@@ -48,6 +48,10 @@ void GLFWHandler::pollEvents() {
     glfwSwapBuffers(window.get());
 }
 
+float GLFWHandler::getlElapsedTime() {
+    return glfwGetTime();
+}
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {

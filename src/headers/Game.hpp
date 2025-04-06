@@ -11,7 +11,7 @@ public:
   void run() const;
 
 private:
-  std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
+  static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
 
   void gameLoop() const;

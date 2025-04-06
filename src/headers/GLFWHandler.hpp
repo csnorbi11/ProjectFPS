@@ -25,8 +25,9 @@ public:
     bool shouldClose() override;
     void swapBuffers() override;
     void pollEvents() override;
+    float getlElapsedTime() override;
 
-protected:
+private:
     std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
 
 };

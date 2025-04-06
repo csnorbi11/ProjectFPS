@@ -18,6 +18,7 @@ public:
     virtual bool shouldClose()=0;
     virtual void swapBuffers()=0;
     virtual void pollEvents()=0;
+    virtual float getlElapsedTime()=0;
 
 protected:
     uint32_t width, height;
