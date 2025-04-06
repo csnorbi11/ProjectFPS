@@ -3,7 +3,8 @@
 
 
 int main() {
-    Game::run();
+    Game game(WindowType::GLFW);
+    game.run();
 
 
     return 0;

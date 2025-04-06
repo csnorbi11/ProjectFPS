@@ -1,17 +1,23 @@
 #ifndef GAME_HPP
 #define GAME_HPP
-
+#include "GLFWHandler.hpp"
 
 
 class Game {
 public:
-  Game();
+  Game(WindowType windowType);
   ~Game();
 
-  static void run();
+  void run();
 
 private:
+  std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
+
+  void gameLoop() const;
+
+
+  std::unique_ptr<WindowHandler> windowHandler;
 
 };
 
