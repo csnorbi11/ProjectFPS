@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "./src/*.cpp")
 add_executable(ProjectFPS_BSP ${SOURCES})
 
 set(CMAKE_CXX_COMPILER clang++)
@@ -27,10 +27,10 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # Enable sanitizers (Debug only)
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
-    target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
-endif()
+#if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+#    target_compile_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
+#    target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
+#endif()
 
 find_package(glfw3 REQUIRED)
 find_package(glm CONFIG REQUIRED)

@@ -1,10 +1,9 @@
-#include <iostream>
-
+#include "headers/Game.hpp"
 
 
 
 int main() {
-    std::cout << "Hello, World!\n";
+    Game::run();
 
 
     return 0;

@@ -11,6 +11,8 @@ I'm going to use some libraries and APIs, especially for graphics.
 - OpenGL 4.3
 - stb_image
 
+For diagrams, I'm going to use [draw.io](https://draw.io)
+
 ## Concept
 The project concept is to make a Quake-ish game with Binary Space Partitioning.
 The player's goal is to destroy every enemy, get the key and get to the end of the map.
@@ -20,3 +22,33 @@ The player's goal is to destroy every enemy, get the key and get to the end of t
 - shooter which shoots at the player
 
 If the player dies, the map restarts.
+
+## Stages
+There's going to be multiple stages of the development.
+
+### Stages with Checklist
+
+#### 1. Basic Prototype
+Goal is to make a simple "Game" where you can walk around and load different map
+- [ ] OpenGL window with GLFW
+- [ ] FPS camera
+- [ ] Input system
+- [ ] Player movement controller
+- [ ] Collision with static geometry
+- [ ] Load basic level (BSP)
+- [ ] Basic physics
+- [ ] Debug overlay
+
+### 2. FPS Prototype
+Goal is to implement basic shooting, pickup ables
+- [ ] Basic shooting
+- [ ] Health system
+- [ ] Pickup ables (health pack, ammunition, etc.)
+- [ ] GUI
+
+### 3. Enemies
+TODO
+### 4. Menu System
+TODO
+### 5. Settings
+TODO
