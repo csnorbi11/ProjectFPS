@@ -10,7 +10,8 @@
 struct GLFWDestroyer{
     void operator()(GLFWwindow* window) const {
       if(window!=nullptr){
-        glfwDestroyWindow(window);
+          glfwDestroyWindow(window);
+          glfwTerminate();
       }
     }
 };

@@ -8,7 +8,7 @@ public:
   Game(WindowType windowType);
   ~Game();
 
-  void run();
+  void run() const;
 
 private:
   std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
