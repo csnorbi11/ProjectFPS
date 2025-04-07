@@ -31,6 +31,9 @@ void Game::gameLoop() const {
         glClear(GL_COLOR_BUFFER_BIT);
 
 
+
+
+
         windowHandler->swapBuffers();
         windowHandler->pollEvents();
     }

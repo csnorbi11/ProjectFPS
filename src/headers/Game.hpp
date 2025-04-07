@@ -5,7 +5,7 @@
 
 class Game {
 public:
-  Game(WindowType windowType);
+  explicit Game(WindowType windowType);
   ~Game();
 
   void run() const;

@@ -27,8 +27,14 @@ public:
     void pollEvents() override;
     float getlElapsedTime() override;
 
+    struct InputHandler {
+        static bool onKeyboard(int key);
+        static bool onMousePressed(int but, int pX, int pY);
+        static void onMouseMotion(int pX, int pY);
+    };
+
 private:
-    std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
+    static std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
 
 };
 

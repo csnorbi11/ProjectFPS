@@ -30,7 +30,7 @@ There's going to be multiple stages of the development.
 
 #### 1. Basic Prototype
 Goal is to make a simple "Game" where you can walk around and load different map
-- [ ] OpenGL window with GLFW
+- [X] OpenGL window with GLFW
 - [ ] FPS camera
 - [ ] Input system
 - [ ] Player movement controller
