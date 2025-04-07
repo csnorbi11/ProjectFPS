@@ -1,5 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
+#include <chrono>
+
 #include "GLFWHandler.hpp"
 
 
@@ -14,13 +16,15 @@ private:
   static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
   void gameLoop();
+  void calculateDeltaTime();
 
 
   std::unique_ptr<WindowHandler> windowHandler;
 
-  float deltaTime;
-  float lastFrameEnd;
-
+  std::chrono::time_point<std::chrono::system_clock> frameStart;
+  std::chrono::time_point<std::chrono::system_clock> frameEnd;
+  long frameDuration;
+  double deltaTime;
 };
 
 #endif //GAME_HPP

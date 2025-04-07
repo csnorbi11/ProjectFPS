@@ -29,7 +29,7 @@ endif()
 # Enable sanitizers (Debug only)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     #target_compile_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
-    #target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
+    #dtarget_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
 endif()
 
 find_package(glfw3 REQUIRED)
