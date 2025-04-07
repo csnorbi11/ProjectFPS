@@ -26,35 +26,26 @@ std::unique_ptr<WindowHandler> Game::createWindowHandler(const WindowType window
     }
 }
 
+void Game::render() {
+    glClearColor(0.2f,0.2f,0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+
+
+
+
+
+
+
+    windowHandler->swapBuffers();
+    windowHandler->pollEvents();
+    calculateDeltaTime();
+}
+
 void Game::gameLoop() {
-    float red = 0.f;
-    float green = 0.f;
-    float blue = 0.f;
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
-        glClearColor(red, green, blue, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        if (WindowHandler::getKeyState(GLFW_KEY_W) == GLFW_REPEAT) {
-            red += deltaTime;
-        } else if (WindowHandler::getKeyState(GLFW_KEY_S) == GLFW_REPEAT) {
-            red -= deltaTime;
-        }
-        if (WindowHandler::getKeyState(GLFW_KEY_D) == GLFW_REPEAT) {
-            blue += deltaTime;
-        } else if (WindowHandler::getKeyState(GLFW_KEY_A) == GLFW_REPEAT) {
-            blue -= deltaTime;
-        }
-        if (WindowHandler::getMouseButtonState(GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-            green += deltaTime;
-        } else if (WindowHandler::getMouseButtonState(GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-            green -= deltaTime;
-        }
-
-
-        windowHandler->swapBuffers();
-        windowHandler->pollEvents();
-        calculateDeltaTime();
+        render();
 
         if (WindowHandler::getKeyState(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             windowHandler->closeWindow();

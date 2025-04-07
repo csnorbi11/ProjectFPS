@@ -15,9 +15,11 @@ public:
 private:
   static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
+
+
   void gameLoop();
   void calculateDeltaTime();
-
+  void render();
 
   std::unique_ptr<WindowHandler> windowHandler;
 
