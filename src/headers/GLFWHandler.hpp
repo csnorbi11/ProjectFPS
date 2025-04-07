@@ -16,7 +16,6 @@ struct GLFWDestroyer{
     }
 };
 
-
 class GLFWHandler final : public WindowHandler {
 public:
     GLFWHandler();
@@ -25,12 +24,20 @@ public:
     bool shouldClose() override;
     void swapBuffers() override;
     void pollEvents() override;
-    float getlElapsedTime() override;
+    float getElapsedTime() override;
 
     struct InputHandler {
-        static bool onKeyboard(int key);
-        static bool onMousePressed(int but, int pX, int pY);
-        static void onMouseMotion(int pX, int pY);
+        static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+
+        static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+        static void cursorPositionCallback(GLFWwindow* window, double xPos, double yPos);
+        static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+        static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+
+        static void debugKeys(int key, int scancode, int action, int mods);
+        static void debugCursor(double xPos, double yPos);
+        static void debugMouseButton(int button, int action, int mods);
+        static void debugMouseScroll(double xOffset, double yOffset);
     };
 
 private:

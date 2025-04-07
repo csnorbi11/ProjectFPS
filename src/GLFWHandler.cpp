@@ -4,8 +4,8 @@
 #include <memory>
 #include <ostream>
 
+#include "headers/DebugMode.hpp"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 std::unique_ptr<GLFWwindow, GLFWDestroyer> GLFWHandler::window = nullptr;
 
@@ -36,11 +36,17 @@ GLFWHandler::GLFWHandler()
 
 
     glfwMakeContextCurrent(window.get());
-    glfwSetFramebufferSizeCallback(window.get(), framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window.get(), InputHandler::framebufferSizeCallback);
+    glfwSetKeyCallback(window.get(),InputHandler::keyCallback);
+    glfwSetCursorPosCallback(window.get(),InputHandler::cursorPositionCallback);
+    glfwSetMouseButtonCallback(window.get(),InputHandler::mouseButtonCallback);
+    glfwSetScrollCallback(window.get(),InputHandler::scrollCallback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
         throw std::runtime_error("Failed to initialize GLAD");
     }
+
+
 
 }
 
@@ -54,27 +60,57 @@ void GLFWHandler::pollEvents() {
     glfwSwapBuffers(window.get());
 }
 
-float GLFWHandler::getlElapsedTime() {
+float GLFWHandler::getElapsedTime() {
     return glfwGetTime();
 }
 
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
+
+void GLFWHandler::InputHandler::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    debugKeys(key, scancode, action, mods);
+}
+void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, double xPos, double yPos) {
+    debugCursor(xPos, yPos);
+}
+void GLFWHandler::InputHandler::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
+    debugMouseButton(button, action, mods);
+}
+void GLFWHandler::InputHandler::scrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
+    debugMouseScroll(xOffset, yOffset);
+}
+void GLFWHandler::InputHandler::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-bool GLFWHandler::InputHandler::onKeyboard(int key) {
-    if (glfwGetKey(window.get(),key)==GLFW_PRESS)
-        return true;
-    return false;
+void GLFWHandler::InputHandler::debugMouseScroll(double xOffset, double yOffset) {
+    if (inputDebugMode&InputDebugMode::MouseScroll) {
+        std::cout<<"Scroll: "<<xOffset<<" "<<yOffset<<std::endl;
+    }
 }
-
-bool GLFWHandler::InputHandler::onMousePressed(int but, int pX, int pY) {
-    if (glfwGetMouseButton(window.get(),but)==GLFW_PRESS)
-        return true;
-    return false;
+void GLFWHandler::InputHandler::debugMouseButton(int button, int action, int mods) {
+    if (inputDebugMode&InputDebugMode::MouseButton){
+        if (action == GLFW_PRESS)
+            std::cout<<"Mouse button: "<<button<<" "<<mods<<std::endl;
+        if (action == GLFW_RELEASE)
+            std::cout<<"Mouse button: "<<button<<" "<<mods<<std::endl;
+    }
 }
-
-void GLFWHandler::InputHandler::onMouseMotion(int pX, int pY) {
+void GLFWHandler::InputHandler::debugCursor(double xPos, double yPos) {
+    if (inputDebugMode&InputDebugMode::MouseCursor)
+        std::cout<<"Cursor position: "<<xPos<<" "<<yPos<<std::endl;
+}
+void GLFWHandler::InputHandler::debugKeys(int key, int scancode, int action, int mods) {
+    if (inputDebugMode&InputDebugMode::Key) {
+        if (action == GLFW_PRESS)
+            std::cout << glfwGetKeyName(key,scancode) << " is pressed";
+        if (action == GLFW_RELEASE)
+            std::cout << glfwGetKeyName(key,scancode) << " is released";
+        if (mods&GLFW_MOD_SHIFT)
+            std::cout<<" with SHIFT";
+        if (mods&GLFW_MOD_CONTROL)
+            std::cout<<" with CONTROL";
+        if (mods&GLFW_MOD_ALT)
+            std::cout<<" with ALT";
+        std::cout<<std::endl;
+    }
 }

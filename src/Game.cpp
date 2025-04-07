@@ -26,8 +26,8 @@ std::unique_ptr<WindowHandler> Game::createWindowHandler(WindowType windowType) 
 
 void Game::gameLoop() const {
     while (!windowHandler->shouldClose()) {
-        glClearColor(0.0f, glm::sin(windowHandler->getlElapsedTime()/2),
-            glm::sin(windowHandler->getlElapsedTime()), 1.0f);
+        glClearColor(0.0f, glm::sin(windowHandler->getElapsedTime()/2),
+            glm::sin(windowHandler->getElapsedTime()), 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
 
