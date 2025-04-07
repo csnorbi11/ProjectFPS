@@ -21,25 +21,16 @@ public:
     virtual ~WindowHandler() = default;
 
     virtual bool shouldClose() =0;
-
     virtual void swapBuffers() =0;
-
     virtual void pollEvents() =0;
-
     virtual void closeWindow() =0;
 
     static uint8_t getKeyState(uint16_t key);
-
     static uint8_t getMouseButtonState(uint8_t button);
-
     static double getMouseScrollx();
-
     static double getMouseScrolly();
-
     static double getMouseX();
-
     static double getMouseY();
-
     static void resetMouseScroll();
 
 protected:
