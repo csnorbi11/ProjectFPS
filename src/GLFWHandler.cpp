@@ -42,6 +42,7 @@ GLFWHandler::GLFWHandler()
         throw std::runtime_error("Failed to initialize GLAD");
     }
     glfwSwapInterval(0);
+    glEnable(GL_DEPTH_TEST);
 }
 
 bool GLFWHandler::shouldClose() {

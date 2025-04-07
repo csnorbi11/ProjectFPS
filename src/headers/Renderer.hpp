@@ -4,9 +4,11 @@
 #include <glm/vec4.hpp>
 #include <GLFW/glfw3.h>
 
-namespace Render{
+class Renderer {
+public:
+    Renderer();
+    ~Renderer();
 
-
-}
+};
 
 #endif //RENDERER_HPP

@@ -5,10 +5,19 @@
 
 #include <glm/glm.hpp>
 
+#include "headers/Shader.hpp"
+#include "headers/ShaderProgram.hpp"
+
 Game::Game(const WindowType windowType)
     : frameDuration(0),
       deltaTime(0) {
     windowHandler = createWindowHandler(windowType);
+
+    Shader vertexShader("assets/shaders/vertex.glsl", GL_VERTEX_SHADER);
+    Shader fragShader("assets/shaders/fragment.glsl", GL_FRAGMENT_SHADER);
+    shaderProgram=new ShaderProgram(vertexShader, fragShader);
+
+    gameObject = new GameObject();
 }
 
 Game::~Game() = default;
@@ -28,9 +37,9 @@ std::unique_ptr<WindowHandler> Game::createWindowHandler(const WindowType window
 
 void Game::render() {
     glClearColor(0.2f,0.2f,0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-
+    gameObject->draw(*shaderProgram);
 
 
 

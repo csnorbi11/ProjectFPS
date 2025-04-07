@@ -21,7 +21,7 @@ Shader::Shader(const char *path, GLenum shaderType)
         shaderFile.close();
 
         shaderCode = shaderStream.str();
-    }catch (std::ifstream::failure e) {
+    }catch (std::ifstream::failure& e) {
         throw std::runtime_error("Failed to read file");
     }
     const char* shaderSource = shaderCode.c_str();

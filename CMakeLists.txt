@@ -38,3 +38,16 @@ find_package(glm CONFIG REQUIRED)
 include_directories(glad PUBLIC "/home/csnorbi/Glad/include")
 add_library(glad STATIC "src/glad.c")
 target_link_libraries(ProjectFPS_BSP PRIVATE glfw glm glad stdc++fs)
+
+
+
+set(SHADERS_DIR ${CMAKE_SOURCE_DIR}/assets/shaders)
+set(BUILD_SHADERS_DIR ${CMAKE_BINARY_DIR}/assets/shaders)
+file(MAKE_DIRECTORY ${ASSETS_DIR})
+
+add_custom_command(
+        TARGET ProjectFPS_BSP POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${SHADERS_DIR} ${BUILD_SHADERS_DIR}
+        COMMENT "Copying assets to build directory"
+)

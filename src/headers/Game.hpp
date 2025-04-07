@@ -2,6 +2,7 @@
 #define GAME_HPP
 #include <chrono>
 
+#include "GameObject.hpp"
 #include "GLFWHandler.hpp"
 
 
@@ -16,10 +17,13 @@ private:
   static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
 
-
   void gameLoop();
   void calculateDeltaTime();
   void render();
+
+  GameObject* gameObject;
+
+  ShaderProgram* shaderProgram;
 
   std::unique_ptr<WindowHandler> windowHandler;
 
