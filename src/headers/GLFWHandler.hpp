@@ -8,6 +8,10 @@
 
 #include "WindowHandler.hpp"
 
+/**
+ * @struct GLFWDestroyer
+ * @brief Custom deleter for GLFWwindow used with std::unique_ptr.
+*/
 struct GLFWDestroyer {
     void operator()(GLFWwindow *window) const {
         if (window != nullptr) {
@@ -17,6 +21,10 @@ struct GLFWDestroyer {
     }
 };
 
+/**
+* @class GLFWHandler
+* @brief Concrete implementation of WindowHandler using GLFW.
+*/
 class GLFWHandler final : public WindowHandler {
 public:
     struct InputHandler {

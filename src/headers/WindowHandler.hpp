@@ -8,6 +8,10 @@ enum class WindowType {
     GLFW
 };
 
+/**
+ * @class WindowHandler
+ * @brief Abstract base class for handling window operations and input.
+ */
 class WindowHandler {
 public:
     WindowHandler(const int width, const int height)
@@ -20,10 +24,30 @@ public:
 
     virtual ~WindowHandler() = default;
 
-    virtual bool shouldClose() =0;
-    virtual void swapBuffers() =0;
-    virtual void pollEvents() =0;
-    virtual void closeWindow() =0;
+    /**
+     * @brief Checks if the window should close.
+     * @return True if the window is set to close, false otherwise.
+     */
+    virtual bool shouldClose() = 0;
+
+    /**
+     * @brief Swaps the front and back buffers of the window.
+     *
+     * Typically used at the end of a frame to present the rendered image.
+     */
+    virtual void swapBuffers() = 0;
+
+    /**
+     * @brief Polls for and processes input events.
+     *
+     * Should be called each frame to keep input and window events updated.
+     */
+    virtual void pollEvents() = 0;
+
+    /**
+     * @brief Forces the window to close.
+     */
+    virtual void closeWindow() = 0;
 
     static uint8_t getKeyState(uint16_t key);
     static uint8_t getMouseButtonState(uint8_t button);
@@ -37,8 +61,9 @@ protected:
     int width, height;
     float aspectRatio;
 
-
+    /// Map of key states (pressed/released/held).
     static std::unordered_map<uint16_t, uint8_t> keys;
+    /// Map of mouse button states (pressed/released/held).
     static std::unordered_map<uint8_t, uint8_t> mouseButtons;
     static double mouseScrollx, mouseScrolly;
     static double mousePosx, mousePosy;
