@@ -2,6 +2,7 @@
 #define GLFWHANDLER_HPP
 
 #include <memory>
+#include <unordered_map>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -18,17 +19,8 @@ struct GLFWDestroyer{
 
 class GLFWHandler final : public WindowHandler {
 public:
-    GLFWHandler();
-    ~GLFWHandler() override =default;
-
-    bool shouldClose() override;
-    void swapBuffers() override;
-    void pollEvents() override;
-    float getElapsedTime() override;
-
     struct InputHandler {
         static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
-
         static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void cursorPositionCallback(GLFWwindow* window, double xPos, double yPos);
         static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
@@ -40,8 +32,20 @@ public:
         static void debugMouseScroll(double xOffset, double yOffset);
     };
 
+    GLFWHandler();
+    ~GLFWHandler() override =default;
+
+    bool shouldClose() override;
+    void swapBuffers() override;
+    void pollEvents() override;
+    float getElapsedTime() override;
+
+
+
 private:
     static std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
+
+
 
 };
 

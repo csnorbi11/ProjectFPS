@@ -8,16 +8,18 @@ public:
   explicit Game(WindowType windowType);
   ~Game();
 
-  void run() const;
+  void run();
 
 private:
   static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
-
-  void gameLoop() const;
+  void gameLoop();
 
 
   std::unique_ptr<WindowHandler> windowHandler;
+
+  float deltaTime;
+  float lastFrameEnd;
 
 };
 
