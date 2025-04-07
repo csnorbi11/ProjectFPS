@@ -5,32 +5,33 @@
 #include "GameObject.hpp"
 #include "GLFWHandler.hpp"
 
+class Renderer;
+
 
 class Game {
 public:
-  explicit Game(WindowType windowType);
-  ~Game();
+    explicit Game(WindowType windowType);
+    ~Game();
 
-  void run();
+    void run();
 
 private:
-  static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
+    static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
 
-  void gameLoop();
-  void calculateDeltaTime();
-  void render();
+    void gameLoop();
+    void calculateDeltaTime();
+    void render();
 
-  GameObject* gameObject;
+    std::vector<std::unique_ptr<GameObject> > gameObjects;
 
-  ShaderProgram* shaderProgram;
+    std::unique_ptr<WindowHandler> windowHandler;
+    std::unique_ptr<Renderer> renderer;
 
-  std::unique_ptr<WindowHandler> windowHandler;
-
-  std::chrono::time_point<std::chrono::system_clock> frameStart;
-  std::chrono::time_point<std::chrono::system_clock> frameEnd;
-  long frameDuration;
-  double deltaTime;
+    std::chrono::time_point<std::chrono::system_clock> frameStart;
+    std::chrono::time_point<std::chrono::system_clock> frameEnd;
+    long frameDuration;
+    double deltaTime;
 };
 
 #endif //GAME_HPP

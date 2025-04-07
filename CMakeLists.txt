@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB SOURCES "./src/*.cpp")
-add_executable(ProjectFPS_BSP ${SOURCES})
+file(GLOB HEADERS "./src/headers/*.hpp")
+
+add_executable(ProjectFPS_BSP ${SOURCES} ${HEADERS})
 
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_C_COMPILER clang)
@@ -28,8 +30,8 @@ endif()
 
 # Enable sanitizers (Debug only)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    #target_compile_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
-    #target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
+    target_compile_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
+    target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
 endif()
 
 find_package(glfw3 REQUIRED)

@@ -21,7 +21,6 @@ public:
               static_cast<float>(width) / static_cast<float>(height)
           ) {
     }
-
     virtual ~WindowHandler() = default;
 
     /**
@@ -48,7 +47,6 @@ public:
      * @brief Forces the window to close.
      */
     virtual void closeWindow() = 0;
-
     static uint8_t getKeyState(uint16_t key);
     static uint8_t getMouseButtonState(uint8_t button);
     static double getMouseScrollx();

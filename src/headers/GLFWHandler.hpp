@@ -2,7 +2,6 @@
 #define GLFWHANDLER_HPP
 
 #include <memory>
-#include <unordered_map>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -41,7 +40,6 @@ public:
     };
 
     GLFWHandler();
-
     ~GLFWHandler() override = default;
 
     bool shouldClose() override;

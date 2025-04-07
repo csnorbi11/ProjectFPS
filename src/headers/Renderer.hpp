@@ -1,14 +1,36 @@
 #ifndef RENDERER_HPP
 #define RENDERER_HPP
 
-#include <glm/vec4.hpp>
-#include <GLFW/glfw3.h>
+#include <memory>
+#include <unordered_map>
+#include <glad/glad.h>
+#include <string>
+
+class Shader;
+class ShaderProgram;
+class Model;
+class GameObject;
 
 class Renderer {
 public:
     Renderer();
+
     ~Renderer();
 
+
+    void createShaderProgram(const std::string &name,
+                             const std::string &vertexShader, const std::string &fragmentShader);
+    void draw(const GameObject &gameObject);
+
+private:
+    void loadShader(const std::string &path, GLenum shaderType);
+    void loadModel(const std::string &path, const std::string &shaderProgName);
+
+    std::unordered_map<std::string, std::unique_ptr<Shader> > shaders = {};
+    std::unordered_map<std::string, std::unique_ptr<ShaderProgram> > shaderPrograms = {};
+    std::unordered_map<std::string, std::unique_ptr<Model> > models{};
+
+    std::string activeShaderProgram{};
 };
 
 #endif //RENDERER_HPP

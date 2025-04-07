@@ -5,9 +5,7 @@
 #include <stdexcept>
 
 Shader::Shader(const char *path, GLenum shaderType)
-    :
-    shaderType(shaderType)
-{
+    : shaderType(shaderType) {
     std::string shaderCode;
     std::ifstream shaderFile;
 
@@ -21,24 +19,24 @@ Shader::Shader(const char *path, GLenum shaderType)
         shaderFile.close();
 
         shaderCode = shaderStream.str();
-    }catch (std::ifstream::failure& e) {
+    } catch (std::ifstream::failure &e) {
         throw std::runtime_error("Failed to read file");
     }
-    const char* shaderSource = shaderCode.c_str();
+    const char *shaderSource = shaderCode.c_str();
 
     shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &shaderSource, nullptr);
     glCompileShader(shader);
 
-    int  success;
+    int success;
     char infoLog[512];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
+    if (!success) {
         glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-        throw std::runtime_error("Failed to compile shader: "+std::to_string(*infoLog)+"\n"+path);
+        throw std::runtime_error("Failed to compile shader: " + std::to_string(*infoLog) + "\n" + path);
     }
 }
+
 Shader::~Shader() noexcept {
     glDeleteShader(shader);
 }
@@ -46,6 +44,7 @@ Shader::~Shader() noexcept {
 GLenum Shader::getShaderType() const {
     return shaderType;
 }
-const GLuint& Shader::getShader() const {
+
+const GLuint &Shader::getShader() const {
     return shader;
 }

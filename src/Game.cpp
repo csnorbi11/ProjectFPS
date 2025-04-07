@@ -5,22 +5,26 @@
 
 #include <glm/glm.hpp>
 
-#include "headers/Shader.hpp"
+#include "headers/Renderer.hpp"
 #include "headers/ShaderProgram.hpp"
 
 Game::Game(const WindowType windowType)
-    : frameDuration(0),
-      deltaTime(0) {
+    :
+    frameDuration(0),
+    deltaTime(0)
+{
     windowHandler = createWindowHandler(windowType);
+    renderer = std::make_unique<Renderer>();
 
-    Shader vertexShader("assets/shaders/vertex.glsl", GL_VERTEX_SHADER);
-    Shader fragShader("assets/shaders/fragment.glsl", GL_FRAGMENT_SHADER);
-    shaderProgram=new ShaderProgram(vertexShader, fragShader);
+    renderer->createShaderProgram("basic",
+                                  "assets/shaders/vertex.glsl",
+                                  "assets/shaders/fragment.glsl");
 
-    gameObject = new GameObject();
+    gameObjects.emplace_back(std::make_unique<GameObject>("cube"));
 }
 
-Game::~Game() = default;
+Game::~Game() {
+}
 
 void Game::run() {
     gameLoop();
@@ -36,15 +40,13 @@ std::unique_ptr<WindowHandler> Game::createWindowHandler(const WindowType window
 }
 
 void Game::render() {
-    glClearColor(0.2f,0.2f,0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
-    gameObject->draw(*shaderProgram);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-
-
-
+    for (auto& gameObject : gameObjects) {
+        renderer->draw(*gameObject);
+    }
 
     windowHandler->swapBuffers();
     windowHandler->pollEvents();
