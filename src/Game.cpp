@@ -58,7 +58,7 @@ void Game::gameLoop() {
         frameStart = std::chrono::high_resolution_clock::now();
         render();
 
-        if (WindowHandler::getKeyState(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        if (WindowHandler::getKeyState(GLFW_KEY_ESCAPE) == Input::Action::PRESSED) {
             windowHandler->closeWindow();
         }
     }

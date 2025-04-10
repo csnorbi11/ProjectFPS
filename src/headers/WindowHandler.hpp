@@ -4,9 +4,12 @@
 #include <functional>
 #include <GLFW/glfw3.h>
 
+#include "Input.hpp"
+
 enum class WindowType {
     GLFW
 };
+
 
 /**
  * @class WindowHandler
@@ -47,8 +50,9 @@ public:
      * @brief Forces the window to close.
      */
     virtual void closeWindow() = 0;
-    static uint8_t getKeyState(uint16_t key);
-    static uint8_t getMouseButtonState(uint8_t button);
+
+    static Input::Action getKeyState(uint16_t key);
+    static Input::Action getMouseButtonState(uint8_t button);
     static double getMouseScrollx();
     static double getMouseScrolly();
     static double getMouseX();
@@ -60,9 +64,9 @@ protected:
     float aspectRatio;
 
     /// Map of key states (pressed/released/held).
-    static std::unordered_map<uint16_t, uint8_t> keys;
+    static std::unordered_map<uint16_t, Input::Action> keys;
     /// Map of mouse button states (pressed/released/held).
-    static std::unordered_map<uint8_t, uint8_t> mouseButtons;
+    static std::unordered_map<uint8_t, Input::Action> mouseButtons;
     static double mouseScrollx, mouseScrolly;
     static double mousePosx, mousePosy;
 };

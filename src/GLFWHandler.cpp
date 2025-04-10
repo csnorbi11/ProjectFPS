@@ -5,6 +5,7 @@
 #include <ostream>
 
 #include "headers/DebugMode.hpp"
+#include "headers/Input.hpp"
 
 
 std::unique_ptr<GLFWwindow, GLFWDestroyer> GLFWHandler::window = nullptr;
@@ -67,11 +68,11 @@ void GLFWHandler::InputHandler::keyCallback(GLFWwindow *window, const int key, c
     if (inputDebugMode & InputDebugMode::Key)
         debugKeys(key, scancode, action, mods);
     if (action == GLFW_PRESS)
-        keys[key] = GLFW_PRESS;
+        keys[key] = Input::Action::PRESSED;
     else if (action == GLFW_RELEASE)
-        keys[key] = GLFW_RELEASE;
+        keys[key] = Input::Action::RELEASED;
     else if (action == GLFW_REPEAT)
-        keys[key] = GLFW_REPEAT;
+        keys[key] = Input::Action::HELD;
 }
 
 void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, const double xPos, const double yPos) {
@@ -86,11 +87,11 @@ void GLFWHandler::InputHandler::mouseButtonCallback(GLFWwindow *window, const in
     if (inputDebugMode & InputDebugMode::MouseButton)
         debugMouseButton(button, action, mods);
     if (action == GLFW_PRESS)
-        mouseButtons[button] = GLFW_PRESS;
+        mouseButtons[button] = Input::Action::PRESSED;
     else if (action == GLFW_RELEASE)
-        mouseButtons[button] = GLFW_RELEASE;
+        mouseButtons[button] = Input::Action::RELEASED;
     else if (action == GLFW_REPEAT)
-        mouseButtons[button] = GLFW_REPEAT;
+        mouseButtons[button] = Input::Action::HELD;
 }
 
 void GLFWHandler::InputHandler::scrollCallback(GLFWwindow *window, const double xOffset, const double yOffset) {
