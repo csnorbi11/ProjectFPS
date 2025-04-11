@@ -67,8 +67,8 @@ protected:
     static std::unordered_map<uint8_t, Input::Action> mouseButtons;
     static double mouseScrollX, mouseScrollY;
     static double mousePosX, mousePosY;
+    static double cursorOffsetX, cursorOffsetY;
     static double cursorPrevOffsetX, cursorPrevOffsetY;
-
 };
 
 #endif //WINDOWHANDLER_HPP
