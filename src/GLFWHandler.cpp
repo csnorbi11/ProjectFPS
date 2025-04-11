@@ -5,7 +5,6 @@
 #include <ostream>
 
 
-#include "headers/Camera.hpp"
 #include "headers/DebugMode.hpp"
 #include "headers/Game.hpp"
 #include "headers/Input.hpp"

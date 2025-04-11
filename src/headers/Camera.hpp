@@ -10,7 +10,7 @@ public:
 
     void update(float deltaTime) override;
 
-    glm::mat4 getViewMatrix();
+    glm::mat4 getViewMatrix() const;
 
 private:
     void updateCameraVectors();

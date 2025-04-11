@@ -46,9 +46,6 @@ void Camera::update(float deltaTime)
     rotation.x+=offsetY*mouseSensitivity;
     rotation.y+=offsetX*mouseSensitivity;
 
-    std::cout << offsetY << " " << offsetX << std::endl;
-
-
     if (rotation.x>89.0f)
         rotation.x=89.0f;
     if (rotation.x<-89.0f)
@@ -59,7 +56,7 @@ void Camera::update(float deltaTime)
 }
 
 
-glm::mat4 Camera::getViewMatrix() {
+glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(position, position + front, up);
 }
 
