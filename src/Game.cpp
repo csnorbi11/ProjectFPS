@@ -3,10 +3,7 @@
 #include <iostream>
 #include <chrono>
 
-#include <glm/glm.hpp>
-
 #include "headers/Renderer.hpp"
-#include "headers/ShaderProgram.hpp"
 
 Game::Game(const WindowType windowType)
     :

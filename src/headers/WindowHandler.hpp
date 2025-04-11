@@ -2,7 +2,6 @@
 #define WINDOWHANDLER_HPP
 #include <cstdint>
 #include <functional>
-#include <GLFW/glfw3.h>
 
 #include "Input.hpp"
 

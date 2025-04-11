@@ -1,6 +1,8 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
+#include <GLFW/glfw3.h>
+
 namespace Input {
   enum class Action {
     PRESSED,
