@@ -8,10 +8,7 @@ double WindowHandler::mouseScrollX = 0.0f;
 double WindowHandler::mouseScrollY = 0.0f;
 double WindowHandler::mousePosX = 0.0;
 double WindowHandler::mousePosY = 0.0;
-double WindowHandler::cursorOffsetX = 0.0;
-double WindowHandler::cursorOffsetY = 0.0;
-double WindowHandler::cursorPrevOffsetX = 0.0;
-double WindowHandler::cursorPrevOffsetY = 0.0;
+
 
 
 WindowHandler::WindowHandler(const int width, const int height)
@@ -60,14 +57,6 @@ double WindowHandler::getMouseX() {
 
 double WindowHandler::getMouseY() {
     return mousePosY;
-}
-
-double WindowHandler::getCursorOffsetX() {
-    return cursorOffsetX;
-}
-
-double WindowHandler::getCursorOffsetY() {
-    return cursorOffsetY;
 }
 
 void WindowHandler::resetMouseScroll() {

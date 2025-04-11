@@ -90,16 +90,6 @@ void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, doubl
     mousePosX = xPos;
     mousePosY = yPos;
 
-    float offsetX,offsetY;
-
-    offsetX=xPos-cursorPrevOffsetX;
-    offsetY=cursorPrevOffsetY-yPos;
-
-    cursorPrevOffsetX=xPos;
-    cursorPrevOffsetY=yPos;
-
-
-
 }
 
 void GLFWHandler::InputHandler::mouseButtonCallback(GLFWwindow *window, const int button, const int action,

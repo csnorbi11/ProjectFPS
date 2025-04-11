@@ -31,20 +31,23 @@ void Camera::update(float deltaTime)
         position+=right*deltaTime;
     }
 
+    float offsetX = WindowHandler::getMouseX()-prevMousePosX;
+    float offsetY = prevMousePosY-WindowHandler::getMouseY();
 
+    prevMousePosX = WindowHandler::getMouseX();
+    prevMousePosY = WindowHandler::getMouseY();
 
+    rotation.x+=offsetY;
+    rotation.y+=offsetX;
 
-    updateCameraVectors();
-}
-
-void Camera::processCursorOffset(double offsetX, double offsetY) {
-    rotation.x+=static_cast<float>(offsetX);
-    rotation.y+=static_cast<float>(offsetY);
 
     if (rotation.x>89.0f)
         rotation.x=89.0f;
     if (rotation.x<-89.0f)
         rotation.x=-89.0f;
+
+
+    updateCameraVectors();
 }
 
 

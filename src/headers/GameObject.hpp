@@ -15,13 +15,15 @@ public:
 
     virtual void update(float deltaTime);
 
+
     const std::string& getModelPath() const;
     glm::mat4 getModelMatrix() const;
 
-protected:
-    glm::mat4 transformMatrix{};
     glm::vec3 position{};
     glm::vec3 rotation{};
+
+protected:
+    glm::mat4 transformMatrix{};
     glm::vec3 direction{};
 
     glm::vec3 front{};

@@ -17,6 +17,7 @@ public:
 private:
     void updateCameraVectors();
 
+    float prevMousePosX, prevMousePosY;
     float mouseSensitivity;
 };
 
