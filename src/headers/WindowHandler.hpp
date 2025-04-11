@@ -51,7 +51,7 @@ public:
      */
     virtual void closeWindow() = 0;
 
-    static Input::Action getKeyState(uint16_t key);
+    static Input::Action getKeyState(Input::Key key);
     static Input::Action getMouseButtonState(uint8_t button);
     static double getMouseScrollx();
     static double getMouseScrolly();
@@ -64,7 +64,7 @@ protected:
     float aspectRatio;
 
     /// Map of key states (pressed/released/held).
-    static std::unordered_map<uint16_t, Input::Action> keys;
+    static std::unordered_map<Input::Key, Input::Action> keys;
     /// Map of mouse button states (pressed/released/held).
     static std::unordered_map<uint8_t, Input::Action> mouseButtons;
     static double mouseScrollx, mouseScrolly;

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-std::unordered_map<uint16_t, Input::Action> WindowHandler::keys = {};
+std::unordered_map<Input::Key, Input::Action> WindowHandler::keys = {};
 std::unordered_map<uint8_t, Input::Action> WindowHandler::mouseButtons = {};
 double WindowHandler::mouseScrollx = 0.0f;
 double WindowHandler::mouseScrolly = 0.0f;
@@ -14,7 +14,7 @@ double WindowHandler::mousePosy = 0.0;
  * @param key the pressed key
  * @return key's state
  */
-Input::Action WindowHandler::getKeyState(const uint16_t key) {
+Input::Action WindowHandler::getKeyState(const Input::Key key) {
     if (keys.count(key) == 0) {
         keys[key] = Input::Action::RELEASED;
     }

@@ -65,14 +65,15 @@ void GLFWHandler::closeWindow() {
 
 void GLFWHandler::InputHandler::keyCallback(GLFWwindow *window, const int key, const int scancode, const int action,
                                             const int mods) {
+    Input::Key convertedKey=Input::getKeyGLFW(key);
     if (inputDebugMode & InputDebugMode::Key)
         debugKeys(key, scancode, action, mods);
     if (action == GLFW_PRESS)
-        keys[key] = Input::Action::PRESSED;
+        keys[convertedKey] = Input::Action::PRESSED;
     else if (action == GLFW_RELEASE)
-        keys[key] = Input::Action::RELEASED;
+        keys[convertedKey] = Input::Action::RELEASED;
     else if (action == GLFW_REPEAT)
-        keys[key] = Input::Action::HELD;
+        keys[convertedKey] = Input::Action::HELD;
 }
 
 void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, const double xPos, const double yPos) {
@@ -84,6 +85,7 @@ void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, const
 
 void GLFWHandler::InputHandler::mouseButtonCallback(GLFWwindow *window, const int button, const int action,
                                                     const int mods) {
+    std::cout<<button<<std::endl;
     if (inputDebugMode & InputDebugMode::MouseButton)
         debugMouseButton(button, action, mods);
     if (action == GLFW_PRESS)

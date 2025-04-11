@@ -21,7 +21,9 @@ private:
 
     void gameLoop();
     void calculateDeltaTime();
-    void render();
+    void render() const;
+
+    void input() const;
 
     std::vector<std::unique_ptr<GameObject> > gameObjects;
 
