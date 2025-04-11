@@ -10,8 +10,6 @@ public:
 
     void update(float deltaTime) override;
 
-    void processCursorOffset(double offsetX, double offsetY);
-
     glm::mat4 getViewMatrix();
 
 private:

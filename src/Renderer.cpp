@@ -47,7 +47,12 @@ void Renderer::draw(const GameObject &gameObject) {
     shaderPrograms[activeShaderProgram]->setMat4("projection",
         glm::perspective(glm::radians(90.0f),(float)800/(float)600,0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
-    shaderPrograms[activeShaderProgram]->setMat4("model",gameObject.getModelMatrix());
+    glm::mat4 transformMatrix(1.f);
+    transformMatrix = glm::translate(glm::mat4(1.0f), gameObject.position);
+    transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.x, glm::vec3(0.0f,1.0f,0.0f));
+    transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.y, glm::vec3(1.0f,0.0f,0.0f));
+    transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.z, glm::vec3(0.0f,0.0f,1.0f));
+    shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
     model->draw();
 }
 

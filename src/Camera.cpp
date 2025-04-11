@@ -19,26 +19,34 @@ Camera::Camera()
 void Camera::update(float deltaTime)
 {
     if (WindowHandler::getKeyState(Input::Key::W)==Input::Action::PRESSED) {
-        position+=front*deltaTime;
+        position+=front*deltaTime*3.f;
     }
     if (WindowHandler::getKeyState(Input::Key::S)==Input::Action::PRESSED) {
-        position-=front*deltaTime;
+        position-=front*deltaTime*3.f;
     }
     if (WindowHandler::getKeyState(Input::Key::A)==Input::Action::PRESSED) {
-        position-=right*deltaTime;
+        position-=right*deltaTime*3.f;
     }
     if (WindowHandler::getKeyState(Input::Key::D)==Input::Action::PRESSED) {
-        position+=right*deltaTime;
+        position+=right*deltaTime*3.f;
+    }
+    if (WindowHandler::getKeyState(Input::Key::SPACE)==Input::Action::PRESSED) {
+        position.y+=deltaTime*3.f;
+    }
+    if (WindowHandler::getKeyState(Input::Key::LCTRL)==Input::Action::PRESSED) {
+        position.y-=deltaTime;
     }
 
-    float offsetX = WindowHandler::getMouseX()-prevMousePosX;
-    float offsetY = prevMousePosY-WindowHandler::getMouseY();
+    const float offsetX = static_cast<float>(WindowHandler::getMouseX())-prevMousePosX;
+    const float offsetY = prevMousePosY-static_cast<float>(WindowHandler::getMouseY());
 
     prevMousePosX = WindowHandler::getMouseX();
     prevMousePosY = WindowHandler::getMouseY();
 
-    rotation.x+=offsetY;
-    rotation.y+=offsetX;
+    rotation.x+=offsetY*mouseSensitivity;
+    rotation.y+=offsetX*mouseSensitivity;
+
+    std::cout << offsetY << " " << offsetX << std::endl;
 
 
     if (rotation.x>89.0f)

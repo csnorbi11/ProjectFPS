@@ -16,7 +16,8 @@ namespace Input {
     Q,W,E,R,T,Z,U,I,O,P,A,S,D,F,G,H,J,K,L,Y,X,C,V,B,N,M,
     COMMA,DOT,MINUS,
     ESCAPE,ENTER,
-    RIGHT,LEFT,UP,DOWN
+    RIGHT,LEFT,UP,DOWN,
+    SPACE, LSHIFT, LCTRL
   };
 
   enum class Modifier : uint8_t {
@@ -72,6 +73,9 @@ namespace Input {
       case GLFW_KEY_DOWN: return Key::DOWN;
       case GLFW_KEY_LEFT: return Key::LEFT;
       case GLFW_KEY_RIGHT: return Key::RIGHT;
+      case GLFW_KEY_LEFT_CONTROL: return Key::LCTRL;
+      case GLFW_KEY_LEFT_SHIFT: return Key::LSHIFT;
+      case GLFW_KEY_SPACE: return Key::SPACE;
       default: return Input::Key::UNKNOWN;
     }
   }

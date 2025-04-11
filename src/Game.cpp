@@ -20,7 +20,16 @@ Game::Game(const WindowType windowType)
     camera= std::make_unique<Camera>();
     renderer->setActiveCamera(camera.get());
 
-    gameObjects.emplace_back(std::make_unique<GameObject>("cube"));
+    int index = 0;
+    for (int i=0;i<3;i++) {
+        for (int j=0;j<3;j++) {
+            for (int k=0;k<3;k++) {
+                gameObjects.emplace_back(new GameObject());
+                gameObjects[index++]->position=glm::vec3(k*2,i*2,j*2);
+            }
+        }
+    }
+
 }
 
 Game::~Game() = default;
@@ -64,6 +73,9 @@ void Game::gameLoop() {
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
 
+        for (auto& gameObject : gameObjects) {
+            gameObject->update(deltaTime);
+        }
         camera->update(deltaTime);
 
         render();
