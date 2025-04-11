@@ -23,8 +23,7 @@ Game::Game(const WindowType windowType)
     gameObjects.emplace_back(std::make_unique<GameObject>("cube"));
 }
 
-Game::~Game() {
-}
+Game::~Game() = default;
 
 void Game::run() {
     gameLoop();
@@ -39,8 +38,8 @@ std::unique_ptr<WindowHandler> Game::createWindowHandler(const WindowType window
     }
 }
 
-void Game::render() {
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+void Game::render() const {
+    glClearColor(0.f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -49,18 +48,27 @@ void Game::render() {
     }
 
     windowHandler->swapBuffers();
+
+
+}
+
+void Game::input() const {
+    if (WindowHandler::getKeyState(Input::Key::ESCAPE) == Input::Action::PRESSED) {
+        windowHandler->closeWindow();
+    }
+
     windowHandler->pollEvents();
-    calculateDeltaTime();
 }
 
 void Game::gameLoop() {
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
-        render();
 
-        if (WindowHandler::getKeyState(GLFW_KEY_ESCAPE) == Input::Action::PRESSED) {
-            windowHandler->closeWindow();
-        }
+
+
+        render();
+        input();
+        calculateDeltaTime();
     }
 }
 
