@@ -6,6 +6,8 @@
 #include <glad/glad.h>
 #include <string>
 
+#include "Camera.hpp"
+
 class Shader;
 class ShaderProgram;
 class Model;
@@ -22,6 +24,8 @@ public:
                              const std::string &vertexShader, const std::string &fragmentShader);
     void draw(const GameObject &gameObject);
 
+    void setActiveCamera(Camera* camera);
+
 private:
     void loadShader(const std::string &path, GLenum shaderType);
     void loadModel(const std::string &path, const std::string &shaderProgName);
@@ -30,6 +34,7 @@ private:
     std::unordered_map<std::string, std::unique_ptr<ShaderProgram> > shaderPrograms = {};
     std::unordered_map<std::string, std::unique_ptr<Model> > models{};
 
+    Camera* camera;
     std::string activeShaderProgram{};
 };
 

@@ -7,6 +7,7 @@
 
 #include "WindowHandler.hpp"
 
+class Camera;
 /**
  * @struct GLFWDestroyer
  * @brief Custom deleter for GLFWwindow used with std::unique_ptr.
@@ -49,6 +50,7 @@ public:
 
 private:
     static std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
+    static Camera* activeCamera;
 };
 
 #endif //WINDOWHANDLER_HPP

@@ -24,7 +24,7 @@ Model::~Model() {
 
 void Model::draw() const {
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size()/5);
 }
 
 const std::string &Model::getShaderProgName() {

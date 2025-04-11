@@ -4,10 +4,21 @@
 
 std::unordered_map<Input::Key, Input::Action> WindowHandler::keys = {};
 std::unordered_map<uint8_t, Input::Action> WindowHandler::mouseButtons = {};
-double WindowHandler::mouseScrollx = 0.0f;
-double WindowHandler::mouseScrolly = 0.0f;
-double WindowHandler::mousePosx = 0.0;
-double WindowHandler::mousePosy = 0.0;
+double WindowHandler::mouseScrollX = 0.0f;
+double WindowHandler::mouseScrollY = 0.0f;
+double WindowHandler::mousePosX = 0.0;
+double WindowHandler::mousePosY = 0.0;
+double WindowHandler::cursorPrevOffsetX = 0.0;
+double WindowHandler::cursorPrevOffsetY = 0.0;
+
+
+WindowHandler::WindowHandler(const int width, const int height)
+: width(width),
+          height(height),
+          aspectRatio(
+              static_cast<float>(width) / static_cast<float>(height)
+          ){
+}
 
 /**
  * @brief If the key haven't pressed yet, it's going to be added to keys and returns it's state
@@ -33,23 +44,23 @@ Input::Action WindowHandler::getMouseButtonState(const uint8_t button) {
     return mouseButtons[button];
 }
 
-double WindowHandler::getMouseScrollx() {
-    return mouseScrollx;
+double WindowHandler::getMouseScrollX() {
+    return mouseScrollX;
 }
 
-double WindowHandler::getMouseScrolly() {
-    return mouseScrolly;
+double WindowHandler::getMouseScrollY() {
+    return mouseScrollY;
 }
 
 double WindowHandler::getMouseX() {
-    return mousePosx;
+    return mousePosX;
 }
 
 double WindowHandler::getMouseY() {
-    return mousePosy;
+    return mousePosY;
 }
 
 void WindowHandler::resetMouseScroll() {
-    mouseScrollx = 0.0f;
-    mouseScrolly = 0.0f;
+    mouseScrollX = 0.0f;
+    mouseScrollY = 0.0f;
 }

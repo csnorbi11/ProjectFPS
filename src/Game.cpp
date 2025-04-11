@@ -17,6 +17,9 @@ Game::Game(const WindowType windowType)
                                   "assets/shaders/vertex.glsl",
                                   "assets/shaders/fragment.glsl");
 
+    camera= std::make_unique<Camera>();
+    renderer->setActiveCamera(camera.get());
+
     gameObjects.emplace_back(std::make_unique<GameObject>("cube"));
 }
 
@@ -61,7 +64,7 @@ void Game::gameLoop() {
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
 
-
+        camera->update(deltaTime);
 
         render();
         input();

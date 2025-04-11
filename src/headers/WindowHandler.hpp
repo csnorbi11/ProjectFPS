@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <functional>
 
+#include "Camera.hpp"
 #include "Input.hpp"
 
 enum class WindowType {
@@ -16,13 +17,7 @@ enum class WindowType {
  */
 class WindowHandler {
 public:
-    WindowHandler(const int width, const int height)
-        : width(width),
-          height(height),
-          aspectRatio(
-              static_cast<float>(width) / static_cast<float>(height)
-          ) {
-    }
+    WindowHandler(const int width, const int height);
     virtual ~WindowHandler() = default;
 
     /**
@@ -52,11 +47,15 @@ public:
 
     static Input::Action getKeyState(Input::Key key);
     static Input::Action getMouseButtonState(uint8_t button);
-    static double getMouseScrollx();
-    static double getMouseScrolly();
+    static double getMouseScrollX();
+    static double getMouseScrollY();
     static double getMouseX();
     static double getMouseY();
+    static double getCursorOffsetX();
+    static double getCursorOffsetY();
     static void resetMouseScroll();
+
+    void setActiveCamera(Camera* camera);
 
 protected:
     int width, height;
@@ -66,8 +65,10 @@ protected:
     static std::unordered_map<Input::Key, Input::Action> keys;
     /// Map of mouse button states (pressed/released/held).
     static std::unordered_map<uint8_t, Input::Action> mouseButtons;
-    static double mouseScrollx, mouseScrolly;
-    static double mousePosx, mousePosy;
+    static double mouseScrollX, mouseScrollY;
+    static double mousePosX, mousePosY;
+    static double cursorPrevOffsetX, cursorPrevOffsetY;
+
 };
 
 #endif //WINDOWHANDLER_HPP

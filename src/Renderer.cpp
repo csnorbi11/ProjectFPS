@@ -5,8 +5,7 @@
 #include "headers/Shader.hpp"
 #include "headers/ShaderProgram.hpp"
 
-Renderer::Renderer() {
-}
+Renderer::Renderer() = default;
 
 Renderer::~Renderer() {
     models.clear();
@@ -45,5 +44,12 @@ void Renderer::draw(const GameObject &gameObject) {
         activeShaderProgram = model->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
     }
+    shaderPrograms[activeShaderProgram]->setMat4("projection",
+        glm::perspective(glm::radians(90.0f),(float)800/(float)600,0.01f,100.0f));
+    shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
     model->draw();
+}
+
+void Renderer::setActiveCamera(Camera* camera) {
+    this->camera = camera;
 }

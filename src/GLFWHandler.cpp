@@ -4,7 +4,10 @@
 #include <memory>
 #include <ostream>
 
+
+#include "headers/Camera.hpp"
 #include "headers/DebugMode.hpp"
+#include "headers/Game.hpp"
 #include "headers/Input.hpp"
 
 
@@ -33,6 +36,7 @@ GLFWHandler::GLFWHandler()
 
 
     glfwMakeContextCurrent(window.get());
+
     glfwSetFramebufferSizeCallback(window.get(), InputHandler::framebufferSizeCallback);
     glfwSetKeyCallback(window.get(), InputHandler::keyCallback);
     glfwSetCursorPosCallback(window.get(), InputHandler::cursorPositionCallback);
@@ -44,6 +48,9 @@ GLFWHandler::GLFWHandler()
     }
     glfwSwapInterval(0);
     glEnable(GL_DEPTH_TEST);
+
+
+    std::cout << glGetString(GL_RENDERER) << std::endl;
 }
 
 bool GLFWHandler::shouldClose() {
@@ -76,11 +83,23 @@ void GLFWHandler::InputHandler::keyCallback(GLFWwindow *window, const int key, c
         keys[convertedKey] = Input::Action::HELD;
 }
 
-void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, const double xPos, const double yPos) {
+void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, double xPos, double yPos) {
     if (inputDebugMode & InputDebugMode::MouseCursor)
         debugCursor(xPos, yPos);
-    mousePosx = xPos;
-    mousePosy = yPos;
+
+    mousePosX = xPos;
+    mousePosY = yPos;
+
+    float offsetX,offsetY;
+
+    offsetX=xPos-cursorPrevOffsetX;
+    offsetY=cursorPrevOffsetY-yPos;
+
+    cursorPrevOffsetX=xPos;
+    cursorPrevOffsetY=yPos;
+
+
+
 }
 
 void GLFWHandler::InputHandler::mouseButtonCallback(GLFWwindow *window, const int button, const int action,
@@ -99,8 +118,8 @@ void GLFWHandler::InputHandler::mouseButtonCallback(GLFWwindow *window, const in
 void GLFWHandler::InputHandler::scrollCallback(GLFWwindow *window, const double xOffset, const double yOffset) {
     if (inputDebugMode & InputDebugMode::MouseScroll)
         debugMouseScroll(xOffset, yOffset);
-    mouseScrollx = xOffset;
-    mouseScrolly = yOffset;
+    mouseScrollX = xOffset;
+    mouseScrollY = yOffset;
 }
 
 void GLFWHandler::InputHandler::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
