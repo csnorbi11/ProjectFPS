@@ -17,8 +17,8 @@ enum class WindowType {
  */
 class WindowHandler {
 public:
-    WindowHandler(const int width, const int height);
-    virtual ~WindowHandler() = default;
+    WindowHandler(int width, int height);
+    virtual ~WindowHandler();
 
     /**
      * @brief Checks if the window should close.
@@ -53,9 +53,9 @@ public:
     static double getMouseY();
     static void resetMouseScroll();
 
+
 protected:
     int width, height;
-    float aspectRatio;
 
     /// Map of key states (pressed/released/held).
     static std::unordered_map<Input::Key, Input::Action> keys;

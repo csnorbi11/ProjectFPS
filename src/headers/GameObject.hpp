@@ -7,9 +7,9 @@
 
 class GameObject {
 public:
-    GameObject(const std::string &modelPath,
+    explicit GameObject(const std::string &modelPath,
                glm::vec3 position = glm::vec3(0.f), glm::vec3 rotation = glm::vec3(0.f));
-    GameObject(glm::vec3 position = glm::vec3(0.f), glm::vec3 rotation = glm::vec3(0.f));
+    explicit GameObject(glm::vec3 position = glm::vec3(0.f), glm::vec3 rotation = glm::vec3(0.f));
 
     virtual ~GameObject()=default;
 
@@ -18,16 +18,15 @@ public:
 
     const std::string& getModelPath() const;
 
-    glm::vec3 position{};
-    glm::vec3 rotation{};
+    glm::vec3 position={};
+    glm::vec3 rotation={};
 
 protected:
+    glm::vec3 direction;
 
-    glm::vec3 direction{};
-
-    glm::vec3 front{};
-    glm::vec3 right{};
-    glm::vec3 up{};
+    glm::vec3 front;
+    glm::vec3 right;
+    glm::vec3 up;
 
     std::string model{};
 };

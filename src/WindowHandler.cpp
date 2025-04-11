@@ -10,14 +10,14 @@ double WindowHandler::mousePosX = 0.0;
 double WindowHandler::mousePosY = 0.0;
 
 
+WindowHandler::WindowHandler(int width, int height)
+    :
+        width(width),
+        height(height)
+{}
 
-WindowHandler::WindowHandler(const int width, const int height)
-: width(width),
-          height(height),
-          aspectRatio(
-              static_cast<float>(width) / static_cast<float>(height)
-          ){
-}
+WindowHandler::~WindowHandler()=default;
+
 
 /**
  * @brief If the key haven't pressed yet, it's going to be added to keys and returns it's state
@@ -63,3 +63,5 @@ void WindowHandler::resetMouseScroll() {
     mouseScrollX = 0.0f;
     mouseScrollY = 0.0f;
 }
+
+

@@ -53,6 +53,8 @@ GLFWHandler::GLFWHandler()
     std::cout << glGetString(GL_RENDERER) << std::endl;
 }
 
+GLFWHandler::~GLFWHandler()=default;
+
 bool GLFWHandler::shouldClose() {
     return glfwWindowShouldClose(window.get());
 }

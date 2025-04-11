@@ -40,7 +40,7 @@ public:
     };
 
     GLFWHandler();
-    ~GLFWHandler() override = default;
+    ~GLFWHandler() override;
 
     bool shouldClose() override;
     void swapBuffers() override;
@@ -49,7 +49,6 @@ public:
 
 private:
     static std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
-    static Camera* activeCamera;
 };
 
 #endif //WINDOWHANDLER_HPP

@@ -5,22 +5,22 @@ GameObject::GameObject(const std::string &modelPath, const glm::vec3 position, c
     :
         position(position),
         rotation(rotation),
-        front(glm::vec3(0.f,0.f,-1.f)),
-        right(glm::vec3(1.f,0.f,0.f)),
-        up(glm::vec3(0.f,1.f,0.f)),
+        direction(0.f,0.f,-1.f),
+        front(0.f,0.f,-1.f),
+        right(1.f,0.f,0.f),
+        up(0.f,1.f,0.f),
         model(modelPath)
-{
-}
+{}
 
 GameObject::GameObject(glm::vec3 position, glm::vec3 rotation)
     :
         position(position),
         rotation(rotation),
-        front(glm::vec3(0.f,0.f,-1.f)),
-        right(glm::vec3(1.f,0.f,0.f)),
-        up(glm::vec3(0.f,1.f,0.f))
-{
-}
+        direction(0.f,0.f,-1.f),
+        front(0.f,0.f,-1.f),
+        right(1.f,0.f,0.f),
+        up(0.f,1.f,0.f)
+{}
 
 void GameObject::update(float deltaTime) {
 

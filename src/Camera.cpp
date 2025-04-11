@@ -10,11 +10,11 @@
 
 Camera::Camera()
     :
-    GameObject("none"),
-    mouseSensitivity(1.f)
-{
+    GameObject("none")
+{}
 
-}
+Camera::~Camera()=default;
+
 
 void Camera::update(float deltaTime)
 {

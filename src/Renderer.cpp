@@ -1,5 +1,6 @@
 #include "headers/Renderer.hpp"
 
+#include "headers/Camera.hpp"
 #include "headers/GameObject.hpp"
 #include "headers/Model.hpp"
 #include "headers/Shader.hpp"

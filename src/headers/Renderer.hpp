@@ -6,17 +6,16 @@
 #include <glad/glad.h>
 #include <string>
 
-#include "Camera.hpp"
 
 class Shader;
 class ShaderProgram;
 class Model;
 class GameObject;
+class Camera;
 
 class Renderer {
 public:
     Renderer();
-
     ~Renderer();
 
 
@@ -32,10 +31,10 @@ private:
 
     std::unordered_map<std::string, std::unique_ptr<Shader> > shaders = {};
     std::unordered_map<std::string, std::unique_ptr<ShaderProgram> > shaderPrograms = {};
-    std::unordered_map<std::string, std::unique_ptr<Model> > models{};
+    std::unordered_map<std::string, std::unique_ptr<Model> > models={};
 
-    Camera* camera;
-    std::string activeShaderProgram{};
+    Camera* camera=nullptr;
+    std::string activeShaderProgram={};
 };
 
 #endif //RENDERER_HPP

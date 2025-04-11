@@ -6,7 +6,7 @@
 class Camera final :public GameObject {
 public:
     Camera();
-    ~Camera() override=default;
+    ~Camera() override;
 
     void update(float deltaTime) override;
 
@@ -15,8 +15,8 @@ public:
 private:
     void updateCameraVectors();
 
-    float prevMousePosX, prevMousePosY;
-    float mouseSensitivity;
+    float prevMousePosX=0, prevMousePosY=0;
+    float mouseSensitivity=1.f;
 };
 
 #endif //CAMERA_HPP

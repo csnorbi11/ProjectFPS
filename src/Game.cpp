@@ -1,14 +1,10 @@
 #include "headers/Game.hpp"
 
 #include <iostream>
-#include <chrono>
 
 #include "headers/Renderer.hpp"
 
 Game::Game(const WindowType windowType)
-    :
-    frameDuration(0),
-    deltaTime(0)
 {
     windowHandler = createWindowHandler(windowType);
     renderer = std::make_unique<Renderer>();
@@ -57,8 +53,6 @@ void Game::render() const {
     }
 
     windowHandler->swapBuffers();
-
-
 }
 
 void Game::input() const {
@@ -73,10 +67,10 @@ void Game::gameLoop() {
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
 
-        for (auto& gameObject : gameObjects) {
-            gameObject->update(deltaTime);
+        for (const auto& gameObject : gameObjects) {
+            gameObject->update(static_cast<float>(deltaTime));
         }
-        camera->update(deltaTime);
+        camera->update(static_cast<float>(deltaTime));
 
         render();
         input();

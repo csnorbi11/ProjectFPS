@@ -16,7 +16,7 @@ public:
 
     void run();
 
-public:
+private:
     static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
 
 
@@ -26,16 +26,15 @@ public:
 
     void input() const;
 
-    std::vector<std::unique_ptr<GameObject> > gameObjects;
-
     std::unique_ptr<WindowHandler> windowHandler;
     std::unique_ptr<Renderer> renderer;
+    std::vector<std::unique_ptr<GameObject>> gameObjects;
     std::unique_ptr<Camera> camera;
 
-    std::chrono::time_point<std::chrono::system_clock> frameStart;
-    std::chrono::time_point<std::chrono::system_clock> frameEnd;
-    long frameDuration;
-    double deltaTime;
+    std::chrono::time_point<std::chrono::system_clock> frameStart={};
+    std::chrono::time_point<std::chrono::system_clock> frameEnd={};
+    long frameDuration=0;
+    double deltaTime=0;
 };
 
 #endif //GAME_HPP
