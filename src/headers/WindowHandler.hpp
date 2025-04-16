@@ -45,9 +45,12 @@ public:
      */
     virtual void closeWindow() = 0;
 
+    static bool toggleKey(Input::Key key);
+
     static float getAspectRatio();
 
     static Input::Action getKeyState(Input::Key key);
+    static Input::Action getKeyPrevState(Input::Key key);
     static Input::Action getMouseButtonState(uint8_t button);
     static double getMouseScrollX();
     static double getMouseScrollY();
@@ -60,12 +63,15 @@ protected:
     static int width, height;
     static float aspectRatio;
 
+
     /// Map of key states (pressed/released/held).
     static std::unordered_map<Input::Key, Input::Action> keys;
+    static std::unordered_map<Input::Key, Input::Action> keysPrevStates;
     /// Map of mouse button states (pressed/released/held).
     static std::unordered_map<uint8_t, Input::Action> mouseButtons;
     static double mouseScrollX, mouseScrollY;
     static double mousePosX, mousePosY;
+
 };
 
 #endif //WINDOWHANDLER_HPP

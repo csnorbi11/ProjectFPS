@@ -3,6 +3,7 @@
 #include <cstdint>
 
 std::unordered_map<Input::Key, Input::Action> WindowHandler::keys = {};
+std::unordered_map<Input::Key, Input::Action> WindowHandler::keysPrevStates = {};
 std::unordered_map<uint8_t, Input::Action> WindowHandler::mouseButtons = {};
 double WindowHandler::mouseScrollX = 0.0f;
 double WindowHandler::mouseScrollY = 0.0f;
@@ -14,6 +15,14 @@ float WindowHandler::aspectRatio = 1.f;
 
 WindowHandler::WindowHandler()=default;
 WindowHandler::~WindowHandler()=default;
+
+bool WindowHandler::toggleKey(Input::Key key) {
+    bool state=false;
+    if (keys[key]==Input::Action::PRESSED&&keys[key]!=keysPrevStates[key])
+        state=true;
+    keysPrevStates[key]=keys[key];
+    return state;
+}
 
 float WindowHandler::getAspectRatio() {
     return aspectRatio;
@@ -27,8 +36,13 @@ float WindowHandler::getAspectRatio() {
 Input::Action WindowHandler::getKeyState(const Input::Key key) {
     if (keys.count(key) == 0) {
         keys[key] = Input::Action::RELEASED;
+        keysPrevStates[key] = Input::Action::RELEASED;
     }
     return keys[key];
+}
+
+Input::Action WindowHandler::getKeyPrevState(Input::Key key) {
+    return keysPrevStates[key];
 }
 
 /**

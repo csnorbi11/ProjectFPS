@@ -89,14 +89,10 @@ void Renderer::draw(const GameObject &gameObject) {
 }
 
 void Renderer::update() {
-    if (WindowHandler::getKeyState(Input::Key::O)==Input::Action::PRESSED) {
+    if (WindowHandler::toggleKey(Input::Key::O)) {
         debugMode=!debugMode;
     }
-    if (debugMode) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    } else {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
+    glPolygonMode(GL_FRONT_AND_BACK, debugMode ? GL_LINE : GL_FILL);
 }
 
 void Renderer::setActiveCamera(Camera* camera) {
