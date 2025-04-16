@@ -36,11 +36,11 @@ endif()
 
 find_package(glfw3 REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(assimp REQUIRED)
 
 include_directories(glad PUBLIC "/home/csnorbi/Glad/include")
 add_library(glad STATIC "src/glad.c")
-target_link_libraries(ProjectFPS_BSP PRIVATE glfw glm glad stdc++fs)
-
+target_link_libraries(ProjectFPS_BSP PRIVATE glfw glm glad assimp::assimp stdc++fs)
 
 
 set(SHADERS_DIR ${CMAKE_SOURCE_DIR}/assets/shaders)

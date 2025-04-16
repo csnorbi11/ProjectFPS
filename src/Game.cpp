@@ -1,8 +1,10 @@
 #include "headers/Game.hpp"
 
 #include <iostream>
+#include <filesystem>
 
 #include "headers/Renderer.hpp"
+
 
 Game::Game(const WindowType windowType)
 {
@@ -16,15 +18,7 @@ Game::Game(const WindowType windowType)
     camera= std::make_unique<Camera>();
     renderer->setActiveCamera(camera.get());
 
-    int index = 0;
-    for (int i=0;i<3;i++) {
-        for (int j=0;j<3;j++) {
-            for (int k=0;k<3;k++) {
-                gameObjects.emplace_back(new GameObject());
-                gameObjects[index++]->position=glm::vec3(k*2,i*2,j*2);
-            }
-        }
-    }
+    gameObjects.emplace_back(new GameObject("assets/models/backpack/backpack.obj"));
 
 }
 
@@ -71,7 +65,6 @@ void Game::gameLoop() {
             gameObject->update(static_cast<float>(deltaTime));
         }
         camera->update(static_cast<float>(deltaTime));
-
         render();
         input();
         calculateDeltaTime();
