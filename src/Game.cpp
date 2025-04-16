@@ -17,8 +17,8 @@ Game::Game(const WindowType windowType)
 
     camera= std::make_unique<Camera>();
     renderer->setActiveCamera(camera.get());
-
-    gameObjects.emplace_back(new GameObject("assets/models/backpack/backpack.obj"));
+    loadedMap = std::make_unique<Map>("assets/models/map0.obj");
+    renderer->setActiveMap(loadedMap.get());
 
 }
 
@@ -41,7 +41,7 @@ void Game::render() const {
     glClearColor(0.f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+    renderer->drawMap();
     for (auto& gameObject : gameObjects) {
         renderer->draw(*gameObject);
     }

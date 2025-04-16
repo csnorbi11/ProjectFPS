@@ -51,5 +51,16 @@ add_custom_command(
         TARGET ProjectFPS_BSP POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${SHADERS_DIR} ${BUILD_SHADERS_DIR}
-        COMMENT "Copying assets to build directory"
+        COMMENT "Copying shaders to build directory"
+)
+
+set(MODELS_DIR ${CMAKE_SOURCE_DIR}/assets/models)
+set(BUILD_MODELS_DIR ${CMAKE_BINARY_DIR}/assets/models)
+file(MAKE_DIRECTORY ${ASSETS_DIR})
+
+add_custom_command(
+        TARGET ProjectFPS_BSP POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${MODELS_DIR} ${BUILD_MODELS_DIR}
+        COMMENT "Copying models to build directory"
 )

@@ -37,7 +37,7 @@ private:
     std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type,
                                          std::string typeName);
 
-    void logModelInfo();
+    void logModelInfo() const;
 
     std::string shaderProgName;
 

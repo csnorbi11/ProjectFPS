@@ -93,7 +93,6 @@ void GLFWHandler::InputHandler::cursorPositionCallback(GLFWwindow *window, doubl
 
 void GLFWHandler::InputHandler::mouseButtonCallback(GLFWwindow *window, const int button, const int action,
                                                     const int mods) {
-    std::cout<<button<<std::endl;
     if (inputDebugMode & InputDebugMode::MouseButton)
         debugMouseButton(button, action, mods);
     if (action == GLFW_PRESS)

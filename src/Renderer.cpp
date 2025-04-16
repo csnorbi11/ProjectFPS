@@ -1,9 +1,11 @@
 #include "headers/Renderer.hpp"
 
 #include <iostream>
+#include <map>
 
 #include "headers/Camera.hpp"
 #include "headers/GameObject.hpp"
+#include "headers/Map.hpp"
 #include "headers/Model.hpp"
 #include "headers/Shader.hpp"
 #include "headers/ShaderProgram.hpp"
@@ -88,6 +90,43 @@ void Renderer::draw(const GameObject &gameObject) {
 
 }
 
+void Renderer::drawMap() {
+    if (activeShaderProgram != currentMap->getShaderProgName()) {
+        activeShaderProgram = currentMap->getShaderProgName();
+        shaderPrograms[activeShaderProgram]->use();
+    }
+    shaderPrograms[activeShaderProgram]->setMat4("projection",
+        glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
+    shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
+    shaderPrograms[activeShaderProgram]->setMat4("model",glm::mat4(1.0f));
+    for (const auto &mesh : currentMap->getMeshes()) {
+        // bind appropriate textures
+        uint32_t diffuseNr  = 1;
+        uint32_t specularNr = 1;
+        uint32_t normalNr   = 1;
+        uint32_t heightNr   = 1;
+        for (int i=0;i<mesh->getTextures().size();i++) {
+            glActiveTexture(GL_TEXTURE0 + i);
+            std::string number;
+            std::string name = mesh->getTextures()[i].type;
+            if(name == "texture_diffuse")
+                number = std::to_string(diffuseNr++);
+            else if(name == "texture_specular")
+                number = std::to_string(specularNr++); // transfer unsigned int to string
+            else if(name == "texture_normal")
+                number = std::to_string(normalNr++); // transfer unsigned int to string
+            else if(name == "texture_height")
+                number = std::to_string(heightNr++);
+            shaderPrograms[activeShaderProgram]->setInt(name + number,i);
+            glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
+        }
+        mesh->bindVAO();
+        glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
+        mesh->unbindVAO();
+        glActiveTexture(GL_TEXTURE0);
+    }
+}
+
 void Renderer::update() {
     if (WindowHandler::toggleKey(Input::Key::O)) {
         debugMode=!debugMode;
@@ -97,4 +136,8 @@ void Renderer::update() {
 
 void Renderer::setActiveCamera(Camera* camera) {
     this->camera = camera;
+}
+
+void Renderer::setActiveMap(Map *map) {
+    currentMap=map;
 }

@@ -72,7 +72,7 @@ std::vector<std::unique_ptr<Mesh>> & Model::getMeshes() {
     return meshes;
 }
 
-void Model::logModelInfo() {
+void Model::logModelInfo() const {
     std::cout << "Model infos:" << std::endl;
     std::cout<<"\tpath: "<<path<<std::endl;
     std::cout<<"\tshader program: "<<shaderProgName<<std::endl;
@@ -84,13 +84,13 @@ void Model::logModelInfo() {
         std::cout<<"\t\tvertices count: "<<mesh->getVertices().size()<<std::endl;
     }
     std::cout<<"\ttotal vertices: "<<totalVertices<<std::endl;
-    std::cout<<"models size: "<<totalVertices*sizeof(Vertex)/1000.f/1000.f<<"MB"<<std::endl;
+    std::cout<<"models size: "<<static_cast<float>(totalVertices*sizeof(Vertex))/1000.f/1000.f<<"MB"<<std::endl;
 }
 
 void Model::loadModel() {
 
     Assimp::Importer import;
-    const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene *scene = import.ReadFile(path, aiProcess_OptimizeMeshes | aiProcess_Triangulate | aiProcess_FlipUVs);
 
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {

@@ -4,6 +4,7 @@
 
 #include "GameObject.hpp"
 #include "GLFWHandler.hpp"
+#include "Map.hpp"
 
 class Camera;
 class Renderer;
@@ -30,6 +31,7 @@ private:
     std::unique_ptr<Renderer> renderer;
     std::vector<std::unique_ptr<GameObject>> gameObjects;
     std::unique_ptr<Camera> camera;
+    std::unique_ptr<Map> loadedMap;
 
     std::chrono::time_point<std::chrono::system_clock> frameStart={};
     std::chrono::time_point<std::chrono::system_clock> frameEnd={};
