@@ -55,8 +55,11 @@ unsigned int TextureFromFile(const char *path, const std::string &directory, boo
 }
 
 Model::Model(std::string path, std::string shaderProgName)
-    : shaderProgName(std::move(shaderProgName)) {
-    loadModel(std::move(path));
+    :
+        shaderProgName(std::move(shaderProgName)),
+        path(std::move(path)) {
+    loadModel();
+    logModelInfo();
 }
 
 Model::~Model() = default;
@@ -69,7 +72,22 @@ std::vector<std::unique_ptr<Mesh>> & Model::getMeshes() {
     return meshes;
 }
 
-void Model::loadModel(const std::string& path) {
+void Model::logModelInfo() {
+    std::cout << "Model infos:" << std::endl;
+    std::cout<<"\tpath: "<<path<<std::endl;
+    std::cout<<"\tshader program: "<<shaderProgName<<std::endl;
+    std::cout<<"\tmeshes count: "<<meshes.size()<<std::endl;
+    std::cout<<"\ttextures_loaded count: "<<textures_loaded.size()<<std::endl;
+    uint32_t totalVertices = 0;
+    for (auto& mesh:meshes) {
+        totalVertices += mesh->getVertices().size();
+        std::cout<<"\t\tvertices count: "<<mesh->getVertices().size()<<std::endl;
+    }
+    std::cout<<"\ttotal vertices: "<<totalVertices<<std::endl;
+    std::cout<<"models size: "<<totalVertices*sizeof(Vertex)/1000.f/1000.f<<"MB"<<std::endl;
+}
+
+void Model::loadModel() {
 
     Assimp::Importer import;
     const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
