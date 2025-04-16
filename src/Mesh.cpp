@@ -13,8 +13,6 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vec
     setupMesh();
 }
 
-Mesh::Mesh(Mesh &&other)noexcept=default;
-
 Mesh::~Mesh() {
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
@@ -39,8 +37,6 @@ const std::vector<uint32_t> & Mesh::getIndices() const {
 const std::vector<Vertex> & Mesh::getVertices() const {
     return vertices;
 }
-
-Mesh & Mesh::operator=(Mesh &&) noexcept =default;
 
 
 void Mesh::setupMesh() {

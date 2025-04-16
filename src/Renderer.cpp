@@ -58,22 +58,30 @@ void Renderer::draw(const GameObject &gameObject) {
         transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.z, glm::vec3(0.0f,0.0f,1.0f));
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
 
-        uint32_t diffuseNr=1;
-        uint32_t specularNr=1;
+        // bind appropriate textures
+        uint32_t diffuseNr  = 1;
+        uint32_t specularNr = 1;
+        uint32_t normalNr   = 1;
+        uint32_t heightNr   = 1;
          for (int i=0;i<mesh->getTextures().size();i++) {
              glActiveTexture(GL_TEXTURE0 + i);
              std::string number;
              std::string name = mesh->getTextures()[i].type;
-             if (name == "texture_diffuse") {
+             if(name == "texture_diffuse")
                  number = std::to_string(diffuseNr++);
-             } else if (name == "texture_specular") {
-                 number = std::to_string(specularNr++);
-             }
+             else if(name == "texture_specular")
+                 number = std::to_string(specularNr++); // transfer unsigned int to string
+             else if(name == "texture_normal")
+                 number = std::to_string(normalNr++); // transfer unsigned int to string
+             else if(name == "texture_height")
+                 number = std::to_string(heightNr++);
              shaderPrograms[activeShaderProgram]->setInt(name + number,i);
+             glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
          }
         mesh->bindVAO();
         glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
         mesh->unbindVAO();
+        glActiveTexture(GL_TEXTURE0);
     }
 
 

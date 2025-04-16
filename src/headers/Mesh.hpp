@@ -20,7 +20,6 @@ struct Texture {
 class Mesh {
 public:
     Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
-    Mesh(Mesh&& other)noexcept;
     ~Mesh();
 
     void bindVAO() const;
@@ -29,8 +28,6 @@ public:
     const std::vector<Texture> &getTextures() const;
     const std::vector<uint32_t> &getIndices() const;
     const std::vector<Vertex> &getVertices() const;
-
-    Mesh& operator=(Mesh&&) noexcept;
 
 private:
     void setupMesh();
