@@ -8,16 +8,16 @@ double WindowHandler::mouseScrollX = 0.0f;
 double WindowHandler::mouseScrollY = 0.0f;
 double WindowHandler::mousePosX = 0.0;
 double WindowHandler::mousePosY = 0.0;
+int WindowHandler::width = 600;
+int WindowHandler::height = 800;
+float WindowHandler::aspectRatio = 1.f;
 
-
-WindowHandler::WindowHandler(int width, int height)
-    :
-        width(width),
-        height(height)
-{}
-
+WindowHandler::WindowHandler()=default;
 WindowHandler::~WindowHandler()=default;
 
+float WindowHandler::getAspectRatio() {
+    return aspectRatio;
+}
 
 /**
  * @brief If the key haven't pressed yet, it's going to be added to keys and returns it's state

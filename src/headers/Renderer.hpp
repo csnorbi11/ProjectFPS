@@ -22,6 +22,7 @@ public:
     void createShaderProgram(const std::string &name,
                              const std::string &vertexShader, const std::string &fragmentShader);
     void draw(const GameObject &gameObject);
+    void update();
 
     void setActiveCamera(Camera* camera);
 
@@ -35,6 +36,9 @@ private:
 
     Camera* camera=nullptr;
     std::string activeShaderProgram={};
+
+    bool debugMode=false;
+
 };
 
 #endif //RENDERER_HPP

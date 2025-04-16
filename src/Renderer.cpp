@@ -7,6 +7,7 @@
 #include "headers/Model.hpp"
 #include "headers/Shader.hpp"
 #include "headers/ShaderProgram.hpp"
+#include "headers/WindowHandler.hpp"
 
 Renderer::Renderer() = default;
 
@@ -48,7 +49,7 @@ void Renderer::draw(const GameObject &gameObject) {
         shaderPrograms[activeShaderProgram]->use();
     }
     shaderPrograms[activeShaderProgram]->setMat4("projection",
-        glm::perspective(glm::radians(90.0f),(float)800/(float)600,0.01f,100.0f));
+        glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
     for (const auto &mesh : model->getMeshes()) {
         glm::mat4 transformMatrix(1.f);
@@ -85,6 +86,17 @@ void Renderer::draw(const GameObject &gameObject) {
     }
 
 
+}
+
+void Renderer::update() {
+    if (WindowHandler::getKeyState(Input::Key::O)==Input::Action::PRESSED) {
+        debugMode=!debugMode;
+    }
+    if (debugMode) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 }
 
 void Renderer::setActiveCamera(Camera* camera) {

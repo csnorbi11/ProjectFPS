@@ -13,11 +13,9 @@
 std::unique_ptr<GLFWwindow, GLFWDestroyer> GLFWHandler::window = nullptr;
 
 
-GLFWHandler::GLFWHandler()
-    : WindowHandler(800, 600) {
+GLFWHandler::GLFWHandler(int width, int height){
     if (window != nullptr)
         throw std::runtime_error("Already have window");
-
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW");
     }
@@ -115,7 +113,9 @@ void GLFWHandler::InputHandler::scrollCallback(GLFWwindow *window, const double 
 
 void GLFWHandler::InputHandler::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
-    glfwGetWindowSize(window, &width, &height);
+    WindowHandler::width = width;
+    WindowHandler::height = height;
+    aspectRatio = static_cast<float>(width) / static_cast<float>(height);
 }
 
 void GLFWHandler::InputHandler::debugMouseScroll(const double xOffset, const double yOffset) {

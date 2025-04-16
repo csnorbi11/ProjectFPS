@@ -65,6 +65,7 @@ void Game::gameLoop() {
             gameObject->update(static_cast<float>(deltaTime));
         }
         camera->update(static_cast<float>(deltaTime));
+        renderer->update();
         render();
         input();
         calculateDeltaTime();

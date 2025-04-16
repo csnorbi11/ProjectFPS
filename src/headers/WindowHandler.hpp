@@ -17,7 +17,7 @@ enum class WindowType {
  */
 class WindowHandler {
 public:
-    WindowHandler(int width, int height);
+    WindowHandler();
     virtual ~WindowHandler();
 
     /**
@@ -45,6 +45,8 @@ public:
      */
     virtual void closeWindow() = 0;
 
+    static float getAspectRatio();
+
     static Input::Action getKeyState(Input::Key key);
     static Input::Action getMouseButtonState(uint8_t button);
     static double getMouseScrollX();
@@ -55,7 +57,8 @@ public:
 
 
 protected:
-    int width, height;
+    static int width, height;
+    static float aspectRatio;
 
     /// Map of key states (pressed/released/held).
     static std::unordered_map<Input::Key, Input::Action> keys;

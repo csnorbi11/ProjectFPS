@@ -38,7 +38,7 @@ public:
         static void debugMouseScroll(double xOffset, double yOffset);
     };
 
-    GLFWHandler();
+    GLFWHandler(int width=800, int height=600);
     ~GLFWHandler() override;
 
     bool shouldClose() override;
