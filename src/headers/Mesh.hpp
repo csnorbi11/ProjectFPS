@@ -1,6 +1,7 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -19,7 +20,7 @@ struct Texture {
 
 class Mesh {
 public:
-    Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
+    Mesh(std::unordered_map<Vertex,uint32_t> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
     ~Mesh();
 
     void bindVAO() const;
@@ -27,12 +28,12 @@ public:
 
     const std::vector<Texture> &getTextures() const;
     const std::vector<uint32_t> &getIndices() const;
-    const std::vector<Vertex> &getVertices() const;
+    const std::unordered_map<Vertex,uint32_t> &getVertices() const;
 
 private:
     void setupMesh();
 
-    std::vector<Vertex> vertices;
+    std::unordered_map<Vertex,uint32_t> vertices;
     std::vector<uint32_t> indices;
     std::vector<Texture> textures;
 
