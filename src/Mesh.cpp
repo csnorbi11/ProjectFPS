@@ -4,7 +4,7 @@
 
 #include <glad/glad.h>
 
-Mesh::Mesh(std::unordered_map<Vertex,uint32_t> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures)
     :
     vertices(std::move(vertices)),
     indices(std::move(indices)),
@@ -34,7 +34,7 @@ const std::vector<uint32_t> & Mesh::getIndices() const {
     return indices;
 }
 
-const std::unordered_map<Vertex,uint32_t> & Mesh::getVertices() const {
+const std::vector<Vertex> & Mesh::getVertices() const {
     return vertices;
 }
 
