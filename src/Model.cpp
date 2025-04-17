@@ -11,6 +11,8 @@
 
 #include "headers/Model.hpp"
 #define STB_IMAGE_IMPLEMENTATION
+#include <unordered_map>
+
 #include "headers/stb_image.h"
 
 
@@ -119,6 +121,7 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 }
 
 Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+    std::unordered_map<Vertex,uint32_t> uniqueVertices;
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     std::vector<Texture> textures;
@@ -153,15 +156,14 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         else
             vertex.texCoords = glm::vec2(0.0f, 0.0f);
 
-        vertices.push_back(vertex);
+        if (uniqueVertices.count(vertex)==0) {
+            uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
+            vertices.push_back(vertex);
+        }
+        indices.push_back(uniqueVertices[vertex]);
+
     }
-    for(unsigned int i = 0; i < mesh->mNumFaces; i++)
-    {
-        aiFace face = mesh->mFaces[i];
-        // retrieve all indices of the face and store them in the indices vector
-        for(unsigned int j = 0; j < face.mNumIndices; j++)
-            indices.push_back(face.mIndices[j]);
-    }
+
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
