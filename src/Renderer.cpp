@@ -91,6 +91,7 @@ void Renderer::draw(const GameObject &gameObject) {
 }
 
 void Renderer::drawMap() {
+    if (currentMap == nullptr) return;
     if (activeShaderProgram != currentMap->getShaderProgName()) {
         activeShaderProgram = currentMap->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
