@@ -17,11 +17,12 @@ Game::Game(const WindowType windowType)
 
     camera= std::make_unique<Camera>();
     renderer->setActiveCamera(camera.get());
-    //loadedMap = std::make_unique<Map>("assets/models/map0.obj");
-    //renderer->setActiveMap(loadedMap.get());
+    loadedMap = std::make_unique<Map>("assets/models/map0.obj");
+    renderer->setActiveMap(loadedMap.get());
 
     gameObjects.emplace_back(std::make_unique<GameObject>("assets/models/backpack/backpack.obj"));
     gameObjects[0]->position=glm::vec3(0.f,0.f,2.f);
+    gameObjects.emplace_back(std::make_unique<GameObject>("assets/models/mustang.obj"));
 }
 
 Game::~Game() = default;

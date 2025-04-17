@@ -121,7 +121,6 @@ void Model::processNode(aiNode *node, const aiScene *scene) {
 }
 
 Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
-    std::unordered_map<Vertex,uint32_t> uniqueVertices;
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     std::vector<Texture> textures;
@@ -156,12 +155,14 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         else
             vertex.texCoords = glm::vec2(0.0f, 0.0f);
 
-        if (uniqueVertices.count(vertex)==0) {
-            uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
-            vertices.push_back(vertex);
-        }
-        indices.push_back(uniqueVertices[vertex]);
-
+        vertices.push_back(vertex);
+    }
+    for(unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+        aiFace face = mesh->mFaces[i];
+        // retrieve all indices of the face and store them in the indices vector
+        for(unsigned int j = 0; j < face.mNumIndices; j++)
+            indices.push_back(face.mIndices[j]);
     }
 
     // process materials
@@ -172,6 +173,12 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     // diffuse: texture_diffuseN
     // specular: texture_specularN
     // normal: texture_normalN
+    aiColor3D color;
+    material->Get(AI_MATKEY_COLOR_DIFFUSE,color);
+    std::cout<<"material name: "<<color.r<<" "<<color.g<<" "<<color.b<<std::endl;
+    for (auto& vert:vertices) {
+        vert.color = glm::vec3(color.r, color.g, color.b);
+    }
 
     // 1. diffuse maps
     std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");

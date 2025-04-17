@@ -60,7 +60,7 @@ void Renderer::draw(const GameObject &gameObject) {
         transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.y, glm::vec3(1.0f,0.0f,0.0f));
         transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.z, glm::vec3(0.0f,0.0f,1.0f));
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
-
+        shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
         // bind appropriate textures
         uint32_t diffuseNr  = 1;
         uint32_t specularNr = 1;
@@ -100,7 +100,9 @@ void Renderer::drawMap() {
         glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
     shaderPrograms[activeShaderProgram]->setMat4("model",glm::mat4(1.0f));
+
     for (const auto &mesh : currentMap->getMeshes()) {
+        shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
         // bind appropriate textures
         uint32_t diffuseNr  = 1;
         uint32_t specularNr = 1;

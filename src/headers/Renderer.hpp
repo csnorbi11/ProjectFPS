@@ -37,7 +37,7 @@ private:
     std::unordered_map<std::string, std::unique_ptr<ShaderProgram> > shaderPrograms = {};
     std::unordered_map<std::string, std::unique_ptr<Model> > models={};
 
-    Map* currentMap;
+    Map* currentMap=nullptr;
 
     Camera* camera=nullptr;
     std::string activeShaderProgram={};
