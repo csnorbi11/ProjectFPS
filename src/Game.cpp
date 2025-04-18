@@ -17,11 +17,13 @@ Game::Game(const WindowType windowType)
 
     camera= std::make_unique<Camera>();
     renderer->setActiveCamera(camera.get());
-    loadedMap = std::make_unique<Map>("assets/models/map0.obj");
+    loadedMap = std::make_unique<Map>("assets/models/TestMap.obj");
     renderer->setActiveMap(loadedMap.get());
 
     gameObjects.emplace_back(std::make_unique<GameObject>("assets/models/backpack/backpack.obj"));
-    gameObjects[0]->position=glm::vec3(0.f,1.f,6.f);
+    gameObjects[0]->position=glm::vec3(30.f,1.f,6.f);
+
+    camera->position=glm::vec3(25.0f,0.0f,0.0f);
 }
 
 Game::~Game() = default;
@@ -30,10 +32,11 @@ void Game::run() {
     gameLoop();
 }
 
-std::unique_ptr<WindowHandler> Game::createWindowHandler(const WindowType windowType) {
+std::unique_ptr<WindowHandler> Game::createWindowHandler(const WindowType windowType,
+    int windowWidth,int windowHeight) {
     switch (windowType) {
         case WindowType::GLFW:
-            return std::make_unique<GLFWHandler>();
+            return std::make_unique<GLFWHandler>(windowWidth,windowHeight);
         default:
             throw std::runtime_error("Invalid Window Type");
     }

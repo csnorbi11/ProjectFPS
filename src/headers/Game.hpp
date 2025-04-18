@@ -18,7 +18,8 @@ public:
     void run();
 
 private:
-    static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType);
+    static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType,
+        int windowWidth=1280,int windowHeight=720);
 
 
     void gameLoop();

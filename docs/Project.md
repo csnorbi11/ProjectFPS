@@ -31,11 +31,13 @@ There's going to be multiple stages of the development.
 #### 1. Basic Prototype
 Goal is to make a simple "Game" where you can walk around and load different map
 - [X] OpenGL window with GLFW
-- [ ] FPS camera
-- [ ] Input system
-- [ ] Player movement controller
-- [ ] Collision with static geometry
-- [ ] Load basic level (BSP)
+- [X] FPS camera
+- [X] Input system
+- [X] 3D Graphics
+- [ ] Basic Lighting
+- [ ] Player controller
+- [ ] Collision with static geometry (BSP)
+- [ ] Load basic level (Wavefront OBJ)
 - [ ] Basic physics
 - [ ] Debug overlay
 
