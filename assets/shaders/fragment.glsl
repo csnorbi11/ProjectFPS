@@ -8,7 +8,6 @@ struct Material{
 };
 struct Light {
     vec3 position;
-
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -39,8 +38,8 @@ void main()
 
 
     vec3 normal=normalize(Normal);
-    vec3 lightDir=normalize(lightPos-FragPos);
-    float dif=max(dot(normal,lightDir),0);
+    vec3 lightDir=normalize(light.position-FragPos);
+    float diff=max(dot(normal,lightDir),0);
 
     float specularStrength=0.5f;
     vec3 viewDir=normalize(viewPos-FragPos);

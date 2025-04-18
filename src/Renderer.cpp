@@ -62,6 +62,8 @@ void Renderer::draw(const GameObject &gameObject) {
         shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.2f, 0.2f, 0.2f});
         shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.5f, 0.5f, 0.5f}); // darken diffuse light a bit
         shaderPrograms[activeShaderProgram]->setVec3("light.specular", {1.0f, 1.0f, 1.0f});
+        shaderPrograms[activeShaderProgram]->setVec3("light.position", {40.f,10.f,sin(glfwGetTime()*2)*30});
+        shaderPrograms[activeShaderProgram]->setVec3("viewPos", camera->position);
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
         // bind appropriate textures
@@ -92,7 +94,6 @@ void Renderer::draw(const GameObject &gameObject) {
 
 
 }
-
 void Renderer::drawMap() {
     if (currentMap == nullptr) return;
     if (activeShaderProgram != currentMap->getShaderProgName()) {
@@ -110,6 +111,8 @@ void Renderer::drawMap() {
     shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.2f, 0.2f, 0.2f});
     shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.5f, 0.5f, 0.5f}); // darken diffuse light a bit
     shaderPrograms[activeShaderProgram]->setVec3("light.specular", {1.0f, 1.0f, 1.0f});
+    shaderPrograms[activeShaderProgram]->setVec3("light.position", {40.f,10.f,sin(glfwGetTime())*30});
+    shaderPrograms[activeShaderProgram]->setVec3("viewPos", camera->position);
     for (const auto &mesh : currentMap->getMeshes()) {
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
         // bind appropriate textures
