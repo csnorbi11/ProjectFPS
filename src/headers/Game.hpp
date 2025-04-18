@@ -2,6 +2,7 @@
 #define GAME_HPP
 #include <chrono>
 
+#include "DirectionalLight.hpp"
 #include "GameObject.hpp"
 #include "GLFWHandler.hpp"
 #include "Map.hpp"
@@ -33,11 +34,13 @@ private:
     std::vector<std::unique_ptr<GameObject>> gameObjects;
     std::unique_ptr<Camera> camera;
     std::unique_ptr<Map> loadedMap;
+    std::vector<std::unique_ptr<Light>> lights;
 
     std::chrono::time_point<std::chrono::system_clock> frameStart={};
     std::chrono::time_point<std::chrono::system_clock> frameEnd={};
     long frameDuration=0;
     double deltaTime=0;
+
 };
 
 #endif //GAME_HPP

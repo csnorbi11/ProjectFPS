@@ -6,10 +6,9 @@
 #include "headers/Renderer.hpp"
 
 
-Game::Game(const WindowType windowType)
-{
+Game::Game(const WindowType windowType){
     windowHandler = createWindowHandler(windowType);
-    renderer = std::make_unique<Renderer>();
+    renderer = std::make_unique<Renderer>(gameObjects,lights);
 
     renderer->createShaderProgram("basic",
                                   "assets/shaders/vertex.glsl",
@@ -24,6 +23,8 @@ Game::Game(const WindowType windowType)
     gameObjects[0]->position=glm::vec3(30.f,1.f,6.f);
 
     camera->position=glm::vec3(25.0f,0.0f,0.0f);
+
+    lights.emplace_back(std::make_unique<DirectionalLight>(glm::vec3(-1.f)));
 }
 
 Game::~Game() = default;
@@ -47,9 +48,7 @@ void Game::render() const {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     renderer->drawMap();
-    for (auto& gameObject : gameObjects) {
-        renderer->draw(*gameObject);
-    }
+    renderer->draw();
 
     windowHandler->swapBuffers();
 }

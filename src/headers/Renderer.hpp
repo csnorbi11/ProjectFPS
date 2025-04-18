@@ -5,6 +5,9 @@
 #include <unordered_map>
 #include <glad/glad.h>
 #include <string>
+#include <vector>
+
+#include "Light.hpp"
 
 
 class Map;
@@ -16,13 +19,14 @@ class Camera;
 
 class Renderer {
 public:
-    Renderer();
+    Renderer(std::vector<std::unique_ptr<GameObject>>& gameObjects,
+        std::vector<std::unique_ptr<Light>>& lights);
     ~Renderer();
 
 
     void createShaderProgram(const std::string &name,
                              const std::string &vertexShader, const std::string &fragmentShader);
-    void draw(const GameObject &gameObject);
+    void draw();
     void drawMap();
     void update();
 
@@ -41,6 +45,9 @@ private:
 
     Camera* camera=nullptr;
     std::string activeShaderProgram={};
+
+    std::vector<std::unique_ptr<GameObject>>& gameObjects;
+    std::vector<std::unique_ptr<Light>>& lights;
 
     bool debugMode=false;
 

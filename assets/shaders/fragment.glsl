@@ -5,8 +5,8 @@ struct Material {
     sampler2D specular;
     float shininess;
 };
-struct Light {
-    vec3 position;
+struct DirectionalLight {
+    vec3 direction;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -22,29 +22,25 @@ in vec3 FragPos;
 
 uniform bool hasTexture;
 uniform Material material;
-uniform Light light;
+uniform DirectionalLight dirLight;
 
-
-uniform vec3 lightColor;
-uniform vec3 lightPos;
 uniform vec3 viewPos;
 
 void main()
 {
     vec3 fragResult=vec3(0.f);
 
-    vec3 ambient = light.ambient;
+    vec3 ambient = dirLight.ambient;
 
     vec3 normal=normalize(Normal);
-    vec3 lightDir=normalize(light.position-FragPos);
+    vec3 lightDir=normalize(-dirLight.direction);
     float diff=max(dot(normal,lightDir),0);
-    vec3 diffuse = light.diffuse * diff;
+    vec3 diffuse = dirLight.diffuse * diff;
 
-    float specularStrength=0.5f;
     vec3 viewDir=normalize(viewPos-FragPos);
     vec3 reflectDir=reflect(-lightDir,normal);
     float spec=pow(max(dot(viewDir,reflectDir),0.f),material.shininess);
-    vec3 specular = light.specular * spec;
+    vec3 specular = dirLight.specular * spec;
 
     if(hasTexture){
         ambient*=texture(material.diffuse, TexCoords).rgb;

@@ -11,7 +11,12 @@
 #include "headers/ShaderProgram.hpp"
 #include "headers/WindowHandler.hpp"
 
-Renderer::Renderer() = default;
+Renderer::Renderer(std::vector<std::unique_ptr<GameObject>>& gameObjects,
+    std::vector<std::unique_ptr<Light>>& lights)
+        :
+    gameObjects(gameObjects),
+    lights(lights)
+{}
 
 Renderer::~Renderer() {
     models.clear();
@@ -40,12 +45,16 @@ void Renderer::createShaderProgram(const std::string &name,
                                                                  *shaders[fragmentShader]));
 }
 
-void Renderer::draw(const GameObject &gameObject) {
-    if (models.count(gameObject.getModelPath()) == 0) {
-        loadModel(gameObject.getModelPath(), "basic");
+void Renderer::draw() {
+    for (auto &gameObject : gameObjects) {
+        if (models.count(gameObject->getModelPath()) == 0) {
+        loadModel(gameObject->getModelPath(), "basic");
     }
+        for (const auto& light : lights) {
+            light->update(shaderPrograms[activeShaderProgram].get());
+        }
 
-    Model *model = models[gameObject.getModelPath()].get();
+    Model *model = models[gameObject->getModelPath()].get();
     if (activeShaderProgram != model->getShaderProgName()) {
         activeShaderProgram = model->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
@@ -55,14 +64,10 @@ void Renderer::draw(const GameObject &gameObject) {
     shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
     for (const auto &mesh : model->getMeshes()) {
         glm::mat4 transformMatrix(1.f);
-        transformMatrix = glm::translate(glm::mat4(1.0f), gameObject.position);
-        transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.x, glm::vec3(0.0f,1.0f,0.0f));
-        transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.y, glm::vec3(1.0f,0.0f,0.0f));
-        transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.z, glm::vec3(0.0f,0.0f,1.0f));
-        shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.2f, 0.2f, 0.2f});
-        shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.5f, 0.5f, 0.5f}); // darken diffuse light a bit
-        shaderPrograms[activeShaderProgram]->setVec3("light.specular", {1.0f, 1.0f, 1.0f});
-        shaderPrograms[activeShaderProgram]->setVec3("light.position", {40.f,10.f,sin(glfwGetTime()*2)*30});
+        transformMatrix = glm::translate(glm::mat4(1.0f), gameObject->position);
+        transformMatrix = glm::rotate(transformMatrix, gameObject->rotation.x, glm::vec3(0.0f,1.0f,0.0f));
+        transformMatrix = glm::rotate(transformMatrix, gameObject->rotation.y, glm::vec3(1.0f,0.0f,0.0f));
+        transformMatrix = glm::rotate(transformMatrix, gameObject->rotation.z, glm::vec3(0.0f,0.0f,1.0f));
         shaderPrograms[activeShaderProgram]->setVec3("viewPos", camera->position);
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
@@ -96,6 +101,8 @@ void Renderer::draw(const GameObject &gameObject) {
         mesh->unbindVAO();
         glActiveTexture(GL_TEXTURE0);
     }
+    }
+
 
 
 }
@@ -104,7 +111,11 @@ void Renderer::drawMap() {
     if (activeShaderProgram != currentMap->getShaderProgName()) {
         activeShaderProgram = currentMap->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
+        for (const auto& light : lights) {
+            light->update(shaderPrograms[activeShaderProgram].get());
+        }
     }
+
     shaderPrograms[activeShaderProgram]->setMat4("projection",
         glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
@@ -113,10 +124,6 @@ void Renderer::drawMap() {
     shaderPrograms[activeShaderProgram]->setVec3("material.diffuse", {1.0f, 0.5f, 0.31f});
     shaderPrograms[activeShaderProgram]->setVec3("material.specular", {0.1f, 0.1f, 0.1f});
     shaderPrograms[activeShaderProgram]->setFloat("material.shininess", 32.0f);
-    shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.3f, 0.3f, 0.3f});
-    shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.9f, 0.9f, 0.9f}); // darken diffuse light a bit
-    shaderPrograms[activeShaderProgram]->setVec3("light.specular", {1.0f, 1.0f, 1.0f});
-    shaderPrograms[activeShaderProgram]->setVec3("light.position", {40.f,10.f,sin(glfwGetTime())*30});
     shaderPrograms[activeShaderProgram]->setVec3("viewPos", camera->position);
     for (const auto &mesh : currentMap->getMeshes()) {
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
@@ -153,6 +160,7 @@ void Renderer::update() {
     }
     glPolygonMode(GL_FRONT_AND_BACK, debugMode ? GL_LINE : GL_FILL);
 }
+
 
 void Renderer::setActiveCamera(Camera* camera) {
     this->camera = camera;
