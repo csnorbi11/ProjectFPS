@@ -75,15 +75,20 @@ void Renderer::draw(const GameObject &gameObject) {
              glActiveTexture(GL_TEXTURE0 + i);
              std::string number;
              std::string name = mesh->getTextures()[i].type;
-             if(name == "texture_diffuse")
+             if(name == "texture_diffuse") {
                  number = std::to_string(diffuseNr++);
-             else if(name == "texture_specular")
+                 shaderPrograms[activeShaderProgram]->setInt("material.diffuse",i);
+             }
+             else if(name == "texture_specular") {
                  number = std::to_string(specularNr++); // transfer unsigned int to string
-             else if(name == "texture_normal")
-                 number = std::to_string(normalNr++); // transfer unsigned int to string
-             else if(name == "texture_height")
-                 number = std::to_string(heightNr++);
-             shaderPrograms[activeShaderProgram]->setInt(name + number,i);
+                 shaderPrograms[activeShaderProgram]->setInt("material.specular",i);
+             }
+
+             // else if(name == "texture_normal")
+             //     number = std::to_string(normalNr++); // transfer unsigned int to string
+             // else if(name == "texture_height")
+             //     number = std::to_string(heightNr++);
+
              glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
          }
         mesh->bindVAO();
@@ -106,10 +111,10 @@ void Renderer::drawMap() {
     shaderPrograms[activeShaderProgram]->setMat4("model",glm::mat4(1.0f));
     shaderPrograms[activeShaderProgram]->setVec3("material.ambient", {1.0f, 0.5f, 0.31f});
     shaderPrograms[activeShaderProgram]->setVec3("material.diffuse", {1.0f, 0.5f, 0.31f});
-    shaderPrograms[activeShaderProgram]->setVec3("material.specular", {0.5f, 0.5f, 0.5f});
+    shaderPrograms[activeShaderProgram]->setVec3("material.specular", {0.1f, 0.1f, 0.1f});
     shaderPrograms[activeShaderProgram]->setFloat("material.shininess", 32.0f);
-    shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.2f, 0.2f, 0.2f});
-    shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.5f, 0.5f, 0.5f}); // darken diffuse light a bit
+    shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.3f, 0.3f, 0.3f});
+    shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.9f, 0.9f, 0.9f}); // darken diffuse light a bit
     shaderPrograms[activeShaderProgram]->setVec3("light.specular", {1.0f, 1.0f, 1.0f});
     shaderPrograms[activeShaderProgram]->setVec3("light.position", {40.f,10.f,sin(glfwGetTime())*30});
     shaderPrograms[activeShaderProgram]->setVec3("viewPos", camera->position);
