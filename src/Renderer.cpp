@@ -59,10 +59,11 @@ void Renderer::draw(const GameObject &gameObject) {
         transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.x, glm::vec3(0.0f,1.0f,0.0f));
         transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.y, glm::vec3(1.0f,0.0f,0.0f));
         transformMatrix = glm::rotate(transformMatrix, gameObject.rotation.z, glm::vec3(0.0f,0.0f,1.0f));
+        shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.2f, 0.2f, 0.2f});
+        shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.5f, 0.5f, 0.5f}); // darken diffuse light a bit
+        shaderPrograms[activeShaderProgram]->setVec3("light.specular", {1.0f, 1.0f, 1.0f});
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
-        shaderPrograms[activeShaderProgram]->setVec3("lightColor",glm::vec3(1.0f,1.0f,1.0f));
-        shaderPrograms[activeShaderProgram]->setVec3("lightPos",glm::vec3(2.0f,6.0f,0.0f));
         // bind appropriate textures
         uint32_t diffuseNr  = 1;
         uint32_t specularNr = 1;
@@ -102,8 +103,13 @@ void Renderer::drawMap() {
         glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",camera->getViewMatrix());
     shaderPrograms[activeShaderProgram]->setMat4("model",glm::mat4(1.0f));
-    shaderPrograms[activeShaderProgram]->setVec3("lightColor",glm::vec3(1.0f,1.0f,1.0f));
-    shaderPrograms[activeShaderProgram]->setVec3("lightPos",glm::vec3(2.0f,6.0f,0.0f));
+    shaderPrograms[activeShaderProgram]->setVec3("material.ambient", {1.0f, 0.5f, 0.31f});
+    shaderPrograms[activeShaderProgram]->setVec3("material.diffuse", {1.0f, 0.5f, 0.31f});
+    shaderPrograms[activeShaderProgram]->setVec3("material.specular", {0.5f, 0.5f, 0.5f});
+    shaderPrograms[activeShaderProgram]->setFloat("material.shininess", 32.0f);
+    shaderPrograms[activeShaderProgram]->setVec3("light.ambient",  {0.2f, 0.2f, 0.2f});
+    shaderPrograms[activeShaderProgram]->setVec3("light.diffuse",  {0.5f, 0.5f, 0.5f}); // darken diffuse light a bit
+    shaderPrograms[activeShaderProgram]->setVec3("light.specular", {1.0f, 1.0f, 1.0f});
     for (const auto &mesh : currentMap->getMeshes()) {
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
         // bind appropriate textures
