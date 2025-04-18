@@ -175,7 +175,6 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     // normal: texture_normalN
     aiColor3D color;
     material->Get(AI_MATKEY_COLOR_DIFFUSE,color);
-    std::cout<<"material name: "<<color.r<<" "<<color.g<<" "<<color.b<<std::endl;
     for (auto& vert:vertices) {
         vert.color = glm::vec3(color.r, color.g, color.b);
     }

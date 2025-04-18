@@ -21,8 +21,7 @@ Game::Game(const WindowType windowType)
     renderer->setActiveMap(loadedMap.get());
 
     gameObjects.emplace_back(std::make_unique<GameObject>("assets/models/backpack/backpack.obj"));
-    gameObjects[0]->position=glm::vec3(0.f,0.f,2.f);
-    gameObjects.emplace_back(std::make_unique<GameObject>("assets/models/mustang.obj"));
+    gameObjects[0]->position=glm::vec3(0.f,1.f,6.f);
 }
 
 Game::~Game() = default;
