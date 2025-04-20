@@ -10,6 +10,7 @@ struct DirectionalLight {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    float intensity;
 };
 
 
@@ -52,7 +53,7 @@ void main()
     }
 
 
-    fragResult=ambient+diffuse+specular;
+    fragResult=dirLight.intensity*(ambient+diffuse+specular);
 
     FragColor=vec4(fragResult,1.f);
 }

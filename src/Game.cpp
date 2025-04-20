@@ -6,7 +6,7 @@
 #include "headers/Renderer.hpp"
 
 
-Game::Game(const WindowType windowType){
+Game::Game(const WindowType windowType) {
     windowHandler = createWindowHandler(windowType);
     renderer = std::make_unique<Renderer>(gameObjects,lights);
 
@@ -24,7 +24,8 @@ Game::Game(const WindowType windowType){
 
     camera->position=glm::vec3(25.0f,0.0f,0.0f);
 
-    lights.emplace_back(std::make_unique<DirectionalLight>(glm::vec3(-1.f)));
+    lights.emplace_back(std::make_unique<DirectionalLight>(glm::vec3{0.4f,-1.f,0.2f},
+        glm::vec3{1.f,1.0f,0.6f},glm::vec3{1.f,1.0f,0.6f},glm::vec3{1.f,1.0f,0.6f},0.6f));
 }
 
 Game::~Game() = default;

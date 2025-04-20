@@ -8,9 +8,9 @@ DirectionalLight::DirectionalLight()
 {}
 
 DirectionalLight::DirectionalLight(glm::vec3 direction,glm::vec3 ambient,
-    glm::vec3 diffuse,glm::vec3 specular)
+    glm::vec3 diffuse,glm::vec3 specular,float intensity)
         :
-    Light(ambient, diffuse, specular),
+    Light(ambient, diffuse, specular,intensity),
     direction(direction)
 {}
 
@@ -21,4 +21,5 @@ void DirectionalLight::update(ShaderProgram *program) {
     program->setVec3("dirLight.ambient", ambient);
     program->setVec3("dirLight.diffuse", diffuse);
     program->setVec3("dirLight.specular", specular);
+    program->setFloat("dirLight.intensity", intensity);
 }
