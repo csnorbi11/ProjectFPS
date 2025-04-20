@@ -2,11 +2,9 @@
 #define GAME_HPP
 #include <chrono>
 
-#include "DirectionalLight.hpp"
-#include "GameObject.hpp"
 #include "GLFWHandler.hpp"
-#include "Map.hpp"
 
+struct Scene;
 class Camera;
 class Renderer;
 
@@ -31,10 +29,8 @@ private:
 
     std::unique_ptr<WindowHandler> windowHandler;
     std::unique_ptr<Renderer> renderer;
-    std::vector<std::unique_ptr<GameObject>> gameObjects;
-    std::unique_ptr<Camera> camera;
-    std::unique_ptr<Map> loadedMap;
-    std::vector<std::unique_ptr<Light>> lights;
+    std::unique_ptr<Scene> scene;
+
 
     std::chrono::time_point<std::chrono::system_clock> frameStart={};
     std::chrono::time_point<std::chrono::system_clock> frameEnd={};

@@ -3,29 +3,34 @@
 #include <iostream>
 #include <filesystem>
 
+#include "headers/DirectionalLight.hpp"
+#include "headers/Map.hpp"
 #include "headers/Renderer.hpp"
+#include "headers/Scene.hpp"
 
 
 Game::Game(const WindowType windowType) {
     windowHandler = createWindowHandler(windowType);
-    renderer = std::make_unique<Renderer>(gameObjects,lights);
+    renderer = std::make_unique<Renderer>();
 
     renderer->createShaderProgram("basic",
                                   "assets/shaders/vertex.glsl",
                                   "assets/shaders/fragment.glsl");
 
-    camera= std::make_unique<Camera>();
-    renderer->setActiveCamera(camera.get());
-    loadedMap = std::make_unique<Map>("assets/models/TestMap.obj");
-    renderer->setActiveMap(loadedMap.get());
+    scene = std::make_unique<Scene>();
 
-    gameObjects.emplace_back(std::make_unique<GameObject>("assets/models/backpack/backpack.obj"));
-    gameObjects[0]->position=glm::vec3(30.f,1.f,6.f);
+    scene->camera= std::make_unique<Camera>();
+    scene->loadedMap = std::make_unique<Map>("assets/models/TestMap.obj");
 
-    camera->position=glm::vec3(25.0f,0.0f,0.0f);
+    scene->gameObjects.emplace_back(std::make_unique<GameObject>("assets/models/backpack/backpack.obj"));
+    scene->gameObjects[0]->position=glm::vec3(30.f,1.f,6.f);
 
-    lights.emplace_back(std::make_unique<DirectionalLight>(glm::vec3{0.4f,-1.f,0.2f},
+    scene->camera->position=glm::vec3(25.0f,0.0f,0.0f);
+
+    scene->lights.emplace_back(std::make_unique<DirectionalLight>(glm::vec3{0.4f,-1.f,0.2f},
         glm::vec3{1.f,1.0f,0.6f},glm::vec3{1.f,1.0f,0.6f},glm::vec3{1.f,1.0f,0.6f},0.6f));
+
+    renderer->setActiveScene(scene.get());
 }
 
 Game::~Game() = default;
@@ -48,8 +53,7 @@ void Game::render() const {
     glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    renderer->drawMap();
-    renderer->draw();
+    renderer->drawScene();
 
     windowHandler->swapBuffers();
 }
@@ -66,10 +70,10 @@ void Game::gameLoop() {
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
 
-        for (const auto& gameObject : gameObjects) {
+        for (const auto& gameObject : scene->gameObjects) {
             gameObject->update(static_cast<float>(deltaTime));
         }
-        camera->update(static_cast<float>(deltaTime));
+        scene->camera->update(static_cast<float>(deltaTime));
         renderer->update();
         render();
         input();
