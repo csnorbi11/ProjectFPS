@@ -1,5 +1,6 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
+#include <memory>
 #include <vector>
 
 class GameObject;
@@ -12,6 +13,8 @@ struct Scene {
     std::unique_ptr<Camera> camera;
     std::unique_ptr<Map> loadedMap;
     std::vector<std::unique_ptr<Light>> lights;
+
+    void update(double deltaTime);
 };
 
 #endif //SCENE_HPP

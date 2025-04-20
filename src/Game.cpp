@@ -70,10 +70,7 @@ void Game::gameLoop() {
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
 
-        for (const auto& gameObject : scene->gameObjects) {
-            gameObject->update(static_cast<float>(deltaTime));
-        }
-        scene->camera->update(static_cast<float>(deltaTime));
+        scene->update(deltaTime);
         renderer->update();
         render();
         input();
