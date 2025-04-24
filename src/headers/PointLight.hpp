@@ -14,10 +14,11 @@ class PointLight final : public Light, public GameObject {
 public:
     explicit PointLight(const PointLightParams& params=PointLightParams(),
         const LightParams& lightParams=LightParams(),
-        const GameObjectParams& gameObjectParams=GameObjectParams());
+        const GameObjectParams& gameObjectParams={"assets/models/cube.obj",
+        glm::vec3(0.f),glm::vec3(0.f)});
     ~PointLight() override;
 
-    void update(ShaderProgram* program) override;
+    void apply(ShaderProgram* program) override;
 
 private:
     float constant;

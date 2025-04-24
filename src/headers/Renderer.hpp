@@ -23,14 +23,18 @@ public:
                              const std::string &vertexShader, const std::string &fragmentShader);
 
     void drawScene();
+
+    void viewProjection();
+
     void update();
 
     void setActiveScene(Scene* scene);
 
 private:
-    void updateDirectionalLight();
-    void updatePointLights();
+    void applyDirectionalLight();
+    void applyPointLights();
 
+    void drawPointLights();
     void drawGameObjects();
     void drawMap();
 

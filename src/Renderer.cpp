@@ -40,27 +40,65 @@ void Renderer::createShaderProgram(const std::string &name,
                                                                  *shaders[fragmentShader]));
 }
 
-void Renderer::updateDirectionalLight() {
+void Renderer::applyDirectionalLight() {
     if (currentScene->directionalLight==nullptr) return;
-    currentScene->directionalLight->update(shaderPrograms["basic"].get());
+    currentScene->directionalLight->apply(shaderPrograms["basic"].get());
 }
 
-void Renderer::updatePointLights() {
+void Renderer::applyPointLights() {
     shaderPrograms["basic"]->setInt("activePointLights",static_cast<int>(currentScene->pointLights.size()));
     for (auto& light:currentScene->pointLights) {
-        light->update(shaderPrograms["basic"].get());
+        light->apply(shaderPrograms["basic"].get());
+    }
+}
+
+void Renderer::drawPointLights() {
+    for (auto &light:currentScene->pointLights) {
+        if (models.count(light->getModelPath())==0) {
+            loadModel(light->getModelPath(),"pointLight");
+        }
+
+        Model *model=models[light->getModelPath()].get();
+        if (activeShaderProgram != model->getShaderProgName()) {
+            activeShaderProgram = model->getShaderProgName();
+            shaderPrograms[activeShaderProgram]->use();
+            applyDirectionalLight();
+            applyPointLights();
+        }
+
+
+        glm::mat4 transformMatrix(1.f);
+        transformMatrix = glm::translate(glm::mat4(1.0f), light->position);
+        transformMatrix = glm::rotate(transformMatrix, light->rotation.x, glm::vec3(0.0f,1.0f,0.0f));
+        transformMatrix = glm::rotate(transformMatrix, light->rotation.y, glm::vec3(1.0f,0.0f,0.0f));
+        transformMatrix = glm::rotate(transformMatrix, light->rotation.z, glm::vec3(0.0f,0.0f,1.0f));
+        shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
+        viewProjection();
+        shaderPrograms[activeShaderProgram]->setVec3("color",light->getDiffuse());
+
+
+        model->getMeshes()[0]->bindVAO();
+        glDrawElements(GL_TRIANGLES, static_cast<int>(model->getMeshes()[0]->getIndices().size()), GL_UNSIGNED_INT, 0);
+        model->getMeshes()[0]->unbindVAO();
     }
 }
 
 void Renderer::drawScene() {
     if (currentScene==nullptr) return;
     drawMap();
+    drawPointLights();
     drawGameObjects();
+}
+
+void Renderer::viewProjection() {
+    shaderPrograms[activeShaderProgram]->setMat4("projection",
+                                                 glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
+    shaderPrograms[activeShaderProgram]->setMat4("view",currentScene->camera->getViewMatrix());
 }
 
 void Renderer::drawGameObjects() {
     for (auto &gameObject : currentScene->gameObjects) {
-        if (models.count(gameObject->getModelPath()) == 0) {
+    if (models.count(gameObject->getModelPath()) == 0) {
         loadModel(gameObject->getModelPath(), "basic");
     }
 
@@ -68,12 +106,10 @@ void Renderer::drawGameObjects() {
     if (activeShaderProgram != model->getShaderProgName()) {
         activeShaderProgram = model->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
-        updateDirectionalLight();
-        updatePointLights();
+        applyDirectionalLight();
+        applyPointLights();
     }
-    shaderPrograms[activeShaderProgram]->setMat4("projection",
-        glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
-    shaderPrograms[activeShaderProgram]->setMat4("view",currentScene->camera->getViewMatrix());
+    viewProjection();
     for (const auto &mesh : model->getMeshes()) {
         glm::mat4 transformMatrix(1.f);
         transformMatrix = glm::translate(glm::mat4(1.0f), gameObject->position);
@@ -113,11 +149,9 @@ void Renderer::drawMap() {
         shaderPrograms[activeShaderProgram]->use();
 
     }
-    updateDirectionalLight();
-    updatePointLights();
-    shaderPrograms[activeShaderProgram]->setMat4("projection",
-        glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
-    shaderPrograms[activeShaderProgram]->setMat4("view",currentScene->camera->getViewMatrix());
+    applyDirectionalLight();
+    applyPointLights();
+    viewProjection();
     shaderPrograms[activeShaderProgram]->setMat4("model",glm::mat4(1.0f));
     shaderPrograms[activeShaderProgram]->setVec3("material.ambient", {1.0f, 0.5f, 0.31f});
     shaderPrograms[activeShaderProgram]->setVec3("material.diffuse", {1.0f, 0.5f, 0.31f});

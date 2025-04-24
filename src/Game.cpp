@@ -17,6 +17,9 @@ Game::Game(const WindowType windowType) {
     renderer->createShaderProgram("basic",
                                   "assets/shaders/vertex.glsl",
                                   "assets/shaders/fragment.glsl");
+    renderer->createShaderProgram("pointLight",
+                                    "assets/shaders/pointLightVertex.glsl",
+                                    "assets/shaders/pointLightFragment.glsl");
 
     scene = std::make_unique<Scene>();
 

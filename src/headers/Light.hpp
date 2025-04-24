@@ -15,7 +15,7 @@ public:
     explicit Light(const LightParams& params);
     virtual ~Light()=0;
 
-    virtual void update(ShaderProgram* program)=0;
+    virtual void apply(ShaderProgram* program)=0;
 
     void setAmbient(const glm::vec3& ambient);
     void setDiffuse(const glm::vec3& diffuse);

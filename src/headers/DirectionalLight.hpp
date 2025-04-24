@@ -13,7 +13,7 @@ public:
         const LightParams& lightParams=LightParams());
     ~DirectionalLight() override;
 
-    void update(ShaderProgram* program) override;
+    void apply(ShaderProgram* program) override;
 
     void setDirection(const glm::vec3& direction);
     void setIntensity(float intensity);

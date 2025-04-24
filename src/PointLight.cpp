@@ -16,7 +16,7 @@ PointLight::PointLight(const PointLightParams& params,
 
 PointLight::~PointLight() =default;
 
-void PointLight::update(ShaderProgram *program) {
+void PointLight::apply(ShaderProgram *program) {
     program->setFloat("pointLights["+std::to_string(index)+"].constant",constant);
     program->setFloat("pointLights["+std::to_string(index)+"].linear",linear);
     program->setFloat("pointLights["+std::to_string(index)+"].quadratic",quadratic);
