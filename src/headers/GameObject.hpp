@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <string>
 
-struct GameObjectInit {
+struct GameObjectParams {
     const std::string modelPath="";
     glm::vec3 position{0.f};
     glm::vec3 rotation{0.f};
@@ -12,9 +12,7 @@ struct GameObjectInit {
 
 class GameObject {
 public:
-    explicit GameObject(const std::string &modelPath,
-               glm::vec3 position = glm::vec3(0.f), glm::vec3 rotation = glm::vec3(0.f));
-    explicit GameObject(glm::vec3 position = glm::vec3(0.f), glm::vec3 rotation = glm::vec3(0.f));
+    explicit GameObject(GameObjectParams params);
 
     virtual ~GameObject()=default;
 

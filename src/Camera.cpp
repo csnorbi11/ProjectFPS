@@ -10,7 +10,7 @@
 
 Camera::Camera()
     :
-    GameObject()
+    GameObject({})
 {}
 
 Camera::~Camera()=default;

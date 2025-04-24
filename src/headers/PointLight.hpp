@@ -3,9 +3,17 @@
 #include "GameObject.hpp"
 #include "Light.hpp"
 
+struct PointLightParams {
+    float constant = 1.0f;
+    float linear = 0.35f;
+    float quadratic = 0.44f;
+};
+
 class PointLight final : public Light, public GameObject {
 public:
-    PointLight();
+    explicit PointLight(const PointLightParams& params=PointLightParams(),
+        const LightParams& lightParams=LightParams(),
+        const GameObjectParams& gameObjectParams=GameObjectParams());
     ~PointLight() override;
 
     void update(ShaderProgram* program) override;

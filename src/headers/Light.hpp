@@ -4,11 +4,16 @@
 
 class ShaderProgram;
 
+struct LightParams {
+    glm::vec3 ambient{0.4f};
+    glm::vec3 diffuse{1.f};
+    glm::vec3 specular{1.f};
+    float intensity=1.f;
+};
+
 class Light {
 public:
-    explicit Light(glm::vec3 ambient=glm::vec3(0.4f),
-        glm::vec3 diffuse=glm::vec3(1.0f),
-        glm::vec3 specular=glm::vec3(1.0f),float intensity=1.f);
+    Light(const LightParams& params);
     virtual ~Light();
 
     virtual void update(ShaderProgram* program)=0;

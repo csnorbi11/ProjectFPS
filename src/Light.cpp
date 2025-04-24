@@ -1,11 +1,11 @@
 #include "headers/Light.hpp"
 
-Light::Light(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,float intensity)
+Light::Light(const LightParams& params)
     :
-    ambient(ambient),
-    diffuse(diffuse),
-    specular(specular),
-    intensity(intensity)
+    ambient(params.ambient),
+    diffuse(params.diffuse),
+    specular(params.specular),
+    intensity(params.intensity)
 {}
 
 Light::~Light()=default;

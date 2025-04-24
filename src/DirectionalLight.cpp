@@ -2,15 +2,11 @@
 
 #include "headers/ShaderProgram.hpp"
 
-DirectionalLight::DirectionalLight()
-        :
-    direction(glm::vec3(0.f,-1.f,0.f))
-{}
 
-DirectionalLight::DirectionalLight(glm::vec3 direction,glm::vec3 ambient,
-    glm::vec3 diffuse,glm::vec3 specular,float intensity)
+DirectionalLight::DirectionalLight(glm::vec3 direction,
+        const LightParams& lightParams)
         :
-    Light(ambient, diffuse, specular,intensity),
+    Light(lightParams),
     direction(direction)
 {}
 
