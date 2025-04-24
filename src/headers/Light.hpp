@@ -24,7 +24,6 @@ public:
     const glm::vec3& getAmbient() const;
     const glm::vec3& getDiffuse() const;
     const glm::vec3& getSpecular() const;
-    const float& getIntensity() const;
 
 protected:
     glm::vec3 ambient;
