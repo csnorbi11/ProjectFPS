@@ -1,8 +1,10 @@
 #include "headers/PointLight.hpp"
 
+#include "headers/ShaderProgram.hpp"
+
 PointLight::PointLight(const PointLightParams& params,
-        const LightParams& lightParams,
-        const GameObjectParams& gameObjectParams)
+                       const LightParams& lightParams,
+                       const GameObjectParams& gameObjectParams)
                 :
     Light(lightParams),
     GameObject(gameObjectParams),

@@ -14,9 +14,9 @@ struct LightParams {
 class Light {
 public:
     Light(const LightParams& params);
-    virtual ~Light();
+    virtual ~Light()=0;
 
-    virtual void update(ShaderProgram* program)=0;
+    virtual void update(ShaderProgram* program);
 
 protected:
     glm::vec3 ambient;

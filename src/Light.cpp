@@ -1,5 +1,7 @@
 #include "headers/Light.hpp"
 
+#include "headers/ShaderProgram.hpp"
+
 Light::Light(const LightParams& params)
     :
     ambient(params.ambient),
@@ -9,3 +11,10 @@ Light::Light(const LightParams& params)
 {}
 
 Light::~Light()=default;
+
+void Light::update(ShaderProgram* program) {
+    program->setVec3("dirLight.ambient", ambient);
+    program->setVec3("dirLight.diffuse", diffuse);
+    program->setVec3("dirLight.specular", specular);
+    program->setFloat("dirLight.intensity", intensity);
+}
