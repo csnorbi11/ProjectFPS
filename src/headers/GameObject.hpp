@@ -4,6 +4,11 @@
 #include <glm/glm.hpp>
 #include <string>
 
+struct GameObjectInit {
+    const std::string modelPath="";
+    glm::vec3 position{0.f};
+    glm::vec3 rotation{0.f};
+};
 
 class GameObject {
 public:

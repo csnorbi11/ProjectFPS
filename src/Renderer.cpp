@@ -38,6 +38,12 @@ void Renderer::createShaderProgram(const std::string &name,
                                                                  *shaders[fragmentShader]));
 }
 
+void Renderer::updateDirectionalLight() {
+    for (const auto& light : currentScene->lights) {
+        light->update(shaderPrograms["basic"].get());
+    }
+}
+
 void Renderer::drawScene() {
     if (currentScene==nullptr) return;
     drawMap();
@@ -49,14 +55,12 @@ void Renderer::drawGameObjects() {
         if (models.count(gameObject->getModelPath()) == 0) {
         loadModel(gameObject->getModelPath(), "basic");
     }
-        for (const auto& light : currentScene->lights) {
-            light->update(shaderPrograms[activeShaderProgram].get());
-        }
 
     Model *model = models[gameObject->getModelPath()].get();
     if (activeShaderProgram != model->getShaderProgName()) {
         activeShaderProgram = model->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
+        updateDirectionalLight();
     }
     shaderPrograms[activeShaderProgram]->setMat4("projection",
         glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
@@ -110,9 +114,7 @@ void Renderer::drawMap() {
     if (activeShaderProgram != currentScene->loadedMap->getShaderProgName()) {
         activeShaderProgram = currentScene->loadedMap->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
-        for (const auto& light : currentScene->lights) {
-            light->update(shaderPrograms[activeShaderProgram].get());
-        }
+        updateDirectionalLight();
     }
 
     shaderPrograms[activeShaderProgram]->setMat4("projection",

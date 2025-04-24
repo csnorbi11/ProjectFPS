@@ -22,6 +22,8 @@ public:
     void createShaderProgram(const std::string &name,
                              const std::string &vertexShader, const std::string &fragmentShader);
 
+    void updateDirectionalLight();
+
     void drawScene();
     void update();
 
