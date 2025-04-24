@@ -47,8 +47,12 @@ Game::Game(const WindowType windowType) {
 
     scene->pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{static_cast<uint32_t>(scene->pointLights.size()),
         1.f,0.22f,.20f}));
-    scene->pointLights[1]->position=glm::vec3(22.0f,3.0f,-2.0f);
-    scene->pointLights[1]->setOverallColor({1.0f,0.9f,0.f});
+    scene->pointLights[1]->position=glm::vec3(26.0f,1.0f,-2.0f);
+    scene->pointLights[1]->setOverallColor({1.0f,0.3f,0.f});
+    scene->pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{static_cast<uint32_t>(scene->pointLights.size()),
+        1.f,0.22f,.20f}));
+    scene->pointLights[2]->position=glm::vec3(22.0f,3.0f,-2.0f);
+    scene->pointLights[2]->setOverallColor({1.0f,0.9f,0.f});
 
     renderer->setActiveScene(scene.get());
 }
