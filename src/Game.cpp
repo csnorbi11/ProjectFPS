@@ -30,8 +30,8 @@ Game::Game(const WindowType windowType) {
 
     scene->camera->position=glm::vec3(25.0f,0.0f,0.0f);
 
-    scene->lights.emplace_back(std::make_unique<DirectionalLight>());
-
+    scene->lights.emplace_back(std::make_unique<DirectionalLight>(glm::vec3{0.4f,-1.f,0.2f}));
+    scene->lights[0]->intensity=0.6f;
     renderer->setActiveScene(scene.get());
 }
 
