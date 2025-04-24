@@ -83,28 +83,16 @@ void Renderer::drawGameObjects() {
         shaderPrograms[activeShaderProgram]->setVec3("viewPos", currentScene->camera->position);
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
-        // bind appropriate textures
-        uint32_t diffuseNr  = 1;
-        uint32_t specularNr = 1;
-        uint32_t normalNr   = 1;
-        uint32_t heightNr   = 1;
          for (int i=0;i<mesh->getTextures().size();i++) {
              glActiveTexture(GL_TEXTURE0 + i);
-             std::string number;
              std::string name = mesh->getTextures()[i].type;
              if(name == "texture_diffuse") {
-                 number = std::to_string(diffuseNr++);
                  shaderPrograms[activeShaderProgram]->setInt("material.diffuse",i);
              }
              else if(name == "texture_specular") {
-                 number = std::to_string(specularNr++); // transfer unsigned int to string
                  shaderPrograms[activeShaderProgram]->setInt("material.specular",i);
              }
 
-             // else if(name == "texture_normal")
-             //     number = std::to_string(normalNr++); // transfer unsigned int to string
-             // else if(name == "texture_height")
-             //     number = std::to_string(heightNr++);
 
              glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
          }
