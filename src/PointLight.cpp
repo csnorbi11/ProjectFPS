@@ -24,5 +24,4 @@ void PointLight::update(ShaderProgram *program) {
     program->setVec3("pointLights["+std::to_string(index)+"].ambient", ambient);
     program->setVec3("pointLights["+std::to_string(index)+"].diffuse", diffuse);
     program->setVec3("pointLights["+std::to_string(index)+"].specular", specular);
-    program->setFloat("pointLights["+std::to_string(index)+"].intensity", intensity);
 }

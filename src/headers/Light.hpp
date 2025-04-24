@@ -8,7 +8,6 @@ struct LightParams {
     glm::vec3 ambient{0.4f};
     glm::vec3 diffuse{1.f};
     glm::vec3 specular{1.f};
-    float intensity=1.f;
 };
 
 class Light {
@@ -21,7 +20,6 @@ public:
     void setAmbient(const glm::vec3& ambient);
     void setDiffuse(const glm::vec3& diffuse);
     void setSpecular(const glm::vec3& specular);
-    void setIntensity(float intensity);
     void setOverallColor(const glm::vec3& color, float ambientFactor=0.4f);
     const glm::vec3& getAmbient() const;
     const glm::vec3& getDiffuse() const;
@@ -32,7 +30,6 @@ protected:
     glm::vec3 ambient;
     glm::vec3 diffuse;
     glm::vec3 specular;
-    float intensity;
 };
 
 

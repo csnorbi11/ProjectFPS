@@ -6,8 +6,7 @@ Light::Light(const LightParams& params)
     :
     ambient(params.ambient),
     diffuse(params.diffuse),
-    specular(params.specular),
-    intensity(params.intensity)
+    specular(params.specular)
 {}
 
 Light::~Light()=default;
@@ -32,14 +31,6 @@ void Light::setSpecular(const glm::vec3 &specular) {
         specular.x<=1.f&&specular.y<=1.f&&specular.z<=1.f) {
         this->specular = specular;
         }
-}
-
-void Light::setIntensity(const float intensity) {
-    if (intensity>0.f&&intensity<=1.f) {
-        this->intensity = intensity;
-    }else if (intensity<=0.f) {
-        this->intensity = 0.1f;
-    }
 }
 
 void Light::setOverallColor(const glm::vec3 &color, float ambientFactor) {
@@ -69,8 +60,4 @@ const glm::vec3 & Light::getDiffuse() const {
 
 const glm::vec3 & Light::getSpecular() const {
     return specular;
-}
-
-const float & Light::getIntensity() const {
-    return intensity;
 }

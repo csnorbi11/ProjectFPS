@@ -31,7 +31,7 @@ Game::Game(const WindowType windowType) {
 
     scene->camera->position=glm::vec3(25.0f,0.0f,0.0f);
 
-    scene->directionalLight = std::make_unique<DirectionalLight>(glm::vec3{0.4f,-1.f,0.2f});
+    scene->directionalLight = std::make_unique<DirectionalLight>();
     scene->directionalLight->setIntensity(0.2f);
     scene->directionalLight->setAmbient({0.2f, 0.2f, 0.4f});
     scene->directionalLight->setDiffuse({0.2f, 0.2f, 0.4f});
@@ -41,13 +41,11 @@ Game::Game(const WindowType windowType) {
         1.f,0.14,0.07}));
     scene->pointLights[0]->position=glm::vec3(35.0f,4.0f,5.0f);
     scene->pointLights[0]->setOverallColor({0.3f,0.9f,1.f});
-    scene->pointLights[0]->setIntensity(1.f);
 
     scene->pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{static_cast<uint32_t>(scene->pointLights.size()),
         1.f,0.22f,.20f}));
     scene->pointLights[1]->position=glm::vec3(22.0f,3.0f,-2.0f);
     scene->pointLights[1]->setOverallColor({1.0f,0.9f,0.f});
-    scene->pointLights[1]->setIntensity(1.9f);
 
     renderer->setActiveScene(scene.get());
 }
