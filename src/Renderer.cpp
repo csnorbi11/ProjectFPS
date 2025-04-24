@@ -3,9 +3,11 @@
 #include <iostream>
 
 #include "headers/Camera.hpp"
+#include "headers/DirectionalLight.hpp"
 #include "headers/GameObject.hpp"
 #include "headers/Map.hpp"
 #include "headers/Model.hpp"
+#include "headers/PointLight.hpp"
 #include "headers/Scene.hpp"
 #include "headers/Shader.hpp"
 #include "headers/ShaderProgram.hpp"
@@ -39,7 +41,13 @@ void Renderer::createShaderProgram(const std::string &name,
 }
 
 void Renderer::updateDirectionalLight() {
-    for (const auto& light : currentScene->lights) {
+    if (currentScene->directionalLight==nullptr) return;
+    currentScene->directionalLight->update(shaderPrograms["basic"].get());
+}
+
+void Renderer::updatePointLights() {
+    shaderPrograms["basic"]->setInt("activePointLights",static_cast<int>(currentScene->pointLights.size()));
+    for (auto& light:currentScene->pointLights) {
         light->update(shaderPrograms["basic"].get());
     }
 }
@@ -61,6 +69,7 @@ void Renderer::drawGameObjects() {
         activeShaderProgram = model->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
         updateDirectionalLight();
+        updatePointLights();
     }
     shaderPrograms[activeShaderProgram]->setMat4("projection",
         glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
@@ -114,9 +123,10 @@ void Renderer::drawMap() {
     if (activeShaderProgram != currentScene->loadedMap->getShaderProgName()) {
         activeShaderProgram = currentScene->loadedMap->getShaderProgName();
         shaderPrograms[activeShaderProgram]->use();
-        updateDirectionalLight();
-    }
 
+    }
+    updateDirectionalLight();
+    updatePointLights();
     shaderPrograms[activeShaderProgram]->setMat4("projection",
         glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",currentScene->camera->getViewMatrix());

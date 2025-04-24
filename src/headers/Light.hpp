@@ -13,12 +13,22 @@ struct LightParams {
 
 class Light {
 public:
-    Light(const LightParams& params);
+    explicit Light(const LightParams& params);
     virtual ~Light()=0;
 
-    virtual void update(ShaderProgram* program);
+    virtual void update(ShaderProgram* program)=0;
 
-public:
+    void setAmbient(const glm::vec3& ambient);
+    void setDiffuse(const glm::vec3& diffuse);
+    void setSpecular(const glm::vec3& specular);
+    void setIntensity(float intensity);
+    void setOverallColor(const glm::vec3& color, float ambientFactor=0.4f);
+    const glm::vec3& getAmbient() const;
+    const glm::vec3& getDiffuse() const;
+    const glm::vec3& getSpecular() const;
+    const float& getIntensity() const;
+
+protected:
     glm::vec3 ambient;
     glm::vec3 diffuse;
     glm::vec3 specular;

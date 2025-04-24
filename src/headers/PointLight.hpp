@@ -4,6 +4,7 @@
 #include "Light.hpp"
 
 struct PointLightParams {
+    uint32_t index;
     float constant = 1.0f;
     float linear = 0.35f;
     float quadratic = 0.44f;
@@ -22,6 +23,8 @@ private:
     float constant;
     float linear;
     float quadratic;
+
+    uint32_t index;
 };
 
 

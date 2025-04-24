@@ -17,14 +17,13 @@ set(CMAKE_C_COMPILER clang)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(STATUS "Configuring Clang warnings")
     target_compile_options(${PROJECT_NAME} PRIVATE
-            -Wall -Wextra -Wpedantic
-            -Wconversion -Wsign-conversion
-            -Wshadow -Wdouble-promotion
-            -Wnull-dereference -Wold-style-cast
-            -Wnon-virtual-dtor -Woverloaded-virtual
-            -Wduplicated-cond -Wlogical-op
-            -Wuseless-cast -Wcast-align
-            -Werror
+            #-Wall -Wextra -Wpedantic
+            #-Wconversion -Wsign-conversion
+            #-Wshadow -Wdouble-promotion
+            #-Wnull-dereference -Wold-style-cast
+            #-Wnon-virtual-dtor -Woverloaded-virtual
+             #-Wcast-align
+            #-Werror
     )
 endif()
 

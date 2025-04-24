@@ -11,7 +11,7 @@ class Camera;
 class Shader;
 class ShaderProgram;
 class Model;
-class Scene;
+struct Scene;
 
 class Renderer {
 public:
@@ -22,14 +22,15 @@ public:
     void createShaderProgram(const std::string &name,
                              const std::string &vertexShader, const std::string &fragmentShader);
 
-    void updateDirectionalLight();
-
     void drawScene();
     void update();
 
     void setActiveScene(Scene* scene);
 
 private:
+    void updateDirectionalLight();
+    void updatePointLights();
+
     void drawGameObjects();
     void drawMap();
 
