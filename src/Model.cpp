@@ -61,7 +61,6 @@ Model::Model(std::string path, std::string shaderProgName)
         shaderProgName(std::move(shaderProgName)),
         path(std::move(path)) {
     loadModel();
-    logModelInfo();
 }
 
 Model::~Model() = default;

@@ -58,10 +58,16 @@ public:
     static double getMouseY();
     static void resetMouseScroll();
 
+    virtual void update();
+
+
+    static bool lockCursor;
 
 protected:
     static int width, height;
     static float aspectRatio;
+
+
 
 
     /// Map of key states (pressed/released/held).

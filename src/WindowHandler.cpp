@@ -12,6 +12,7 @@ double WindowHandler::mousePosY = 0.0;
 int WindowHandler::width = 600;
 int WindowHandler::height = 800;
 float WindowHandler::aspectRatio = 1.f;
+bool WindowHandler::lockCursor = false;
 
 WindowHandler::WindowHandler()=default;
 WindowHandler::~WindowHandler()=default;
@@ -76,6 +77,10 @@ double WindowHandler::getMouseY() {
 void WindowHandler::resetMouseScroll() {
     mouseScrollX = 0.0f;
     mouseScrollY = 0.0f;
+}
+
+void WindowHandler::update() {
+    toggleKey(Input::Key::LEFT);
 }
 
 

@@ -57,6 +57,12 @@ bool GLFWHandler::shouldClose() {
 }
 
 void GLFWHandler::swapBuffers() {
+    if (lockCursor) {
+        glfwSetInputMode(window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }else {
+        glfwSetInputMode(window.get(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+
     glfwPollEvents();
 }
 

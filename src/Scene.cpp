@@ -14,6 +14,5 @@ void Scene::update(double deltaTime) {
     }
     gameObjects[1]->rotation.x += static_cast<float>(deltaTime);
     pointLights[1]->position.z = glm::sin(glfwGetTime()*5.f)*5.f;
-    std::cout << glm::sin(static_cast<float>(deltaTime)*glfwGetTime()) << std::endl;
     camera->update(static_cast<float>(deltaTime));
 }

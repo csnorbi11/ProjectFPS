@@ -86,6 +86,9 @@ void Game::input() const {
     if (WindowHandler::getKeyState(Input::Key::ESCAPE) == Input::Action::PRESSED) {
         windowHandler->closeWindow();
     }
+    if (WindowHandler::toggleKey(Input::Key::L)) {
+        WindowHandler::lockCursor=!WindowHandler::lockCursor;
+    }
 
     windowHandler->pollEvents();
 }
