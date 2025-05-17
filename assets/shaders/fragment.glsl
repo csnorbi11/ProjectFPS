@@ -27,7 +27,9 @@ struct PointLight{
 out vec4 FragColor;
 
 in vec3 Normal;
-in vec3 Color;
+in vec3 Ambient;
+in vec3 Diffuse;
+in vec3 Specular;
 in vec2 TexCoords;
 in vec3 FragPos;
 
@@ -66,17 +68,14 @@ vec3 CalcDirLight(DirectionalLight light,vec3 normal,vec3 viewDir){
     vec3 reflectDir=reflect(-lightDir,normal);
     float spec=pow(max(dot(viewDir,reflectDir),0.f),material.shininess);
 
-    vec3 ambient=light.ambient;
-    vec3 diffuse=light.diffuse*diff;
-    vec3 specular=light.specular*spec;
+    vec3 ambient=light.ambient*Ambient;
+    vec3 diffuse=light.diffuse*diff*Diffuse;
+    vec3 specular=light.specular*spec*Specular;
 
     if(hasTexture){
         ambient*=texture(material.diffuse, TexCoords).rgb;
         diffuse*=texture(material.diffuse, TexCoords).rgb;
         specular*=texture(material.specular, TexCoords).rgb;
-    }else{
-        ambient*=Color;
-        diffuse*=Color;
     }
     return light.intensity*(ambient+diffuse+specular);
 }
@@ -93,17 +92,14 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float attenuation = 1.0 / (light.constant + light.linear * distance +
     light.quadratic * (distance * distance));
 
-    vec3 ambient=light.ambient;
-    vec3 diffuse=light.diffuse;
-    vec3 specular=light.specular;
+    vec3 ambient=light.ambient*Ambient;
+    vec3 diffuse=light.diffuse*Diffuse;
+    vec3 specular=light.specular*Specular;
 
     if(hasTexture){
         ambient*=texture(material.diffuse, TexCoords).rgb;
         diffuse*=texture(material.diffuse, TexCoords).rgb;
         specular*=texture(material.specular, TexCoords).rgb;
-    }else{
-        ambient*=Color;
-        diffuse*=Color;
     }
     ambient  *= attenuation;
     diffuse  *= attenuation;

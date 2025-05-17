@@ -10,36 +10,20 @@ file(GLOB SOURCES "./src/*.cpp")
 file(GLOB HEADERS "./src/headers/*.hpp")
 
 add_executable(ProjectFPS_BSP ${SOURCES} ${HEADERS})
+set(CMAKE_TOOLCHAIN_FILE "C:/Users/Norbi/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 
-set(CMAKE_CXX_COMPILER clang++)
-set(CMAKE_C_COMPILER clang)
-# Compiler warnings and flags
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    message(STATUS "Configuring Clang warnings")
-    target_compile_options(${PROJECT_NAME} PRIVATE
-            #-Wall -Wextra -Wpedantic
-            #-Wconversion -Wsign-conversion
-            #-Wshadow -Wdouble-promotion
-            #-Wnull-dereference -Wold-style-cast
-            #-Wnon-virtual-dtor -Woverloaded-virtual
-             #-Wcast-align
-            #-Werror
-    )
-endif()
 
-# Enable sanitizers (Debug only)
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
-    target_link_options(${PROJECT_NAME} PRIVATE -fsanitize=address,undefined)
-endif()
 
 find_package(glfw3 REQUIRED)
+find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(assimp REQUIRED)
 
-include_directories(glad PUBLIC "/home/csnorbi/Glad/include")
+
+
+include_directories(glad PUBLIC "C:/Users/Norbi/vcpkg/vcpkg/installed/x64-windows/include")
 add_library(glad STATIC "src/glad.c")
-target_link_libraries(ProjectFPS_BSP PRIVATE glfw glm glad assimp::assimp stdc++fs)
+target_link_libraries(ProjectFPS_BSP PRIVATE glfw glad assimp::assimp)
 
 
 set(SHADERS_DIR ${CMAKE_SOURCE_DIR}/assets/shaders)

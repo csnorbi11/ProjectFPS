@@ -31,8 +31,8 @@ private:
     std::unique_ptr<Scene> scene;
 
 
-    std::chrono::time_point<std::chrono::system_clock> frameStart={};
-    std::chrono::time_point<std::chrono::system_clock> frameEnd={};
+    std::chrono::steady_clock::time_point frameStart={};
+    std::chrono::steady_clock::time_point frameEnd={};
     long frameDuration=0;
     double deltaTime=0;
 

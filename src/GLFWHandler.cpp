@@ -47,6 +47,8 @@ GLFWHandler::GLFWHandler(int width, int height){
     glEnable(GL_DEPTH_TEST);
 
 
+
+
     std::cout << glGetString(GL_RENDERER) << std::endl;
 }
 

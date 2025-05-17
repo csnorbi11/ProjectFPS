@@ -63,10 +63,16 @@ void Mesh::setupMesh() {
         sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, normal)));
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,
-        sizeof(Vertex),reinterpret_cast<void *>(offsetof(Vertex,color)));
+        sizeof(Vertex),reinterpret_cast<void *>(offsetof(Vertex,ambient)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE,
+        sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, diffuse)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE,
+        sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, specular)));
     // vertex texture coords
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE,
+    glEnableVertexAttribArray(5);
+    glVertexAttribPointer(5, 2, GL_FLOAT, GL_FALSE,
         sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, texCoords)));
 
     glBindVertexArray(0);

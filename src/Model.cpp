@@ -172,10 +172,15 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     // diffuse: texture_diffuseN
     // specular: texture_specularN
     // normal: texture_normalN
-    aiColor3D color;
-    material->Get(AI_MATKEY_COLOR_DIFFUSE,color);
+    aiColor3D ambientColor,diffuseColor,specularColor;
+    
     for (auto& vert:vertices) {
-        vert.color = glm::vec3(color.r, color.g, color.b);
+        if(material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor)==AI_SUCCESS)
+            vert.ambient = glm::vec3(ambientColor.r, ambientColor.g, ambientColor.b);
+        if (material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS)
+            vert.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
+        if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS)
+            vert.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
     }
 
     // 1. diffuse maps
