@@ -43,6 +43,10 @@ void Camera::update(float deltaTime)
     prevMousePosX = WindowHandler::getMouseX();
     prevMousePosY = WindowHandler::getMouseY();
 
+    rotateEulerY(-offsetX*deltaTime);
+    rotateEulerX(offsetY*deltaTime);
+	printf("Camera rotation: %f\n", getEulerAngles().y);
+
     //rotation.x+=offsetY*mouseSensitivity;
     //rotation.y+=offsetX*mouseSensitivity;
 
