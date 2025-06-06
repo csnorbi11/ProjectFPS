@@ -43,13 +43,13 @@ void Camera::update(float deltaTime)
     prevMousePosX = WindowHandler::getMouseX();
     prevMousePosY = WindowHandler::getMouseY();
 
-    rotation.x+=offsetY*mouseSensitivity;
-    rotation.y+=offsetX*mouseSensitivity;
+    //rotation.x+=offsetY*mouseSensitivity;
+    //rotation.y+=offsetX*mouseSensitivity;
 
-    if (rotation.x>89.0f)
-        rotation.x=89.0f;
-    if (rotation.x<-89.0f)
-        rotation.x=-89.0f;
+    //if (rotation.x>89.0f)
+    //    rotation.x=89.0f;
+    //if (rotation.x<-89.0f)
+    //    rotation.x=-89.0f;
 
 
     updateCameraVectors();
@@ -61,10 +61,10 @@ glm::mat4 Camera::getViewMatrix() const {
 }
 
 void Camera::updateCameraVectors() {
-    front.x = glm::cos(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
-    front.y = glm::sin(glm::radians(rotation.x));
-    front.z = glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
-    front = glm::normalize(front);
-    right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)));
-    up    = glm::normalize(glm::cross(right, front));
+    //front.x = glm::cos(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
+    //front.y = glm::sin(glm::radians(rotation.x));
+    //front.z = glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
+    //front = glm::normalize(front);
+    //right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)));
+    //up    = glm::normalize(glm::cross(right, front));
 }
