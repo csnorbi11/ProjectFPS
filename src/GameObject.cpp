@@ -24,6 +24,10 @@ void GameObject::rotate(const glm::vec3& axis, float angle)
 	glm::vec3 normalizedAxis = glm::normalize(axis);
 	glm::quat rotationQuat = glm::angleAxis(angle, normalizedAxis);
 	rotation = glm::normalize(rotationQuat * rotation);
+
+	front = rotation * glm::vec3(0.f, 0.f, -1.f);
+	up = rotation * glm::vec3(0.f, 1.f, 0.f);
+	right = rotation * glm::vec3(1.f, 0.f, 0.f);
 }
 
 void GameObject::rotateGlobal(const glm::vec3& axis, float angle)
@@ -31,6 +35,10 @@ void GameObject::rotateGlobal(const glm::vec3& axis, float angle)
 	glm::vec3 normalizedAxis = glm::normalize(axis);
 	glm::quat rotationQuat = glm::angleAxis(angle, normalizedAxis);
 	rotation = glm::normalize(rotation*rotationQuat);
+
+	front = rotation * glm::vec3(0.f, 0.f, -1.f);
+	up = rotation * glm::vec3(0.f, 1.f, 0.f);
+	right = rotation * glm::vec3(1.f, 0.f, 0.f);
 }
 
 void GameObject::rotateEuler(const glm::vec3& eulerAngles)
@@ -44,7 +52,7 @@ void GameObject::rotateEuler(const glm::vec3& eulerAngles)
 
 void GameObject::rotateEulerX(float angle)
 {
-	rotate(glm::vec3(1.f, 0.f, 0.f),angle);
+	rotateGlobal(glm::vec3(1.f, 0.f, 0.f),angle);
 }
 
 void GameObject::rotateEulerY(float angle)
