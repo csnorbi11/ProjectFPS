@@ -3,6 +3,7 @@
 
 #include <glm/glm.hpp>
 #include <string>
+#include <glm/gtc/quaternion.hpp>
 
 struct GameObjectParams {
     const std::string modelPath="";
@@ -18,11 +19,20 @@ public:
 
     virtual void update(float deltaTime);
 
+    void rotate(const glm::vec3& axis, float angle);    
+    void rotateGlobal(const glm::vec3& axis, float angle);    
+	void rotateEuler(const glm::vec3& eulerAngles);
+	void rotateEulerX(float angle);
+	void rotateEulerY(float angle);
+	void rotateEulerZ(float angle);
+
+    glm::vec3 getEulerAngles() const;
+	glm::quat getQuaternion() const;
 
     const std::string& getModelPath() const;
 
     glm::vec3 position={};
-    glm::vec3 rotation={};
+    
 
 protected:
     glm::vec3 direction;
@@ -32,6 +42,9 @@ protected:
     glm::vec3 up;
 
     std::string model{};
+
+private:
+    glm::quat rotation = {};
 };
 
 
