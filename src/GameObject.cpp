@@ -4,9 +4,9 @@
 GameObject::GameObject(GameObjectParams params)
     :
         position(params.position),
-        rotation(params.rotation),
+        orientation(params.rotation),
         direction(0.f,0.f,-1.f),
-        front(0.f,0.f,-1.f),
+        forward(0.f,0.f,-1.f),
         right(1.f,0.f,0.f),
         up(0.f,1.f,0.f),
         model(params.modelPath)
@@ -19,60 +19,80 @@ void GameObject::update(float deltaTime) {
 
 }
 
-void GameObject::rotate(const glm::vec3& axis, float angle)
+void GameObject::rotateLocal(const glm::vec3& axis, float angle)
 {
 	glm::vec3 normalizedAxis = glm::normalize(axis);
 	glm::quat rotationQuat = glm::angleAxis(angle, normalizedAxis);
-	rotation = glm::normalize(rotationQuat * rotation);
+	orientation = glm::normalize(rotationQuat * orientation);
 
-	front = rotation * glm::vec3(0.f, 0.f, -1.f);
-	up = rotation * glm::vec3(0.f, 1.f, 0.f);
-	right = rotation * glm::vec3(1.f, 0.f, 0.f);
+	calculateVectors();
 }
 
 void GameObject::rotateGlobal(const glm::vec3& axis, float angle)
 {
 	glm::vec3 normalizedAxis = glm::normalize(axis);
 	glm::quat rotationQuat = glm::angleAxis(angle, normalizedAxis);
-	rotation = glm::normalize(rotation*rotationQuat);
+	orientation = glm::normalize(orientation*rotationQuat);
 
-	front = rotation * glm::vec3(0.f, 0.f, -1.f);
-	up = rotation * glm::vec3(0.f, 1.f, 0.f);
-	right = rotation * glm::vec3(1.f, 0.f, 0.f);
+	calculateVectors();
 }
 
-void GameObject::rotateEuler(const glm::vec3& eulerAngles)
+void GameObject::calculateVectors()
+{
+	forward = orientation * glm::vec3(0.f, 0.f, -1.f);
+	up = orientation * glm::vec3(0.f, 1.f, 0.f);
+	right = orientation * glm::vec3(1.f, 0.f, 0.f);
+}
+
+void GameObject::rotateEuler(const glm::vec3& eulerAngles, bool isGlobal)
 {
 	glm::quat qx = glm::angleAxis(eulerAngles.x, glm::vec3(1.f, 0.f, 0.f));
 	glm::quat qy = glm::angleAxis(eulerAngles.y, glm::vec3(0.f, 1.f, 0.f));
 	glm::quat qz = glm::angleAxis(eulerAngles.z, glm::vec3(0.f, 0.f, 1.f));
 
-	rotation = glm::normalize(qz * qy * qx*rotation);
+	orientation = isGlobal? glm::normalize(qz * qy * qx*orientation): glm::normalize(orientation* qz * qy * qx);
+
+	calculateVectors();
 }
 
-void GameObject::rotateEulerX(float angle)
+void GameObject::rotateEulerX(float angle, bool isGlobal)
 {
-	rotateGlobal(glm::vec3(1.f, 0.f, 0.f),angle);
+	if (isGlobal)
+		rotateGlobal(glm::vec3(1.f, 0.f, 0.f), angle);
+	else
+		rotateLocal(glm::vec3(1.f, 0.f, 0.f),angle);
 }
 
-void GameObject::rotateEulerY(float angle)
+void GameObject::rotateEulerY(float angle, bool isGlobal)
 {
-	rotate(glm::vec3(0.f, 1.f, 0.f), angle);
+	if (isGlobal)
+		rotateGlobal(glm::vec3(0.f, 1.f, 0.f), angle);
+	else
+		rotateLocal(glm::vec3(0.f, 1.f, 0.f), angle);
 }
 
-void GameObject::rotateEulerZ(float angle)
+void GameObject::rotateEulerZ(float angle, bool isGlobal)
 {
-	rotate(glm::vec3(0.f, 0.f, 1.f), angle);
+	if (isGlobal)
+		rotateGlobal(glm::vec3(0.f, 0.f, 1.f), angle);
+	else
+		rotateLocal(glm::vec3(0.f, 0.f, 1.f), angle);
 }
 
 glm::vec3 GameObject::getEulerAngles() const
 {
-	return glm::eulerAngles(rotation);
+	return glm::eulerAngles(orientation);
 }
 
 glm::quat GameObject::getQuaternion() const
 {
-	return rotation;
+	return orientation;
+}
+
+void GameObject::setQuaternion(const glm::quat& q)
+{
+	orientation = q;
+	calculateVectors();
 }
 
 

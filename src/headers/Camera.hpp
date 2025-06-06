@@ -19,6 +19,8 @@ private:
 
     float prevMousePosX=0, prevMousePosY=0;
     float mouseSensitivity=1.f;
+
+    float yaw=0.f, pitch=0.f;
 };
 
 #endif //CAMERA_HPP
