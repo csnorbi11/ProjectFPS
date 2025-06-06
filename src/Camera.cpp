@@ -11,7 +11,10 @@
 Camera::Camera()
     :
     GameObject({})
-{}
+{
+	prevMousePosX = static_cast<float>(WindowHandler::getMouseX());
+	prevMousePosY = static_cast<float>(WindowHandler::getMouseY());
+}
 
 Camera::~Camera()=default;
 
@@ -50,6 +53,7 @@ void Camera::update(float deltaTime)
     else if (pitch < glm::radians(-89.0f)) {
 		pitch = glm::radians(-89.0f);
     }
+	printf("Yaw: %f, Pitch: %f\n", yaw, pitch);
 
     glm::quat qPitch = glm::angleAxis(pitch, glm::vec3(1.f, 0.f, 0.f));
     glm::quat qYaw = glm::angleAxis(yaw, glm::vec3(0.f, 1.f, 0.f));
