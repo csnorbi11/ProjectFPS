@@ -15,8 +15,6 @@ GameObject::GameObject(GameObjectParams params)
 
 void GameObject::update(float deltaTime) {
 
-
-
 }
 
 void GameObject::rotateLocal(const glm::vec3& axis, float angle)
