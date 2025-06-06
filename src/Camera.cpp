@@ -19,10 +19,10 @@ Camera::~Camera()=default;
 void Camera::update(float deltaTime)
 {
     if (WindowHandler::getKeyState(Input::Key::W)==Input::Action::PRESSED) {
-        position+=front*deltaTime*3.f;
+        position+=forward*deltaTime*3.f;
     }
     if (WindowHandler::getKeyState(Input::Key::S)==Input::Action::PRESSED) {
-        position-=front*deltaTime*3.f;
+        position-=forward*deltaTime*3.f;
     }
     if (WindowHandler::getKeyState(Input::Key::A)==Input::Action::PRESSED) {
         position-=right*deltaTime*3.f;
@@ -42,33 +42,24 @@ void Camera::update(float deltaTime)
 
     prevMousePosX = WindowHandler::getMouseX();
     prevMousePosY = WindowHandler::getMouseY();
+	yaw -= offsetX * deltaTime * mouseSensitivity;
+    pitch += offsetY * deltaTime * mouseSensitivity;
+	if (pitch > glm::radians(89.0f)) {
+		pitch = glm::radians(89.0f);
+    }
+    else if (pitch < glm::radians(-89.0f)) {
+		pitch = glm::radians(-89.0f);
+    }
 
-    rotateEulerY(-offsetX*deltaTime);
-    rotateEulerX(offsetY*deltaTime);
-	printf("Camera rotation: %f\n", getEulerAngles().y);
+    glm::quat qPitch = glm::angleAxis(pitch, glm::vec3(1.f, 0.f, 0.f));
+    glm::quat qYaw = glm::angleAxis(yaw, glm::vec3(0.f, 1.f, 0.f));
 
-    //rotation.x+=offsetY*mouseSensitivity;
-    //rotation.y+=offsetX*mouseSensitivity;
-
-    //if (rotation.x>89.0f)
-    //    rotation.x=89.0f;
-    //if (rotation.x<-89.0f)
-    //    rotation.x=-89.0f;
-
-
-    updateCameraVectors();
+	setQuaternion(glm::normalize(qYaw * qPitch));
+	calculateVectors();
 }
 
 
 glm::mat4 Camera::getViewMatrix() const {
-    return glm::lookAt(position, position + front, up);
+    return glm::lookAt(position, position + forward, up);
 }
 
-void Camera::updateCameraVectors() {
-    //front.x = glm::cos(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
-    //front.y = glm::sin(glm::radians(rotation.x));
-    //front.z = glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x));
-    //front = glm::normalize(front);
-    //right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)));
-    //up    = glm::normalize(glm::cross(right, front));
-}
