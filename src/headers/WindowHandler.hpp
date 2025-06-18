@@ -5,11 +5,13 @@
 
 #include "Camera.hpp"
 #include "Input.hpp"
+#include <memory>
 
 enum class WindowType {
     GLFW
 };
 
+class InputHandler;
 
 /**
  * @class WindowHandler
@@ -45,38 +47,25 @@ public:
      */
     virtual void closeWindow() = 0;
 
-    static bool toggleKey(Input::Key key);
 
-    static float getAspectRatio();
 
-    static Input::Action getKeyState(Input::Key key);
-    static Input::Action getKeyPrevState(Input::Key key);
-    static Input::Action getMouseButtonState(uint8_t button);
-    static double getMouseScrollX();
-    static double getMouseScrollY();
-    static double getMouseX();
-    static double getMouseY();
-    static void resetMouseScroll();
+    float getAspectRatio();
+
+
 
     virtual void update();
 
 
-    static bool lockCursor;
+    bool lockCursor=false;
 
 protected:
-    static int width, height;
-    static float aspectRatio;
+    int width=800, height=600;
+    float aspectRatio;
 
 
+	std::unique_ptr<InputHandler> inputHandler;
 
 
-    /// Map of key states (pressed/released/held).
-    static std::unordered_map<Input::Key, Input::Action> keys;
-    static std::unordered_map<Input::Key, Input::Action> keysPrevStates;
-    /// Map of mouse button states (pressed/released/held).
-    static std::unordered_map<uint8_t, Input::Action> mouseButtons;
-    static double mouseScrollX, mouseScrollY;
-    static double mousePosX, mousePosY;
 
 };
 

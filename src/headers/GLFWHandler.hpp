@@ -26,17 +26,14 @@ struct GLFWDestroyer {
 */
 class GLFWHandler final : public WindowHandler {
 public:
-    struct InputHandler {
-        static void framebufferSizeCallback(GLFWwindow *window, int width, int height);
-        static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-        static void cursorPositionCallback(GLFWwindow *window, double xPos, double yPos);
-        static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
-        static void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
-        static void debugKeys(int key, int scancode, int action, int mods);
-        static void debugCursor(double xPos, double yPos);
-        static void debugMouseButton(int button, int action, int mods);
-        static void debugMouseScroll(double xOffset, double yOffset);
-    };
+
+    void debugKeys(int key, int scancode, int action, int mods);
+    void debugCursor(double xPos, double yPos);
+    void debugMouseButton(int button, int action, int mods);
+    void debugMouseScroll(double xOffset, double yOffset);
+
+
+
 
     GLFWHandler(int width, int height);
     ~GLFWHandler() override;
@@ -47,6 +44,9 @@ public:
     void closeWindow() override;
 
 private:
+    void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+    void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+
     static std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
 };
 

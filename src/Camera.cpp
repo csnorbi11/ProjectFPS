@@ -55,6 +55,12 @@ void Camera::update(float deltaTime)
     updateCameraVectors();
 }
 
+void Camera::recieveInput(const InputHandler& inputHandler)
+{
+}
+
+
+
 
 glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(position, position + front, up);
