@@ -1,4 +1,4 @@
-#include "headers/InputHandler.hpp"
+#include "headers/GLFWInput.hpp"
 
 
 GLFWInput::GLFWInput(GLFWwindow* window)
@@ -27,13 +27,12 @@ Input::Action GLFWInput::getKeyState(const Input::Key key) {
 
     return keys[key];
 }
-void GLFWInput::update()
-{
+void GLFWInput::update() {
     glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
     for (auto& [key, action] : keys) {
 		keysPrevStates[key] = action;
-        switch (glfwGetKey(glfwGetCurrentContext(), Input::mapKey(key))) {
+        switch (window, Input::mapKey(key)) {
         case GLFW_PRESS:
             keys[key] = Input::Action::PRESSED;
             break;
@@ -49,11 +48,7 @@ void GLFWInput::update()
     }
     
 }
-/**
- * @brief If the button haven't pressed yet, it's going to be added to mouseButtons and returns it's state
- * @param button the pressed button
- * @return button's state
- */
+
 Input::Action GLFWInput::getMouseButtonState(const uint8_t button) {
     if (mouseButtons.count(button) == 0) {
         mouseButtons[button] = Input::Action::RELEASED;

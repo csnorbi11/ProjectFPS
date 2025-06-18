@@ -1,5 +1,4 @@
 #include "headers/WindowHandler.hpp"
-#include "headers/InputHandler.hpp"
 
 
 WindowHandler::WindowHandler()

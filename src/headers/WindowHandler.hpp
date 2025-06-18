@@ -50,12 +50,6 @@ public:
 
 
     float getAspectRatio();
-    GLFWInput& getInputHandler();
-
-
-
-    virtual void update();
-
 
     bool lockCursor=false;
 

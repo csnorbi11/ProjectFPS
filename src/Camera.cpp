@@ -6,7 +6,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 #include "headers/WindowHandler.hpp"
-#include "headers/InputHandler.hpp"
+#include "headers/Input.hpp"
 
 
 Camera::Camera()
@@ -39,33 +39,33 @@ void Camera::update(float deltaTime)
 	calculateVectors();
 }
 
-void Camera::recieveInput(GLFWInput& inputHandler)
+void Camera::recieveInput(Input::IInput& input)
 {
 	direction = glm::vec3(0.f);
-    if (inputHandler.getKeyState(Input::Key::W) == Input::Action::PRESSED) {
+    if (input.getKeyState(Input::Key::W) == Input::Action::PRESSED) {
         direction += forward * 3.f;
     }
-    if (inputHandler.getKeyState(Input::Key::S) == Input::Action::PRESSED) {
+    if (input.getKeyState(Input::Key::S) == Input::Action::PRESSED) {
         direction -= forward * 3.f;
     }
-    if (inputHandler.getKeyState(Input::Key::A) == Input::Action::PRESSED) {
+    if (input.getKeyState(Input::Key::A) == Input::Action::PRESSED) {
         direction -= right * 3.f;
     }
-    if (inputHandler.getKeyState(Input::Key::D) == Input::Action::PRESSED) {
+    if (input.getKeyState(Input::Key::D) == Input::Action::PRESSED) {
         direction += right * 3.f;
     }
-    if (inputHandler.getKeyState(Input::Key::SPACE) == Input::Action::PRESSED) {
+    if (input.getKeyState(Input::Key::SPACE) == Input::Action::PRESSED) {
         direction.y += 3.f;
     }
-    if (inputHandler.getKeyState(Input::Key::LCTRL) == Input::Action::PRESSED) {
+    if (input.getKeyState(Input::Key::LCTRL) == Input::Action::PRESSED) {
         direction.y -= 1;
     }
 
-    offsetX = static_cast<float>(inputHandler.getMouseX()) - prevMousePosX;
-    offsetY = prevMousePosY - static_cast<float>(inputHandler.getMouseY());
+    offsetX = static_cast<float>(input.getMouseX()) - prevMousePosX;
+    offsetY = prevMousePosY - static_cast<float>(input.getMouseY());
 
-    prevMousePosX = inputHandler.getMouseX();
-    prevMousePosY = inputHandler.getMouseY();
+    prevMousePosX = input.getMouseX();
+    prevMousePosY = input.getMouseY();
 }
 
 

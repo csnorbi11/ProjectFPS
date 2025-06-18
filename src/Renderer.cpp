@@ -12,7 +12,7 @@
 #include "headers/Shader.hpp"
 #include "headers/ShaderProgram.hpp"
 #include "headers/WindowHandler.hpp"
-#include "headers/InputHandler.hpp"
+#include "headers/GLFWInput.hpp"
 
 
 Renderer::Renderer(WindowHandler& windowHandler)
@@ -189,9 +189,6 @@ void Renderer::drawMap() {
 }
 
 void Renderer::update() {
-    if (windowHandler.getInputHandler().toggleKey(Input::Key::O)) {
-        debugMode=!debugMode;
-    }
     glPolygonMode(GL_FRONT_AND_BACK, debugMode ? GL_LINE : GL_FILL);
 }
 

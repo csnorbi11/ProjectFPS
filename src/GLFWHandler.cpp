@@ -8,7 +8,7 @@
 #include "headers/DebugMode.hpp"
 #include "headers/Game.hpp"
 #include "headers/Input.hpp"
-#include "headers/InputHandler.hpp"
+#include "headers/GLFWInput.hpp"
 
 
 std::unique_ptr<GLFWwindow, GLFWDestroyer> GLFWHandler::window = nullptr;

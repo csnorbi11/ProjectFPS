@@ -4,7 +4,7 @@
 
 #include "GLFWHandler.hpp"
 #include "Input.hpp"
-#include "InputHandler.hpp"
+#include "GLFWInput.hpp"
 
 struct Scene;
 class Camera;

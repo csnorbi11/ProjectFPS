@@ -8,7 +8,7 @@
 #include "headers/PointLight.hpp"
 #include "headers/Renderer.hpp"
 #include "headers/Scene.hpp"
-#include "headers/InputHandler.hpp"
+#include "headers/GLFWInput.hpp"
 
 
 Game::Game(const WindowType windowType) {
@@ -85,13 +85,13 @@ void Game::render() const {
 }
 
 void Game::input() const {
-    if (windowHandler->getInputHandler().getKeyState(Input::Key::ESCAPE) == Input::Action::PRESSED) {
+    if (inputHandler->getKeyState(Input::Key::ESCAPE) == Input::Action::PRESSED) {
         windowHandler->closeWindow();
     }
-    if (windowHandler->getInputHandler().toggleKey(Input::Key::L)) {
+    if (inputHandler->toggleKey(Input::Key::L)) {
         windowHandler->lockCursor=!windowHandler->lockCursor;
     }
-	scene->camera->recieveInput(windowHandler->getInputHandler());
+	scene->camera->recieveInput(*inputHandler.get());
 
     windowHandler->pollEvents();
 }
