@@ -100,7 +100,7 @@ void Game::gameLoop() {
 
         scene->update(deltaTime);
         renderer->update();
-        render();
+        render();      
         input();
         calculateDeltaTime();
     }

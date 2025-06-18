@@ -68,10 +68,8 @@ void Renderer::drawPointLights() {
 
 
         glm::mat4 transformMatrix(1.f);
+        transformMatrix *= static_cast<glm::mat4>(light->getQuaternion());
         transformMatrix = glm::translate(glm::mat4(1.0f), light->position);
-        transformMatrix = glm::rotate(transformMatrix, light->rotation.x, glm::vec3(0.0f,1.0f,0.0f));
-        transformMatrix = glm::rotate(transformMatrix, light->rotation.y, glm::vec3(1.0f,0.0f,0.0f));
-        transformMatrix = glm::rotate(transformMatrix, light->rotation.z, glm::vec3(0.0f,0.0f,1.0f));
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
         viewProjection();
         shaderPrograms[activeShaderProgram]->setVec3("color",light->getDiffuse());
@@ -113,9 +111,7 @@ void Renderer::drawGameObjects() {
     for (const auto &mesh : model->getMeshes()) {
         glm::mat4 transformMatrix(1.f);
         transformMatrix = glm::translate(glm::mat4(1.0f), gameObject->position);
-        transformMatrix = glm::rotate(transformMatrix, gameObject->rotation.x, glm::vec3(0.0f,1.0f,0.0f));
-        transformMatrix = glm::rotate(transformMatrix, gameObject->rotation.y, glm::vec3(1.0f,0.0f,0.0f));
-        transformMatrix = glm::rotate(transformMatrix, gameObject->rotation.z, glm::vec3(0.0f,0.0f,1.0f));
+        transformMatrix *= static_cast<glm::mat4>(gameObject->getQuaternion());
         shaderPrograms[activeShaderProgram]->setVec3("viewPos", currentScene->camera->position);
         shaderPrograms[activeShaderProgram]->setMat4("model",transformMatrix);
         shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
