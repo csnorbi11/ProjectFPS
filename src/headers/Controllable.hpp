@@ -5,7 +5,7 @@ class InputHandler;
 
 struct Controllable {
 	~Controllable() = default;
-	virtual void recieveInput(const InputHandler& inputHandler) = 0;
+	virtual void recieveInput(InputHandler& inputHandler) = 0;
 };
 
 

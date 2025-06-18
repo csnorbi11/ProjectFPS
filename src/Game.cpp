@@ -8,11 +8,12 @@
 #include "headers/PointLight.hpp"
 #include "headers/Renderer.hpp"
 #include "headers/Scene.hpp"
+#include "headers/InputHandler.hpp"
 
 
 Game::Game(const WindowType windowType) {
     windowHandler = createWindowHandler(windowType);
-    renderer = std::make_unique<Renderer>();
+    renderer = std::make_unique<Renderer>(*windowHandler.get());
 
     renderer->createShaderProgram("basic",
                                   "assets/shaders/vertex.glsl",
@@ -84,12 +85,13 @@ void Game::render() const {
 }
 
 void Game::input() const {
-    if (WindowHandler::getKeyState(Input::Key::ESCAPE) == Input::Action::PRESSED) {
+    if (windowHandler->getInputHandler().getKeyState(Input::Key::ESCAPE) == Input::Action::PRESSED) {
         windowHandler->closeWindow();
     }
-    if (WindowHandler::toggleKey(Input::Key::L)) {
-        WindowHandler::lockCursor=!WindowHandler::lockCursor;
+    if (windowHandler->getInputHandler().toggleKey(Input::Key::L)) {
+        windowHandler->lockCursor=!windowHandler->lockCursor;
     }
+	scene->camera->recieveInput(windowHandler->getInputHandler());
 
     windowHandler->pollEvents();
 }
@@ -97,11 +99,12 @@ void Game::input() const {
 void Game::gameLoop() {
     while (!windowHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
+        input();
 
         scene->update(deltaTime);
         renderer->update();
+		windowHandler->getInputHandler().updateKeyStates();
         render();      
-        input();
         calculateDeltaTime();
     }
 }

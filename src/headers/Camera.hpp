@@ -10,7 +10,7 @@ public:
     ~Camera() override;
 
     void update(float deltaTime) override;
-    void recieveInput(const InputHandler& inputHandler) override;
+    void recieveInput(InputHandler& inputHandler) override;
 
     glm::mat4 getViewMatrix() const;
 
@@ -18,6 +18,7 @@ private:
 
     float prevMousePosX=0, prevMousePosY = 0;
     float mouseSensitivity=1.f;
+    float offsetX, offsetY;
 
     float yaw=0.f, pitch=0.f;
 };

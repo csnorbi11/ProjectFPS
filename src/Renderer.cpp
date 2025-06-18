@@ -12,8 +12,13 @@
 #include "headers/Shader.hpp"
 #include "headers/ShaderProgram.hpp"
 #include "headers/WindowHandler.hpp"
+#include "headers/InputHandler.hpp"
 
-Renderer::Renderer()=default;
+
+Renderer::Renderer(WindowHandler& windowHandler)
+    :
+    windowHandler(windowHandler)
+{}
 
 Renderer::~Renderer() {
     currentScene=nullptr;
@@ -90,7 +95,7 @@ void Renderer::drawScene() {
 
 void Renderer::viewProjection() {
     shaderPrograms[activeShaderProgram]->setMat4("projection",
-                                                 glm::perspective(glm::radians(90.0f),WindowHandler::getAspectRatio(),0.01f,100.0f));
+                                                 glm::perspective(glm::radians(90.0f),windowHandler.getAspectRatio(),0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",currentScene->camera->getViewMatrix());
 }
 
@@ -184,7 +189,7 @@ void Renderer::drawMap() {
 }
 
 void Renderer::update() {
-    if (WindowHandler::toggleKey(Input::Key::O)) {
+    if (windowHandler.getInputHandler().toggleKey(Input::Key::O)) {
         debugMode=!debugMode;
     }
     glPolygonMode(GL_FRONT_AND_BACK, debugMode ? GL_LINE : GL_FILL);

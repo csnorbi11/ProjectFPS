@@ -12,10 +12,11 @@ class Shader;
 class ShaderProgram;
 class Model;
 struct Scene;
+class WindowHandler;
 
 class Renderer {
 public:
-    Renderer();
+    Renderer(WindowHandler& windowHandler);
     ~Renderer();
 
 
@@ -50,6 +51,8 @@ private:
     Scene* currentScene=nullptr;
 
     bool debugMode=false;
+
+    WindowHandler& windowHandler;
 
 };
 
