@@ -3,6 +3,8 @@
 #include <chrono>
 
 #include "GLFWHandler.hpp"
+#include "Input.hpp"
+#include "InputHandler.hpp"
 
 struct Scene;
 class Camera;
@@ -27,6 +29,7 @@ private:
     void input() const;
 
     std::unique_ptr<WindowHandler> windowHandler;
+	std::unique_ptr<Input::IInput> inputHandler;
     std::unique_ptr<Renderer> renderer;
     std::unique_ptr<Scene> scene;
 

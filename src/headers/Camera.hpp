@@ -10,7 +10,7 @@ public:
     ~Camera() override;
 
     void update(float deltaTime) override;
-    void recieveInput(InputHandler& inputHandler) override;
+    void recieveInput(GLFWInput& inputHandler) override;
 
     glm::mat4 getViewMatrix() const;
 

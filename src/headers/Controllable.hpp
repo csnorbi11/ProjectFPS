@@ -1,11 +1,11 @@
 #ifndef CONTROLLABLE_HPP
 #define CONTROLLABLE_HPP
 
-class InputHandler;
+class GLFWInput;
 
 struct Controllable {
 	~Controllable() = default;
-	virtual void recieveInput(InputHandler& inputHandler) = 0;
+	virtual void recieveInput(GLFWInput& inputHandler) = 0;
 };
 
 

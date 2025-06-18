@@ -9,7 +9,6 @@ namespace Input {
     RELEASED,
     HELD
   };
-
   enum class Key {
     UNKNOWN,
     NUM1,NUM2,NUM3,NUM4,NUM5,NUM6,NUM7,NUM8,NUM9,NUM0,
@@ -19,7 +18,6 @@ namespace Input {
     RIGHT,LEFT,UP,DOWN,
     SPACE, LSHIFT, LCTRL
   };
-
   enum class Modifier : uint8_t {
     SHIFT=1<<1,
     CTRL=1<<2,
@@ -27,7 +25,7 @@ namespace Input {
     NONE=0
   };
 
-  inline Key getKeyFromGLFW(const int glfwKey) {
+  inline Key mapGLFW(const int glfwKey) {
     switch (glfwKey) {
       case GLFW_KEY_0: return Key::NUM0;
       case GLFW_KEY_1: return Key::NUM1;
@@ -79,7 +77,7 @@ namespace Input {
       default: return Key::UNKNOWN;
     }
   }
-  inline int getGLFWKeyFromKey(const Key key) {
+  inline int mapKey(const Key key) {
       switch (key) {
       case Key::NUM0: return GLFW_KEY_0;
       case Key::NUM1: return GLFW_KEY_1;
@@ -131,6 +129,20 @@ namespace Input {
       default: return GLFW_KEY_UNKNOWN;
       }
   }
+
+  class IInput {
+  public:
+	  ~IInput() = default;
+
+      virtual void update() = 0;
+
+      virtual bool toggleKey(Input::Key key) = 0;
+      virtual Input::Action getKeyState(Input::Key key) = 0;
+      virtual Input::Action getMouseButtonState(uint8_t button) = 0;
+      virtual double getMouseScrollY() = 0;
+      virtual double getMouseX() = 0;
+      virtual double getMouseY() = 0;
+  };
 
 
 }

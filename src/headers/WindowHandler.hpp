@@ -11,7 +11,7 @@ enum class WindowType {
     GLFW
 };
 
-class InputHandler;
+class GLFWInput;
 
 /**
  * @class WindowHandler
@@ -50,7 +50,7 @@ public:
 
 
     float getAspectRatio();
-    InputHandler& getInputHandler();
+    GLFWInput& getInputHandler();
 
 
 
@@ -62,10 +62,7 @@ public:
 protected:
     int width=800, height=600;
     float aspectRatio;
-    double mouseScrollX = 0.f, mouseScrollY = 0.f;
-    double mousePosX = 0.f, mousePosY = 0.f;
 
-	std::unique_ptr<InputHandler> inputHandler;
 
 
 

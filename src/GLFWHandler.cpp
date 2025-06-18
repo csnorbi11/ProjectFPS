@@ -68,7 +68,7 @@ void GLFWHandler::pollEvents() {
         glfwSetInputMode(window.get(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
-	glfwGetCursorPos(window.get(), &mousePosX, &mousePosY);
+	
 
     glfwPollEvents();
     
@@ -82,8 +82,8 @@ void GLFWHandler::closeWindow() {
 void GLFWHandler::scrollCallback(GLFWwindow *window, const double xOffset, const double yOffset) {
     if (inputDebugMode & InputDebugMode::MouseScroll)
         debugMouseScroll(xOffset, yOffset);
-    mouseScrollX = xOffset;
-    mouseScrollY = yOffset;
+    //mouseScrollX = xOffset;
+    //mouseScrollY = yOffset;
 }
 
 void GLFWHandler::framebufferSizeCallback(GLFWwindow *window, int width, int height) {

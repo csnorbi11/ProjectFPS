@@ -39,7 +39,7 @@ void Camera::update(float deltaTime)
 	calculateVectors();
 }
 
-void Camera::recieveInput(InputHandler& inputHandler)
+void Camera::recieveInput(GLFWInput& inputHandler)
 {
 	direction = glm::vec3(0.f);
     if (inputHandler.getKeyState(Input::Key::W) == Input::Action::PRESSED) {

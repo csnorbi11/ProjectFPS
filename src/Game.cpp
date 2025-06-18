@@ -103,7 +103,6 @@ void Game::gameLoop() {
 
         scene->update(deltaTime);
         renderer->update();
-		windowHandler->getInputHandler().updateKeyStates();
         render();      
         calculateDeltaTime();
     }

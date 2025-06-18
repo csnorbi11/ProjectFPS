@@ -4,21 +4,21 @@
 #include "Input.hpp"
 #include <unordered_map>
 
-class InputHandler {
+class GLFWInput : public Input::IInput {
 public:
-	InputHandler(double* mousePosX, double* mousePosY);
-	~InputHandler() = default;
+	GLFWInput(GLFWwindow* window);
+	~GLFWInput();
 
+	void update() override;
 
-    bool toggleKey(Input::Key key);
-    Input::Action getKeyState(Input::Key key);
-    Input::Action getKeyPrevState(Input::Key key);
-    void updateKeyStates();
-    Input::Action getMouseButtonState(uint8_t button);
-    double getMouseScrollX();
-    double getMouseScrollY();
-    double getMouseX();
-    double getMouseY();
+    bool toggleKey(Input::Key key) override;
+    Input::Action getKeyState(Input::Key key) override;
+    Input::Action getMouseButtonState(uint8_t button) override;
+    double getMouseScrollY() override;
+    double getMouseX() override;
+    double getMouseY() override;
+    
+
     void resetMouseScroll();
 
 private:
@@ -27,8 +27,10 @@ private:
     std::unordered_map<Input::Key, Input::Action> keysPrevStates = {};
     /// Map of mouse button states (pressed/released/held).
     std::unordered_map<uint8_t, Input::Action> mouseButtons = {};
+    double mouseScrollY = 0.f;
+    double mousePosX = 0.f, mousePosY = 0.f;
 
-    double& mousePosX, mousePosY;
+	GLFWwindow* window = nullptr;
 
 };
 
