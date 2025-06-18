@@ -7,7 +7,6 @@
 
 #include "headers/DebugMode.hpp"
 #include "headers/Game.hpp"
-#include "headers/Input.hpp"
 #include "headers/GLFWInput.hpp"
 
 
@@ -78,6 +77,16 @@ void GLFWHandler::closeWindow() {
     glfwSetWindowShouldClose(window.get(), GLFW_TRUE);
 }
 
+float GLFWHandler::getAspectRatio()
+{
+    return aspectRatio;
+}
+
+GLFWwindow* GLFWHandler::getWindow() const
+{
+    return window.get();
+}
+
 
 void GLFWHandler::scrollCallback(GLFWwindow *window, const double xOffset, const double yOffset) {
     if (inputDebugMode & InputDebugMode::MouseScroll)
@@ -88,8 +97,8 @@ void GLFWHandler::scrollCallback(GLFWwindow *window, const double xOffset, const
 
 void GLFWHandler::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
-    WindowHandler::width = width;
-    WindowHandler::height = height;
+    this->width = width;
+    this->height = height;
     aspectRatio = static_cast<float>(width) / static_cast<float>(height);
 }
 

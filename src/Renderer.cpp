@@ -11,13 +11,13 @@
 #include "headers/Scene.hpp"
 #include "headers/Shader.hpp"
 #include "headers/ShaderProgram.hpp"
-#include "headers/WindowHandler.hpp"
 #include "headers/GLFWInput.hpp"
+#include "headers/GLFWHandler.hpp"
 
 
-Renderer::Renderer(WindowHandler& windowHandler)
+Renderer::Renderer(GLFWHandler& glfwHandler)
     :
-    windowHandler(windowHandler)
+    glfwHandler(glfwHandler)
 {}
 
 Renderer::~Renderer() {
@@ -95,7 +95,7 @@ void Renderer::drawScene() {
 
 void Renderer::viewProjection() {
     shaderPrograms[activeShaderProgram]->setMat4("projection",
-                                                 glm::perspective(glm::radians(90.0f),windowHandler.getAspectRatio(),0.01f,100.0f));
+                                                 glm::perspective(glm::radians(90.0f), glfwHandler.getAspectRatio(),0.01f,100.0f));
     shaderPrograms[activeShaderProgram]->setMat4("view",currentScene->camera->getViewMatrix());
 }
 

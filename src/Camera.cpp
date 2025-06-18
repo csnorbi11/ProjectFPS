@@ -5,8 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-#include "headers/WindowHandler.hpp"
-#include "headers/Input.hpp"
+#include "headers/GLFWInput.hpp"
 
 
 Camera::Camera()
@@ -37,35 +36,42 @@ void Camera::update(float deltaTime)
 
 	setQuaternion(glm::normalize(qYaw * qPitch));
 	calculateVectors();
+
+	printf("Camera position: %.2f, %.2f, %.2f\n", position.x, position.y, position.z);
+	printf("Camera eulers: %.2f, %.2f, %.2f\n", getEulerAngles().x, getEulerAngles().z, getEulerAngles().z);
 }
 
-void Camera::recieveInput(Input::IInput& input)
+void Camera::recieveInput(GLFWwindow* window)
 {
 	direction = glm::vec3(0.f);
-    if (input.getKeyState(Input::Key::W) == Input::Action::PRESSED) {
+    if (glfwGetKey(window,GLFW_KEY_W)==GLFW_PRESS) {
         direction += forward * 3.f;
     }
-    if (input.getKeyState(Input::Key::S) == Input::Action::PRESSED) {
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         direction -= forward * 3.f;
     }
-    if (input.getKeyState(Input::Key::A) == Input::Action::PRESSED) {
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         direction -= right * 3.f;
     }
-    if (input.getKeyState(Input::Key::D) == Input::Action::PRESSED) {
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         direction += right * 3.f;
     }
-    if (input.getKeyState(Input::Key::SPACE) == Input::Action::PRESSED) {
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         direction.y += 3.f;
     }
-    if (input.getKeyState(Input::Key::LCTRL) == Input::Action::PRESSED) {
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
         direction.y -= 1;
     }
 
-    offsetX = static_cast<float>(input.getMouseX()) - prevMousePosX;
-    offsetY = prevMousePosY - static_cast<float>(input.getMouseY());
+	double mouseX, mouseY;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
 
-    prevMousePosX = input.getMouseX();
-    prevMousePosY = input.getMouseY();
+
+    offsetX = static_cast<float>(mouseX) - prevMousePosX;
+    offsetY = prevMousePosY - static_cast<float>(mouseY);
+
+    prevMousePosX = mouseX;
+    prevMousePosY = mouseY;
 }
 
 

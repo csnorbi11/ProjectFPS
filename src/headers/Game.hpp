@@ -3,9 +3,7 @@
 #include <chrono>
 
 #include "GLFWHandler.hpp"
-#include "Input.hpp"
 #include "GLFWInput.hpp"
-#include "IPlatformFactory.hpp"
 
 struct Scene;
 class Camera;
@@ -14,25 +12,20 @@ class Renderer;
 
 class Game {
 public:
-    explicit Game(WindowType windowType);
+    explicit Game();
     ~Game();
 
     void run();
 
 private:
-    static std::unique_ptr<WindowHandler> createWindowHandler(WindowType windowType,
-        int windowWidth=1280,int windowHeight=720);
-
     void gameLoop();
     void calculateDeltaTime();
     void render() const;
 
     void input() const;
 
-	std::unique_ptr<IPlatformFactory> platformFactory;
-
-    std::unique_ptr<WindowHandler> windowHandler;
-	std::unique_ptr<Input::IInput> inputHandler;
+    std::unique_ptr<GLFWHandler> glfwHandler;
+	std::unique_ptr<GLFWInput> glfwInput;
     std::unique_ptr<Renderer> renderer;
     std::unique_ptr<Scene> scene;
 

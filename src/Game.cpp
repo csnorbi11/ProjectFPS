@@ -9,18 +9,16 @@
 #include "headers/Renderer.hpp"
 #include "headers/Scene.hpp"
 #include "headers/GLFWInput.hpp"
-#include "headers/GLFWFactory.hpp"
+#include "headers/GLFWHandler.hpp"
+#include "headers/Camera.hpp"
 
 
-Game::Game(const WindowType windowType) {
-    if (windowType == WindowType::GLFW) {
-		platformFactory = std::unique_ptr<GLFWFactory>();
-    }
+Game::Game() {
 
 
-	windowHandler = std::make_unique<WindowHandler>(platformFactory->createWindowHandler());
-	inputHandler = std::make_unique<GLFWInput>(dynamic_cast<GLFWHandler*>(windowHandler.get()));
-    renderer = std::make_unique<Renderer>(*windowHandler.get());
+    glfwHandler = std::make_unique<GLFWHandler>();
+    glfwInput = std::make_unique<GLFWInput>(glfwHandler->getWindow());
+    renderer = std::make_unique<Renderer>(*glfwHandler.get());
 
     renderer->createShaderProgram("basic",
                                   "assets/shaders/vertex.glsl",
@@ -72,39 +70,30 @@ void Game::run() {
     gameLoop();
 }
 
-std::unique_ptr<WindowHandler> Game::createWindowHandler(const WindowType windowType,
-    int windowWidth,int windowHeight) {
-    switch (windowType) {
-        case WindowType::GLFW:
-            return std::make_unique<GLFWHandler>(windowWidth,windowHeight);
-        default:
-            throw std::runtime_error("Invalid Window Type");
-    }
-}
-
 void Game::render() const {
     glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     renderer->drawScene();
 
-    windowHandler->swapBuffers();
+    
+    glfwHandler->swapBuffers();
 }
 
 void Game::input() const {
-    if (inputHandler->getKeyState(Input::Key::ESCAPE) == Input::Action::PRESSED) {
-        windowHandler->closeWindow();
+    if (glfwGetKey(glfwHandler->getWindow(),GLFW_KEY_ESCAPE)) {
+        glfwHandler->closeWindow();
     }
-    if (inputHandler->toggleKey(Input::Key::L)) {
-        windowHandler->lockCursor=!windowHandler->lockCursor;
+    if (glfwInput->toggleKey(GLFW_KEY_L)) {
+        glfwHandler->lockCursor=!glfwHandler->lockCursor;
     }
-	scene->camera->recieveInput(*inputHandler.get());
+	scene->camera->recieveInput(glfwHandler->getWindow());
 
-    windowHandler->pollEvents();
+    glfwHandler->pollEvents();
 }
 
 void Game::gameLoop() {
-    while (!windowHandler->shouldClose()) {
+    while (!glfwHandler->shouldClose()) {
         frameStart = std::chrono::high_resolution_clock::now();
         input();
 

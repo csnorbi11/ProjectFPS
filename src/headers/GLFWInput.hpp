@@ -1,31 +1,31 @@
 #ifndef INPUTHANDLER_HPP
 #define INPUTHANDLER_HPP
 
-#include "Input.hpp"
 #include <unordered_map>
 
-class GLFWInput : public Input::IInput {
+class GLFWwindow;
+
+using GLFW_KEY = uint8_t;
+using GLFW_MOUSE_BUTTON = uint8_t;
+using GLFW_ACTION = uint8_t;
+
+class GLFWInput {
 public:
 	GLFWInput(GLFWwindow* window);
 	~GLFWInput();
 
-	void update() override;
+	void update();
 
-    bool toggleKey(Input::Key key) override;
-    Input::Action getKeyState(Input::Key key) override;
-    Input::Action getMouseButtonState(uint8_t button) override;
-    double getMouseScrollY() override;
-    double getMouseX() override;
-    double getMouseY() override;
+    bool toggleKey(GLFW_KEY key);
+    GLFW_ACTION getPrevKeyState(GLFW_KEY key);
+    double getMouseScrollY();
+    double getMouseX();
+    double getMouseY();
 
     void resetMouseScroll();
 
 private:
-    /// Map of key states (pressed/released/held).
-    std::unordered_map<Input::Key, Input::Action> keys = {};
-    std::unordered_map<Input::Key, Input::Action> keysPrevStates = {};
-    /// Map of mouse button states (pressed/released/held).
-    std::unordered_map<uint8_t, Input::Action> mouseButtons = {};
+    std::unordered_map<GLFW_KEY, GLFW_ACTION> keysPrevStates = {};
     double mouseScrollY = 0.f;
     double mousePosX = 0.f, mousePosY = 0.f;
 

@@ -12,11 +12,11 @@ class Shader;
 class ShaderProgram;
 class Model;
 struct Scene;
-class WindowHandler;
+class GLFWHandler;
 
 class Renderer {
 public:
-    Renderer(WindowHandler& windowHandler);
+    Renderer(GLFWHandler& glfwHandler);
     ~Renderer();
 
 
@@ -52,7 +52,7 @@ private:
 
     bool debugMode=false;
 
-    WindowHandler& windowHandler;
+    GLFWHandler& glfwHandler;
 
 };
 

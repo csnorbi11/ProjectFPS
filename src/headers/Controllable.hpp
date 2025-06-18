@@ -1,13 +1,12 @@
 #ifndef CONTROLLABLE_HPP
 #define CONTROLLABLE_HPP
 
-#include "Input.hpp"
-
+#include <GLFW/glfw3.h>
 
 class Controllable {
 public:
 	~Controllable() = default;
-	virtual void recieveInput(Input::IInput& input) = 0;
+	virtual void recieveInput(GLFWwindow* window) = 0;
 };
 
 

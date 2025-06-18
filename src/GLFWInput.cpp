@@ -1,3 +1,5 @@
+
+#include <GLFW/glfw3.h>
 #include "headers/GLFWInput.hpp"
 
 
@@ -8,10 +10,12 @@ GLFWInput::GLFWInput(GLFWwindow* window)
 
 GLFWInput::~GLFWInput() = default;
 
-bool GLFWInput::toggleKey(Input::Key key) {
+bool GLFWInput::toggleKey(GLFW_KEY key) {
     bool state = false;
-    if (keys[key] == Input::Action::PRESSED && keys[key] != keysPrevStates[key])
+    int keyState = glfwGetKey(window, key);
+    if (state == GLFW_PRESS && state != keysPrevStates[key])
         state = true;
+	keysPrevStates[key] = keyState;
     return state;
 }
 /**
@@ -19,42 +23,19 @@ bool GLFWInput::toggleKey(Input::Key key) {
  * @param key the pressed key
  * @return key's state
  */
-Input::Action GLFWInput::getKeyState(const Input::Key key) {
-    if (keys.count(key) == 0) {
-        keys[key] = Input::Action::RELEASED;
-        keysPrevStates[key] = Input::Action::RELEASED;
+GLFW_KEY GLFWInput::getPrevKeyState(GLFW_KEY key) {
+    if (keysPrevStates.count(key) == 0) {
+        keysPrevStates[key] = GLFW_RELEASE;
     }
 
-    return keys[key];
+    return keysPrevStates[key];
 }
 void GLFWInput::update() {
     glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
-    for (auto& [key, action] : keys) {
-		keysPrevStates[key] = action;
-        switch (window, Input::mapKey(key)) {
-        case GLFW_PRESS:
-            keys[key] = Input::Action::PRESSED;
-            break;
-        case GLFW_RELEASE:
-            keys[key] = Input::Action::RELEASED;
-            break;
-        case GLFW_REPEAT:
-            keys[key] = Input::Action::HELD;
-            break;
-        default:
-            break;
-        }
-    }
     
 }
 
-Input::Action GLFWInput::getMouseButtonState(const uint8_t button) {
-    if (mouseButtons.count(button) == 0) {
-        mouseButtons[button] = Input::Action::RELEASED;
-    }
-    return mouseButtons[button];
-}
 
 double GLFWInput::getMouseScrollY() {
     return mouseScrollY;
