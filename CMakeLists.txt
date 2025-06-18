@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(GLOB SOURCES "./src/*.cpp")
 file(GLOB HEADERS "./src/headers/*.hpp")
 
-add_executable(ProjectFPS_BSP ${SOURCES} ${HEADERS})
+add_executable(ProjectFPS_BSP ${SOURCES} ${HEADERS} "src/GLFWFactory.cpp")
 set(CMAKE_TOOLCHAIN_FILE "C:/Users/Norbi/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 
 
@@ -22,7 +22,7 @@ find_package(assimp REQUIRED)
 
 
 include_directories(glad PUBLIC "C:/Users/Norbi/vcpkg/vcpkg/installed/x64-windows/include")
-add_library(glad STATIC "src/glad.c")
+add_library(glad STATIC "src/glad.c" "src/GLFWFactory.cpp")
 target_link_libraries(ProjectFPS_BSP PRIVATE glfw glad assimp::assimp)
 
 

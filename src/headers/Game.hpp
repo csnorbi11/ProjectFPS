@@ -5,6 +5,7 @@
 #include "GLFWHandler.hpp"
 #include "Input.hpp"
 #include "GLFWInput.hpp"
+#include "IPlatformFactory.hpp"
 
 struct Scene;
 class Camera;
@@ -27,6 +28,8 @@ private:
     void render() const;
 
     void input() const;
+
+	std::unique_ptr<IPlatformFactory> platformFactory;
 
     std::unique_ptr<WindowHandler> windowHandler;
 	std::unique_ptr<Input::IInput> inputHandler;

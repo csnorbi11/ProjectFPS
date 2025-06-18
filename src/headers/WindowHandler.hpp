@@ -47,8 +47,6 @@ public:
      */
     virtual void closeWindow() = 0;
 
-
-
     float getAspectRatio();
 
     bool lockCursor=false;

@@ -17,7 +17,6 @@ public:
     double getMouseScrollY() override;
     double getMouseX() override;
     double getMouseY() override;
-    
 
     void resetMouseScroll();
 

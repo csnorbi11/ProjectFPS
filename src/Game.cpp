@@ -9,10 +9,17 @@
 #include "headers/Renderer.hpp"
 #include "headers/Scene.hpp"
 #include "headers/GLFWInput.hpp"
+#include "headers/GLFWFactory.hpp"
 
 
 Game::Game(const WindowType windowType) {
-    windowHandler = createWindowHandler(windowType);
+    if (windowType == WindowType::GLFW) {
+		platformFactory = std::unique_ptr<GLFWFactory>();
+    }
+
+
+	windowHandler = std::make_unique<WindowHandler>(platformFactory->createWindowHandler());
+	inputHandler = std::make_unique<GLFWInput>(dynamic_cast<GLFWHandler*>(windowHandler.get()));
     renderer = std::make_unique<Renderer>(*windowHandler.get());
 
     renderer->createShaderProgram("basic",
