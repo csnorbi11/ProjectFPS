@@ -13,7 +13,7 @@ GLFWInput::~GLFWInput() = default;
 bool GLFWInput::toggleKey(GLFW_KEY key) {
     bool state = false;
     int keyState = glfwGetKey(window, key);
-    if (state == GLFW_PRESS && state != keysPrevStates[key])
+    if (keyState == GLFW_PRESS && keyState != keysPrevStates[key])
         state = true;
 	keysPrevStates[key] = keyState;
     return state;

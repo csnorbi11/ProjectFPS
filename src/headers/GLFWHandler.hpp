@@ -24,12 +24,6 @@ struct GLFWDestroyer {
 */
 class GLFWHandler final {
 public:
-
-    void debugKeys(int key, int scancode, int action, int mods);
-    void debugCursor(double xPos, double yPos);
-    void debugMouseButton(int button, int action, int mods);
-    void debugMouseScroll(double xOffset, double yOffset);
-
     GLFWHandler(int width=1280, int height=720);
     ~GLFWHandler();
 
@@ -44,7 +38,7 @@ public:
     bool lockCursor = false;
 
 private:
-    void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+    void framebufferResize(int width, int height);
     void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
     static std::unique_ptr<GLFWwindow, GLFWDestroyer> window;
