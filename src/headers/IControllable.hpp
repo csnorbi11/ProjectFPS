@@ -3,9 +3,9 @@
 
 #include <GLFW/glfw3.h>
 
-class Controllable {
+class IControllable {
 public:
-	~Controllable() = default;
+	virtual ~IControllable() = default;
 	virtual void recieveInput(GLFWwindow* window) = 0;
 };
 

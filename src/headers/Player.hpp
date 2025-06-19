@@ -1,13 +1,18 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include <memory>
+
 #include "GameObject.hpp"
-#include "Controllable.hpp"
+#include "IControllable.hpp"
+#include "ICollide.hpp"
+
 
 
 class Camera;
 
-class Player final : public GameObject, public Controllable {
+
+class Player final : public GameObject, public IControllable {
 public:
 	Player();
 	~Player() override;
@@ -18,6 +23,9 @@ public:
 
 private:
 	Camera* camera = nullptr;
+	std::unique_ptr<ICollide> collider = nullptr;
+
+	
 
 };
 

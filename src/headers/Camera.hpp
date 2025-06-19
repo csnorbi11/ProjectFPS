@@ -1,10 +1,10 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 #include "GameObject.hpp"
-#include "Controllable.hpp"
+#include "IControllable.hpp"
 
 
-class Camera final :public GameObject, public Controllable {
+class Camera final :public GameObject, public IControllable {
 public:
     Camera();
     ~Camera() override;
