@@ -37,8 +37,6 @@ void Camera::update(float deltaTime)
 	setQuaternion(glm::normalize(qYaw * qPitch));
 	calculateVectors();
 
-	printf("Camera position: %.2f, %.2f, %.2f\n", position.x, position.y, position.z);
-	printf("Camera eulers: %.2f, %.2f, %.2f\n", getEulerAngles().x, getEulerAngles().z, getEulerAngles().z);
 }
 
 void Camera::recieveInput(GLFWwindow* window)

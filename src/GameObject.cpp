@@ -1,6 +1,8 @@
 #include "headers/GameObject.hpp"
 #include "headers/ShaderProgram.hpp"
 
+GameObject::GameObject() = default;
+
 GameObject::GameObject(GameObjectParams params)
     :
         position(params.position),

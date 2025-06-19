@@ -30,7 +30,7 @@ Game::Game() {
     scene = std::make_unique<Scene>();
 
     scene->camera= std::make_unique<Camera>();
-    scene->loadedMap = std::make_unique<Map>("assets/models/TestMap.obj");
+    //scene->loadedMap = std::make_unique<Map>();
 
     scene->gameObjects.emplace_back(std::make_unique<GameObject>(GameObjectParams{"assets/models/backpack/backpack.obj"}));
     scene->gameObjects[0]->position=glm::vec3(30.f,1.f,6.f);

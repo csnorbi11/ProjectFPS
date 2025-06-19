@@ -13,6 +13,8 @@ struct GameObjectParams {
 
 class GameObject {
 public:
+
+    GameObject();
     explicit GameObject(GameObjectParams params);
 
     virtual ~GameObject()=default;

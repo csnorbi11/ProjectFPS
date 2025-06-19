@@ -145,11 +145,11 @@ void Renderer::drawGameObjects() {
 }
 void Renderer::drawMap() {
     if (currentScene->loadedMap == nullptr) return;
-    if (activeShaderProgram != currentScene->loadedMap->getShaderProgName()) {
-        activeShaderProgram = currentScene->loadedMap->getShaderProgName();
-        shaderPrograms[activeShaderProgram]->use();
+    //if (activeShaderProgram != currentScene->loadedMap->getShaderProgName()) {
+    //    activeShaderProgram = currentScene->loadedMap->getShaderProgName();
+    //    shaderPrograms[activeShaderProgram]->use();
 
-    }
+    //}
     applyDirectionalLight();
     applyPointLights();
     viewProjection();
@@ -159,33 +159,33 @@ void Renderer::drawMap() {
     shaderPrograms[activeShaderProgram]->setVec3("material.specular", {0.1f, 0.1f, 0.1f});
     shaderPrograms[activeShaderProgram]->setFloat("material.shininess", 32.0f);
     shaderPrograms[activeShaderProgram]->setVec3("viewPos", currentScene->camera->position);
-    for (const auto &mesh : currentScene->loadedMap->getMeshes()) {
-        shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
-        // bind appropriate textures
-        uint32_t diffuseNr  = 1;
-        uint32_t specularNr = 1;
-        uint32_t normalNr   = 1;
-        uint32_t heightNr   = 1;
-        for (int i=0;i<mesh->getTextures().size();i++) {
-            glActiveTexture(GL_TEXTURE0 + i);
-            std::string number;
-            std::string name = mesh->getTextures()[i].type;
-            if(name == "texture_diffuse")
-                number = std::to_string(diffuseNr++);
-            else if(name == "texture_specular")
-                number = std::to_string(specularNr++); // transfer unsigned int to string
-            else if(name == "texture_normal")
-                number = std::to_string(normalNr++); // transfer unsigned int to string
-            else if(name == "texture_height")
-                number = std::to_string(heightNr++);
-            shaderPrograms[activeShaderProgram]->setInt(name + number,i);
-            glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
-        }
-        mesh->bindVAO();
-        glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-        mesh->unbindVAO();
-        glActiveTexture(GL_TEXTURE0);
-    }
+    //for (const auto &mesh : currentScene->loadedMap->getMeshes()) {
+    //    shaderPrograms[activeShaderProgram]->setBool("hasTexture",!(mesh->getTextures().empty()));
+    //    // bind appropriate textures
+    //    uint32_t diffuseNr  = 1;
+    //    uint32_t specularNr = 1;
+    //    uint32_t normalNr   = 1;
+    //    uint32_t heightNr   = 1;
+    //    for (int i=0;i<mesh->getTextures().size();i++) {
+    //        glActiveTexture(GL_TEXTURE0 + i);
+    //        std::string number;
+    //        std::string name = mesh->getTextures()[i].type;
+    //        if(name == "texture_diffuse")
+    //            number = std::to_string(diffuseNr++);
+    //        else if(name == "texture_specular")
+    //            number = std::to_string(specularNr++); // transfer unsigned int to string
+    //        else if(name == "texture_normal")
+    //            number = std::to_string(normalNr++); // transfer unsigned int to string
+    //        else if(name == "texture_height")
+    //            number = std::to_string(heightNr++);
+    //        shaderPrograms[activeShaderProgram]->setInt(name + number,i);
+    //        glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
+    //    }
+    //    mesh->bindVAO();
+    //    glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
+    //    mesh->unbindVAO();
+    //    glActiveTexture(GL_TEXTURE0);
+    //}
 }
 
 void Renderer::update() {

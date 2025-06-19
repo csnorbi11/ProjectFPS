@@ -1,12 +1,20 @@
 #ifndef MAP_HPP
 #define MAP_HPP
-#include "Model.hpp"
 
+#include <vector>
+#include <memory>
 
-class Map : public Model {
+#include "BSPTree.hpp"
+#include "StaticObject.hpp"
+
+class Map {
 public:
-    Map(std::string path);
+    Map();
     ~Map();
+
+private:
+    std::vector<StaticObject> objects;
+	std::unique_ptr<BSPTree> bspTree;
 };
 
 #endif //MAP_HPP
