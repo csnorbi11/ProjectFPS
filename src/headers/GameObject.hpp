@@ -17,7 +17,7 @@ public:
     GameObject();
     explicit GameObject(GameObjectParams params);
 
-    virtual ~GameObject()=default;
+    virtual ~GameObject();
 
     virtual void update(float deltaTime);
 
@@ -36,15 +36,15 @@ public:
 
     const std::string& getModelPath() const;
 
-    glm::vec3 position={};
+    glm::vec3 position = { 0,0,0 };
     glm::quat orientation = {};
 
 protected:
-    glm::vec3 direction;
+    glm::vec3 direction = { 0,0,1 };
 
-    glm::vec3 forward;
-    glm::vec3 right;
-    glm::vec3 up;
+    glm::vec3 forward = { 0,0,1 };
+    glm::vec3 right = { 1,0,0 };
+    glm::vec3 up = { 0,1,0 };
 
     std::string model{};
 

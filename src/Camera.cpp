@@ -8,11 +8,7 @@
 #include "headers/GLFWInput.hpp"
 
 
-Camera::Camera()
-    :
-    GameObject({})
-{
-}
+Camera::Camera() = default;
 
 Camera::~Camera()=default;
 

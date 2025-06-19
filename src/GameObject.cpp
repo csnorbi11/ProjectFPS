@@ -15,6 +15,8 @@ GameObject::GameObject(GameObjectParams params)
 {}
 
 
+GameObject::~GameObject() = default;
+
 void GameObject::update(float deltaTime) {
 
 }
