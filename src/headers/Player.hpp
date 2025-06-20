@@ -23,7 +23,6 @@ public:
 
 private:
 	Camera* camera = nullptr;
-	std::unique_ptr<ICollide> collider = nullptr;
 
 	
 
