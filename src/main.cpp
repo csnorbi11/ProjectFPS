@@ -1,7 +1,7 @@
-#include "headers/Game.hpp"
+#include "game/Game.hpp"
 
 int main() {
-    Game game(WindowType::GLFW);
+    Game game;
     game.run();
 
 
