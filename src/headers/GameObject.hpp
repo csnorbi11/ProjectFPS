@@ -16,10 +16,9 @@ public:
 
     GameObject();
     explicit GameObject(GameObjectParams params);
-
     virtual ~GameObject();
 
-    virtual void update(float deltaTime);
+    virtual void update(float deltaTime)=0;
 
     void rotateLocal(const glm::vec3& axis, float angle);    
     void rotateGlobal(const glm::vec3& axis, float angle);

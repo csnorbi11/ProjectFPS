@@ -5,6 +5,8 @@
 #include <memory>
 
 #include "StaticObject.hpp"
+#include "PointLight.hpp"
+#include "DirectionalLight.hpp"
 
 class Map {
 public:
@@ -12,7 +14,10 @@ public:
     ~Map();
 
 private:
-    std::vector<StaticObject> objects;
+    std::vector<std::unique_ptr<StaticObject>> objects;
+	std::vector<std::unique_ptr<PointLight>> pointLights;
+	std::unique_ptr<DirectionalLight> directionalLight;
+    
 };
 
 #endif //MAP_HPP

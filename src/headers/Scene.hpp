@@ -3,18 +3,20 @@
 #include <memory>
 #include <vector>
 
-class PointLight;
-class DirectionalLight;
-class GameObject;
-class Camera;
-class Map;
+#include "Map.hpp"
+#include "Player.hpp"
+#include "Camera.hpp"
+#include "Light.hpp"
+#include "Enemy.hpp"
+#include "DynamicObject.hpp"
 
 struct Scene {
-    std::vector<std::unique_ptr<GameObject>> gameObjects{};
+    Map map;
+	std::vector<std::unique_ptr<Light>> dynamicLights;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::unique_ptr<Player> player;
     std::unique_ptr<Camera> camera;
-    std::unique_ptr<Map> loadedMap;
-    std::unique_ptr<DirectionalLight> directionalLight;
-    std::vector<std::unique_ptr<PointLight>> pointLights{};
+	std::vector<std::unique_ptr<DynamicObject>> dynamicObjects;
 
     void update(double deltaTime);
 };

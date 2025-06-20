@@ -1,5 +1,6 @@
 #ifndef POINTLIGHT_HPP
 #define POINTLIGHT_HPP
+
 #include "GameObject.hpp"
 #include "Light.hpp"
 

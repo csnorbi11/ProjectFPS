@@ -2,7 +2,7 @@
 #define LIGHT_HPP
 #include <glm/vec3.hpp>
 
-class ShaderProgram;
+#include "ShaderProgram.hpp"
 
 struct LightParams {
     glm::vec3 ambient{0.4f};
@@ -13,7 +13,7 @@ struct LightParams {
 class Light {
 public:
     explicit Light(const LightParams& params);
-    virtual ~Light()=0;
+    virtual ~Light();
 
     virtual void apply(ShaderProgram* program)=0;
 

@@ -1,10 +1,10 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
-#include "GameObject.hpp"
+#include "Character.hpp"
 
 
-class Enemy final : public GameObject {
+class Enemy final : public Character {
 public: 
 	Enemy();
 	~Enemy() override;

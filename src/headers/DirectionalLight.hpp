@@ -1,5 +1,6 @@
 #ifndef DIRECTIONALLIGHT_HPP
 #define DIRECTIONALLIGHT_HPP
+
 #include "Light.hpp"
 
 struct DirectionalLightParams {
@@ -7,7 +8,7 @@ struct DirectionalLightParams {
     float intensity=1.f;
 };
 
-class DirectionalLight : public Light {
+class DirectionalLight final : public Light {
 public:
     explicit DirectionalLight(const DirectionalLightParams& params=DirectionalLightParams(),
         const LightParams& lightParams=LightParams());

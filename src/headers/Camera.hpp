@@ -1,10 +1,13 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
-#include "GameObject.hpp"
+
+#include "DynamicObject.hpp"
 #include "IControllable.hpp"
 
+class Player;
 
-class Camera final :public GameObject, public IControllable {
+
+class Camera final :public DynamicObject, public IControllable {
 public:
     Camera();
     ~Camera() override;
@@ -15,6 +18,7 @@ public:
     glm::mat4 getViewMatrix() const;
 
 private:
+	Player* player = nullptr;
 
     float prevMousePosX=0, prevMousePosY = 0;
     float mouseSensitivity=1.f;

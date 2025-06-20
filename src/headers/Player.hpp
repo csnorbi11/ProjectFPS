@@ -3,16 +3,11 @@
 
 #include <memory>
 
-#include "GameObject.hpp"
+#include "Character.hpp"
 #include "IControllable.hpp"
-#include "ICollide.hpp"
 
 
-
-class Camera;
-
-
-class Player final : public GameObject, public IControllable {
+class Player final : public Character, public IControllable {
 public:
 	Player();
 	~Player() override;
@@ -20,11 +15,6 @@ public:
 	void update(float deltaTime) override;
 	void recieveInput(GLFWwindow* window) override;
 
-
-private:
-	Camera* camera = nullptr;
-
-	
 
 };
 
