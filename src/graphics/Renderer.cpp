@@ -60,103 +60,12 @@ void Renderer::applyPointLights() {
     }
 }
 
-void Renderer::drawEnemies()
-{
-    
-}
-
-void Renderer::drawDynamicObjects()
-{
-    for (const auto& object : activeScene->dynamicObjects) {
-        if (models.count(object->getModelPath()) == 0) {
-            loadModel(object->getModelPath(), "basic");
-        }
-
-        Model* model = models[object->getModelPath()].get();
-
-        if (activeShaderProgram != model->getShaderProgName()) {
-            activeShaderProgram = model->getShaderProgName();
-            shaderPrograms[activeShaderProgram]->use();
-            applyDirectionalLight();
-            applyPointLights();
-        }
-
-        glm::mat4 transformMatrix(1.f);
-        transformMatrix = glm::translate(glm::mat4(1.0f), object->position);
-        transformMatrix *= static_cast<glm::mat4>(object->getQuaternion());
-        shaderPrograms[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
-        shaderPrograms[activeShaderProgram]->setMat4("model", transformMatrix);
-
-        for (const auto& mesh : model->getMeshes()) {
-
-            shaderPrograms[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
-            for (int i = 0;i < mesh->getTextures().size();i++) {
-                glActiveTexture(GL_TEXTURE0 + i);
-                std::string name = mesh->getTextures()[i].type;
-                if (name == "texture_diffuse") {
-                    shaderPrograms[activeShaderProgram]->setInt("material.diffuse", i);
-                }
-                else if (name == "texture_specular") {
-                    shaderPrograms[activeShaderProgram]->setInt("material.specular", i);
-                }
-
-
-                glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
-            }
-            mesh->bindVAO();
-            glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-            mesh->unbindVAO();
-            glActiveTexture(GL_TEXTURE0);
-        }
-    }
-}
 
 void Renderer::drawMap()
 {
-	drawDynamicObjects();
-	drawEnemies();
-    for (const auto& object : activeScene->dynamicObjects) {
-        if (models.count(object->getModelPath()) == 0) {
-            loadModel(object->getModelPath(), "basic");
-        }
 
-        Model* model = models[object->getModelPath()].get();
-
-        if (activeShaderProgram != model->getShaderProgName()) {
-            activeShaderProgram = model->getShaderProgName();
-            shaderPrograms[activeShaderProgram]->use();
-            applyDirectionalLight();
-            applyPointLights();
-        }
-
-        glm::mat4 transformMatrix(1.f);
-        transformMatrix = glm::translate(glm::mat4(1.0f), object->position);
-        transformMatrix *= static_cast<glm::mat4>(object->getQuaternion());
-        shaderPrograms[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
-        shaderPrograms[activeShaderProgram]->setMat4("model", transformMatrix);
-
-        for (const auto& mesh : model->getMeshes()) {
-
-            shaderPrograms[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
-            for (int i = 0;i < mesh->getTextures().size();i++) {
-                glActiveTexture(GL_TEXTURE0 + i);
-                std::string name = mesh->getTextures()[i].type;
-                if (name == "texture_diffuse") {
-                    shaderPrograms[activeShaderProgram]->setInt("material.diffuse", i);
-                }
-                else if (name == "texture_specular") {
-                    shaderPrograms[activeShaderProgram]->setInt("material.specular", i);
-                }
-
-
-                glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
-            }
-            mesh->bindVAO();
-            glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-            mesh->unbindVAO();
-            glActiveTexture(GL_TEXTURE0);
-        }
-    }
+	drawObjects<StaticObject>(activeScene->map->getObjects());
+	drawObjects<PointLight>(activeScene->map->getPointLights());
 }
 
 //void Renderer::drawPointLights() {
@@ -190,7 +99,7 @@ void Renderer::drawMap()
 
 void Renderer::drawScene() {
     if (activeScene==nullptr) return;
-    
+	drawMap();
 }
 
 void Renderer::viewProjection() {

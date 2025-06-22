@@ -1,6 +1,8 @@
 #include "StaticObject.hpp"
 
-StaticObject::StaticObject()
+StaticObject::StaticObject(GameObjectParams goParams)
+	:
+	GameObject(goParams)
 {
 }
 

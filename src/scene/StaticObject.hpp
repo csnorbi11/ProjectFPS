@@ -9,7 +9,7 @@
 
 class StaticObject final : public GameObject {
 public:
-	StaticObject();
+	StaticObject(GameObjectParams goParams);
 	~StaticObject() override;
 
 	void update(float deltaTime) override;
