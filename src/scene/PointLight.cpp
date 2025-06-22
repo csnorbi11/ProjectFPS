@@ -25,3 +25,7 @@ void PointLight::apply(ShaderProgram *program) {
     program->setVec3("pointLights["+std::to_string(index)+"].diffuse", diffuse);
     program->setVec3("pointLights["+std::to_string(index)+"].specular", specular);
 }
+
+void PointLight::update(float deltaTime)
+{
+}

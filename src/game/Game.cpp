@@ -32,20 +32,8 @@ Game::Game() {
     scene->camera= std::make_unique<Camera>();
     scene->map = std::make_unique<Map>();
 
-    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{"assets/models/backpack/backpack.obj",glm::vec3(30.f,1.f,6.f) }));
-    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{"assets/models/backpack/backpack.obj",glm::vec3(30.f,1.f,-6.f) }));
 
-    
-
-    scene->camera->position=glm::vec3(25.0f,0.0f,0.0f);
-
-    //scene->map->addPointLight(std::make_unique<PointLight>(PointLightParams{static_cast<uint32_t>(scene->map->getPointLights().size()),
-    //    1.f,0.14,0.07}));
-
-
-    //scene->map->addPointLight(std::make_unique<PointLight>(PointLightParams{static_cast<uint32_t>(scene->map->getPointLights().size()),
-    //    1.f,0.22f,.20f}));
-
+    scene->camera->position = glm::vec3(25.0f, 0.0f, 0.0f);
 
     renderer->setActiveScene(scene.get());
 }

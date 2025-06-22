@@ -7,15 +7,26 @@ Map::Map()
 {
 	directionalLight = std::make_unique<DirectionalLight>();
 
-	//pointLights[0]->position = glm::vec3(35.0f, 4.0f, 5.0f);
-	//pointLights[0]->setOverallColor({ 0.3f,0.9f,1.f });
+	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/testMap.obj" }));
 
-	//pointLights[1]->position = glm::vec3(26.0f, 1.0f, -2.0f);
-	//pointLights[1]->setOverallColor({ 1.0f,0.3f,0.f });
-	//pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
-	//	1.f,0.22f,.20f }));
-	//pointLights[2]->position = glm::vec3(22.0f, 3.0f, -2.0f);
-	//pointLights[2]->setOverallColor({ 1.0f,0.9f,0.f });
+	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
+		1.f,0.22f,.20f }));
+	pointLights[0]->position = glm::vec3(35.0f, 4.0f, 5.0f);
+	pointLights[0]->setOverallColor({ 0.3f,0.9f,1.f });
+
+	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
+		1.f,0.22f,.20f }));
+	pointLights[1]->position = glm::vec3(26.0f, 1.0f, -2.0f);
+	pointLights[1]->setOverallColor({ 1.0f,0.3f,0.f });
+	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
+		1.f,0.22f,.20f }));
+	pointLights[2]->position = glm::vec3(22.0f, 3.0f, -2.0f);
+	pointLights[2]->setOverallColor({ 1.0f,0.9f,0.f });
+
+	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/backpack/backpack.obj",glm::vec3(30.f,1.f,6.f) }));
+	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/backpack/backpack.obj",glm::vec3(30.f,1.f,-6.f) }));
+
+	
 }
 
 void Map::addObject(std::unique_ptr<StaticObject> object)

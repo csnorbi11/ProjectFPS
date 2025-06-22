@@ -20,6 +20,7 @@ public:
     ~PointLight() override;
 
     void apply(ShaderProgram* program) override;
+    void update(float deltaTime) override;
 
 private:
     float constant;
@@ -27,6 +28,7 @@ private:
     float quadratic;
 
     uint32_t index;
+    
 };
 
 
