@@ -6,6 +6,10 @@
 Map::Map()
 {
 	directionalLight = std::make_unique<DirectionalLight>();
+	directionalLight->setIntensity(0.5f);
+	directionalLight->setAmbient({ 1.f,1.f,1.f });
+	directionalLight->setDiffuse({ 1.f,1.f,1.f });
+	directionalLight->setSpecular({ 1.f,1.f,1.f });
 
 	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/testMap.obj" }));
 

@@ -4,7 +4,7 @@
 #include "Light.hpp"
 
 struct DirectionalLightParams {
-    glm::vec3 direction=glm::vec3(1.f,1.f,1.f);
+    glm::vec3 direction=glm::vec3(0.f,-1.f,0.f);
     float intensity=0.5f;
 };
 

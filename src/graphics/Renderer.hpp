@@ -51,6 +51,10 @@ private:
         shaderPrograms[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
         shaderPrograms[activeShaderProgram]->setMat4("model", transformMatrix);
         viewProjection();
+        shaderPrograms[activeShaderProgram]->setVec3("material.ambient", { 1.0f, 0.5f, 0.31f });
+        shaderPrograms[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
+        shaderPrograms[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
+        shaderPrograms[activeShaderProgram]->setFloat("material.shininess", 32.0f);
         Model* model = models[object->getModelPath()].get();
         for (const auto& mesh : model->getMeshes()) {
 

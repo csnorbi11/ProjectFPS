@@ -11,7 +11,7 @@
 struct Vertex {
     glm::vec3 position;
     glm::vec3 normal;
-    glm::vec3 ambient,diffuse,specular;
+    glm::vec3 ambient = { 1,1,1 }, diffuse = { 1,1,1 }, specular = { 1,1,1 };
     glm::vec2 texCoords;
     
     bool operator==(const Vertex& other) const {
