@@ -12,7 +12,13 @@ file(GLOB_RECURSE HEADERS "src/*.hpp")
 add_executable(ProjectFPS_BSP ${SOURCES} ${HEADERS})
 set(CMAKE_TOOLCHAIN_FILE "C:/Users/Norbi/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 
-
+if (WIN32)
+    set(CMAKE_C_COMPILER clang-cl)
+    set(CMAKE_CXX_COMPILER clang-cl)
+else()
+    set(CMAKE_C_COMPILER clang)
+    set(CMAKE_CXX_COMPILER clang++)
+endif()
 
 find_package(glfw3 REQUIRED)
 find_package(glad CONFIG REQUIRED)
