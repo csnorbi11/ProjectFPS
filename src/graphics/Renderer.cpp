@@ -60,6 +60,24 @@ void Renderer::applyPointLights() {
     }
 }
 
+template<>
+void Renderer::drawObjects<PointLight>(std::vector<std::unique_ptr<PointLight>>& objects) {
+    for (const auto& object : objects) {
+
+
+
+        if (!isModelLoaded(object->getModelPath())) {
+            loadModel(object->getModelPath(), "pointLight");
+
+        }
+        if (!isShaderProgramActive("pointLight")) {
+            activeShaderProgram = "pointLight";
+            shaderPrograms[activeShaderProgram]->use();
+        }
+        shaderPrograms[activeShaderProgram]->setVec3("color", object->getDiffuse());
+        drawObject<PointLight>(object.get());
+    }
+}
 
 void Renderer::drawMap()
 {
@@ -100,6 +118,16 @@ void Renderer::drawMap()
 void Renderer::drawScene() {
     if (activeScene==nullptr) return;
 	drawMap();
+}
+
+bool Renderer::isModelLoaded(const std::string& path) const
+{
+    return models.count(path) > 0;
+}
+
+bool Renderer::isShaderProgramActive(const std::string& programName) const
+{
+    return activeShaderProgram==programName;
 }
 
 void Renderer::viewProjection() {

@@ -5,7 +5,7 @@
 #include "../src/graphics/ShaderProgram.hpp"
 
 struct LightParams {
-    glm::vec3 ambient{0.4f};
+    glm::vec3 ambient{1.f};
     glm::vec3 diffuse{1.f};
     glm::vec3 specular{1.f};
 };

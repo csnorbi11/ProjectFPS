@@ -33,24 +33,17 @@ public:
 
 private:
 
+    bool isModelLoaded(const std::string& path) const;
+    bool isShaderProgramActive(const std::string& programName) const;
+
     void viewProjection();
     void applyDirectionalLight();
     void applyPointLights();
 
     template<typename T>
     void drawObject(T* object) {
-        if (models.count(object->getModelPath()) == 0) {
-            loadModel(object->getModelPath(), "basic");
-        }
 
-        Model& model = *models[object->getModelPath()].get();
 
-        if (activeShaderProgram != model.getShaderProgName()) {
-            activeShaderProgram = model.getShaderProgName();
-            shaderPrograms[activeShaderProgram]->use();
-            applyDirectionalLight();
-            applyPointLights();
-        }
 
         glm::mat4 transformMatrix(1.f);
         transformMatrix = glm::translate(glm::mat4(1.0f), object->position);
@@ -58,7 +51,8 @@ private:
         shaderPrograms[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
         shaderPrograms[activeShaderProgram]->setMat4("model", transformMatrix);
         viewProjection();
-        for (const auto& mesh : model.getMeshes()) {
+        Model* model = models[object->getModelPath()].get();
+        for (const auto& mesh : model->getMeshes()) {
 
             shaderPrograms[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
             for (int i = 0;i < mesh->getTextures().size();i++) {
@@ -83,9 +77,22 @@ private:
 	template<typename T>
     void drawObjects(std::vector<std::unique_ptr<T>>& objects) {
         for (const auto& object : objects) {
+            if (!isModelLoaded(object->getModelPath())) {
+				loadModel(object->getModelPath(), "basic");
+            }
+            if (!isShaderProgramActive("basic")) {
+                activeShaderProgram = "basic";
+                shaderPrograms[activeShaderProgram]->use();
+                applyDirectionalLight();
+                applyPointLights();
+			}
+
 			drawObject<T>(object.get());
         }
     }
+    template<>
+    void drawObjects<PointLight>(std::vector<std::unique_ptr<PointLight>>& objects);
+
 
     void drawMap();
 
