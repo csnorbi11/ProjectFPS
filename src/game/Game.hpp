@@ -2,10 +2,10 @@
 #define GAME_HPP
 #include <chrono>
 
-#include "../src/platform/GLFWHandler.hpp"
-#include "../src/platform/GLFWInput.hpp"
-#include "../src/graphics/Renderer.hpp"
-#include "../src/scene/Scene.hpp"
+#include "../platform/GLFWHandler.hpp"
+#include "../platform/GLFWInput.hpp"
+#include "../graphics/Renderer.hpp"
+#include "../scene/Scene.hpp"
 
 
 class Game {

@@ -1,6 +1,6 @@
 #include "DirectionalLight.hpp"
 
-#include "../src/graphics/ShaderProgram.hpp"
+#include "../graphics/ShaderProgram.hpp"
 
 
 DirectionalLight::DirectionalLight(const DirectionalLightParams& param,

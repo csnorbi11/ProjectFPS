@@ -2,7 +2,8 @@
 #define LIGHT_HPP
 #include <glm/vec3.hpp>
 
-#include "../src/graphics/ShaderProgram.hpp"
+#include "../graphics/ShaderProgram.hpp"
+
 
 struct LightParams {
     glm::vec3 ambient{1.f};

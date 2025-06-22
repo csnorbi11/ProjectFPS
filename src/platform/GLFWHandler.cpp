@@ -5,7 +5,7 @@
 #include <ostream>
 
 
-#include "../src/game/DebugMode.hpp"
+#include "../game/DebugMode.hpp"
 #include "../game/Game.hpp"
 #include "GLFWInput.hpp"
 

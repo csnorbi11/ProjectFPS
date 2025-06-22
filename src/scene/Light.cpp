@@ -1,6 +1,6 @@
 #include "Light.hpp"
 
-#include "../src/graphics/ShaderProgram.hpp"
+#include "../graphics/ShaderProgram.hpp"
 
 Light::Light(const LightParams& params)
     :

@@ -1,6 +1,6 @@
 #include "PointLight.hpp"
 
-#include "../src/graphics/ShaderProgram.hpp"
+#include "../graphics/ShaderProgram.hpp"
 
 PointLight::PointLight(const PointLightParams& params,
                        const LightParams& lightParams,

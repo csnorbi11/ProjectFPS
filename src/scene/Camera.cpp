@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-#include "../src/platform/GLFWInput.hpp"
+#include "../platform/GLFWInput.hpp"
 
 
 Camera::Camera() = default;

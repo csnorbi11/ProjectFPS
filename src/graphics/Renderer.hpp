@@ -6,9 +6,9 @@
 #include <glad/glad.h>
 #include <string>
 
-#include "../src/scene/Light.hpp"
-#include "../src/scene/Scene.hpp"
-#include "../src/platform/GLFWHandler.hpp"
+#include "../scene/Light.hpp"
+#include "../scene/Scene.hpp"
+#include "../platform/GLFWHandler.hpp"
 #include "Shader.hpp"
 #include "ShaderProgram.hpp"
 #include "Model.hpp"

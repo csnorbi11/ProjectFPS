@@ -2,17 +2,17 @@
 
 #include <iostream>
 
-#include "../src/scene/Camera.hpp"
-#include "../src/scene/DirectionalLight.hpp"
-#include "../src/scene/GameObject.hpp"
-#include "../src/scene/Map.hpp"
+#include "../scene/Camera.hpp"
+#include "../scene/DirectionalLight.hpp"
+#include "../scene/GameObject.hpp"
+#include "../scene/Map.hpp"
 #include "Model.hpp"
-#include "../src/scene/PointLight.hpp"
-#include "../src/scene/Scene.hpp"
+#include "../scene/PointLight.hpp"
+#include "../scene/Scene.hpp"
 #include "Shader.hpp"
 #include "ShaderProgram.hpp"
-#include "../src/platform/GLFWInput.hpp"
-#include "../src/platform/GLFWHandler.hpp"
+#include "../platform/GLFWInput.hpp"
+#include "../platform/GLFWHandler.hpp"
 
 
 Renderer::Renderer(GLFWHandler& glfwHandler)

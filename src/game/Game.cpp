@@ -3,14 +3,14 @@
 #include <iostream>
 #include <filesystem>
 
-#include "../src/scene/DirectionalLight.hpp"
-#include "../src/scene/Map.hpp"
-#include "../src/scene/PointLight.hpp"
-#include "../src/graphics/Renderer.hpp"
-#include "../src/scene/Scene.hpp"
-#include "../src/platform/GLFWInput.hpp"
-#include "../src/platform/GLFWHandler.hpp"
-#include "../src/scene/Camera.hpp"
+#include "../scene/DirectionalLight.hpp"
+#include "../scene/Map.hpp"
+#include "../scene/PointLight.hpp"
+#include "../graphics/Renderer.hpp"
+#include "../scene/Scene.hpp"
+#include "../platform/GLFWInput.hpp"
+#include "../platform/GLFWHandler.hpp"
+#include "../scene/Camera.hpp"
 
 
 Game::Game() {
