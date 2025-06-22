@@ -12,7 +12,7 @@ class DirectionalLight final : public Light {
 public:
     explicit DirectionalLight(const DirectionalLightParams& params=DirectionalLightParams(),
         const LightParams& lightParams=LightParams());
-    ~DirectionalLight() override;
+    ~DirectionalLight() override = default;;
 
     void apply(ShaderProgram* program) override;
 

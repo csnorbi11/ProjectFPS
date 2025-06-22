@@ -11,8 +11,12 @@
 
 class Map {
 public:
-    Map();
-    ~Map();
+	Map() = default;;
+	~Map() = default;;
+
+	std::vector<std::unique_ptr<StaticObject>>& getObjects();
+	std::vector<std::unique_ptr<PointLight>>& getPointLights();
+	DirectionalLight& getDirectionalLight();
 
 private:
     std::vector<std::unique_ptr<StaticObject>> objects;

@@ -11,7 +11,7 @@
 #include "DynamicObject.hpp"
 
 struct Scene {
-    Map map;
+    std::unique_ptr<Map> map;
 	std::vector<std::unique_ptr<Light>> dynamicLights;
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::unique_ptr<Player> player;

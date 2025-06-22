@@ -35,8 +35,8 @@ private:
     void applyDirectionalLight();
     void applyPointLights();
 
-    void drawPointLights();
-    void drawGameObjects();
+    void drawEnemies();
+    void drawDynamicObjects();
     void drawMap();
 
     void loadShader(const std::string &path, GLenum shaderType);
@@ -48,7 +48,7 @@ private:
 
     std::string activeShaderProgram={};
 
-    Scene* currentScene=nullptr;
+    Scene* activeScene=nullptr;
 
     bool debugMode=false;
 

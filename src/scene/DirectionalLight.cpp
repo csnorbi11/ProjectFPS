@@ -11,8 +11,6 @@ DirectionalLight::DirectionalLight(const DirectionalLightParams& param,
     intensity(param.intensity)
 {}
 
-DirectionalLight::~DirectionalLight()=default;
-
 void DirectionalLight::apply(ShaderProgram *program) {
     program->setVec3("dirLight.direction", direction);
     program->setVec3("dirLight.ambient", ambient);

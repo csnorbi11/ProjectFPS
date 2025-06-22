@@ -2,6 +2,17 @@
 
 #include "Map.hpp"
 
-Map::Map() = default;
+std::vector<std::unique_ptr<StaticObject>>& Map::getObjects()
+{
+	return objects;
+}
 
-Map::~Map()=default;
+std::vector<std::unique_ptr<PointLight>>& Map::getPointLights()
+{
+    return pointLights;
+}
+
+DirectionalLight& Map::getDirectionalLight()
+{
+	return *directionalLight;
+}
