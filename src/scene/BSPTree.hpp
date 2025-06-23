@@ -6,6 +6,7 @@
 
 #include "BSPNode.hpp"
 #include "StaticObject.hpp"
+#include "../graphics/Mesh.hpp"
 
 class BSPTree {
 public:
@@ -21,7 +22,7 @@ private:
 	void buildNode(std::unique_ptr<BSPNode>& node);
 
 	std::unique_ptr<BSPNode> root;
-	std::vector<std::unique_ptr<StaticObject>>& objects;
+	std::vector<Triangle*> triangles;
 
 	size_t currentObjIndex = 0;
 };

@@ -21,13 +21,13 @@ void BSPTree::buildNode(std::unique_ptr<BSPNode>& node)
 	if (object == nullptr) {
 		return;
 	}
-	node = std::make_unique<BSPNode>();
-	node->objects.push_back(object);
-	for (auto& obj : objects) {
-		if (obj.get() == object) {
-			continue;
-		}
+	//node = std::make_unique<BSPNode>();
+	//node->objects.push_back(object);
+	//for (auto& obj : objects) {
+	//	if (obj.get() == object) {
+	//		continue;
+	//	}
 
-	}
+	//}
 }
 

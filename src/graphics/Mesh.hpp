@@ -35,9 +35,15 @@ struct Texture {
     std::string path;
 };
 
+struct Triangle {
+	glm::vec3 vertices[3];
+    glm::vec3 normal;
+};
+
 class Mesh {
 public:
-    Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
+    Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures,
+        std::vector<Triangle> triangles);
     ~Mesh();
 
     void bindVAO() const;
@@ -53,6 +59,7 @@ private:
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     std::vector<Texture> textures;
+    std::vector<Triangle> triangles;
 
     uint32_t VAO{}, VBO{}, EBO{};
 

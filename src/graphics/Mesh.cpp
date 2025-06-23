@@ -4,11 +4,13 @@
 
 #include <glad/glad.h>
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices,
+    std::vector<Texture> textures, std::vector<Triangle> triangles)
     :
     vertices(std::move(vertices)),
     indices(std::move(indices)),
-    textures(std::move(textures))
+    textures(std::move(textures)),
+    triangles(std::move(triangles))
 {
     setupMesh();
 }

@@ -123,6 +123,7 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     std::vector<Texture> textures;
+    std::vector<Triangle> triangles;
 
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -160,8 +161,21 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     {
         aiFace face = mesh->mFaces[i];
         // retrieve all indices of the face and store them in the indices vector
-        for(unsigned int j = 0; j < face.mNumIndices; j++)
+        for (unsigned int j = 0; j < face.mNumIndices; j++) {
             indices.push_back(face.mIndices[j]);
+            if (j < face.mNumIndices - 2) {
+                glm::vec3 a, b, c;
+                a = vertices[face.mIndices[j]].position;
+                b = vertices[face.mIndices[j + 1]].position;
+                c = vertices[face.mIndices[j + 2]].position;
+                glm::vec3 ab = b - a;
+                glm::vec3 ac = c - a;
+                glm::vec3 normal = glm::normalize(glm::cross(ab, ac));
+                triangles.push_back(Triangle{ a,b,c,normal });
+            }
+
+        }
+
     }
 
     // process materials
@@ -189,7 +203,7 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
     // 2. specular maps
     std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    return new Mesh(vertices, indices, textures);
+    return new Mesh(vertices, indices, textures,triangles);
 }
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
