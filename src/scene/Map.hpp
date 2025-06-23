@@ -11,12 +11,14 @@
 
 class Map {
 public:
-	Map();
+	Map(Renderer* renderer);
 	~Map() = default;
 
 	void addObject(std::unique_ptr<StaticObject> object);
 	void addPointLight(std::unique_ptr<PointLight> pointLight);
 	void setDirectionalLight(std::unique_ptr<DirectionalLight> light);
+
+	void generateBSPTree(Renderer* renderer);
 
 	std::vector<std::unique_ptr<StaticObject>>& getObjects();
 	std::vector<std::unique_ptr<PointLight>>& getPointLights();

@@ -52,6 +52,7 @@ public:
     const std::vector<Texture> &getTextures() const;
     const std::vector<uint32_t> &getIndices() const;
     const std::vector<Vertex> &getVertices() const;
+    const std::vector<Triangle> &getTriangles() const;
 
 private:
     void setupMesh();

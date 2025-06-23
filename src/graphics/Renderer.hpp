@@ -30,10 +30,14 @@ public:
     void update();
 
     void setActiveScene(Scene* scene);
+    void loadModel(const std::string& path, const std::string& shaderProgName);
+    bool isModelLoaded(const std::string& path) const;
+
+    std::unordered_map<std::string, std::unique_ptr<Model> >& getModels();
 
 private:
 
-    bool isModelLoaded(const std::string& path) const;
+    
     bool isShaderProgramActive(const std::string& programName) const;
 
     void viewProjection();
@@ -101,7 +105,6 @@ private:
     void drawMap();
 
     void loadShader(const std::string &path, GLenum shaderType);
-    void loadModel(const std::string &path, const std::string &shaderProgName);
 
     std::unordered_map<std::string, std::unique_ptr<Shader> > shaders = {};
     std::unordered_map<std::string, std::unique_ptr<ShaderProgram> > shaderPrograms = {};
