@@ -7,13 +7,13 @@
 #include "Player.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
-#include "Enemy.hpp"
+#include "NPC.hpp"
 #include "DynamicObject.hpp"
 
 struct Scene {
     std::unique_ptr<Map> map;
 	std::vector<std::unique_ptr<Light>> dynamicLights;
-    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<NPC>> enemies;
     std::unique_ptr<Player> player;
     std::unique_ptr<Camera> camera;
 	std::vector<std::unique_ptr<DynamicObject>> dynamicObjects;

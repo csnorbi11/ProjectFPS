@@ -4,10 +4,10 @@
 #include "Character.hpp"
 
 
-class Enemy final : public Character {
+class NPC final : public Character {
 public: 
-	Enemy();
-	~Enemy() override;
+	NPC();
+	~NPC() override;
 
 	void update(float deltaTime) override;
 
