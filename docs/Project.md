@@ -1,6 +1,8 @@
 
 # ProjectFPS
 
+![ProjectFPS](docs/screenshot.png)
+
 ## Purpose
 To make a 3D First-Person Shooter game from scratch with documentations and plans to deepen my knowledge,
 what I got in the university so far, and have a fully functional game.
