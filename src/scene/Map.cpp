@@ -2,9 +2,8 @@
 #include <stdexcept>
 
 #include "Map.hpp"
-#include "../graphics/Renderer.hpp"
 
-Map::Map(Renderer* renderer)
+Map::Map()
 {
 	directionalLight = std::make_unique<DirectionalLight>();
 	directionalLight->setIntensity(0.5f);
@@ -31,12 +30,7 @@ Map::Map(Renderer* renderer)
 	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/backpack/backpack.obj",glm::vec3(30.f,1.f,6.f) }));
 	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/backpack/backpack.obj",glm::vec3(30.f,1.f,-6.f) }));
 
-	for (auto& object : objects) {
-		std::string modelPath = object->getModelPath();
-		if(!renderer->isModelLoaded(modelPath))
-			renderer->loadModel(modelPath, "basic");
-	}
-	bspTree = std::make_unique<BSPTree>(objects, renderer);
+
 }
 
 void Map::addObject(std::unique_ptr<StaticObject> object)
@@ -67,11 +61,6 @@ void Map::setDirectionalLight(std::unique_ptr<DirectionalLight> light)
 	else {
 		throw std::runtime_error("Cannot add a null object to the map.");
 	}
-}
-
-void Map::generateBSPTree(Renderer* renderer)
-{
-	bspTree = std::make_unique<BSPTree>(objects, renderer);
 }
 
 std::vector<std::unique_ptr<StaticObject>>& Map::getObjects()

@@ -30,7 +30,7 @@ Game::Game() {
     scene = std::make_unique<Scene>();
 
     scene->camera= std::make_unique<Camera>();
-    scene->map = std::make_unique<Map>(renderer.get());
+    scene->map = std::make_unique<Map>();
 
 
     scene->camera->position = glm::vec3(25.0f, 0.0f, 0.0f);
