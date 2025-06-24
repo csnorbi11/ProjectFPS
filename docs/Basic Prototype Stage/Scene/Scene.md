@@ -2,4 +2,4 @@
 
 ## Classes
 
-![High level class diagram](worldStructure-High-level class diagram.drawio.png)
+![High level class diagram](worldStructure-High-level.class.diagram.drawio.png)
