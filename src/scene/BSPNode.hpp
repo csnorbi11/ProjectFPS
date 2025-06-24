@@ -7,6 +7,9 @@
 #include "../graphics/Mesh.hpp"
 
 struct BSPNode {
+	BSPNode();
+	~BSPNode()=default;
+
 	glm::vec3 planePoint;
 	glm::vec3 planeNormal;
 	std::vector<Triangle*> triangles;
