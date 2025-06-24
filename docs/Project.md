@@ -1,5 +1,5 @@
 
-# ProjectFPS_BSP
+# ProjectFPS
 
 ## Purpose
 To make a 3D First-Person Shooter game from scratch with documentations and plans to deepen my knowledge,
@@ -14,7 +14,7 @@ I'm going to use some libraries and APIs, especially for graphics.
 For diagrams, I'm going to use [draw.io](https://draw.io)
 
 ## Concept
-The project concept is to make a Quake-ish game with Binary Space Partitioning.
+The project concept is to make a Quake-ish game with own implemented collision detection and physics engine.
 The player's goal is to destroy every enemy, get the key and get to the end of the map.
 <br>On the maps there's going to be pickup able health packs, ammunition, extra weapons, and the key to the exit.
 ### There will be two types of enemies: 
@@ -34,10 +34,11 @@ Goal is to make a simple "Game" where you can walk around and load different map
 - [X] FPS camera
 - [X] Input system
 - [X] 3D Graphics
-- [ ] Basic Lighting
+- [X] Basic Lighting
+- [X] Scene
 - [ ] Player controller
-- [ ] Collision with static geometry (BSP)
-- [ ] Load basic level (Wavefront OBJ)
+- [ ] Collision with static geometry (BVH)
+- [X] Load basic level (Wavefront OBJ)
 - [ ] Basic physics
 - [ ] Debug overlay
 
