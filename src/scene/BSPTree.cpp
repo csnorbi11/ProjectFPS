@@ -28,21 +28,21 @@ void BSPTree::buildTree()
 			tri.vertices[1].x, tri.vertices[1].y, tri.vertices[1].z,
 			tri.vertices[2].x, tri.vertices[2].y, tri.vertices[2].z);
 	}
+
+
 }
 
 void BSPTree::buildNode(std::unique_ptr<BSPNode>& node)
 {
-	//StaticObject* object = objects[currentObjIndex].get();
-	//if (object == nullptr) {
-	//	return;
-	//}
-	//node = std::make_unique<BSPNode>();
-	//node->objects.push_back(object);
-	//for (auto& obj : objects) {
-	//	if (obj.get() == object) {
-	//		continue;
-	//	}
+	if (currentObjIndex >= triangles.size()) {
+		return;
+	}
+	node = std::make_unique<BSPNode>();
+	node->planePoint = triangles[currentObjIndex].vertices[0];
+	node->planeNormal = triangles[currentObjIndex].normal;
+	triangles.push_back(triangles[currentObjIndex++]);
+	//for()
 
-	//}
+
 }
 

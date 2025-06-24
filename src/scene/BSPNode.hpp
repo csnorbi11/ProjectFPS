@@ -4,12 +4,12 @@
 #include <memory>
 #include <vector>
 
-#include "StaticObject.hpp"
+#include "../graphics/Mesh.hpp"
 
 struct BSPNode {
 	glm::vec3 planePoint;
 	glm::vec3 planeNormal;
-	std::vector<StaticObject*>& objects;
+	std::vector<Triangle*> triangles;
 
   std::unique_ptr<BSPNode> front, back;
 };
