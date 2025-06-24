@@ -9,35 +9,20 @@
 #include "../scene/Light.hpp"
 #include "../scene/Scene.hpp"
 #include "../platform/GLFWHandler.hpp"
-#include "Shader.hpp"
-#include "ShaderProgram.hpp"
-#include "Model.hpp"
+#include "../game/AssetManager.hpp"
 
 
 class Renderer {
 public:
-    Renderer(GLFWHandler& glfwHandler);
+    Renderer(GLFWHandler& glfwHandler, AssetManager& assetManager);
     ~Renderer();
 
 
-    void createShaderProgram(const std::string &name,
-                             const std::string &vertexShader, const std::string &fragmentShader);
-
     void drawScene();
-
-    
-
     void update();
 
     void setActiveScene(Scene* scene);
-    void loadModel(const std::string& path, const std::string& shaderProgName);
-    bool isModelLoaded(const std::string& path) const;
-
-    std::unordered_map<std::string, std::unique_ptr<Model> >& getModels();
-
 private:
-
-    
     bool isShaderProgramActive(const std::string& programName) const;
 
     void viewProjection();
@@ -52,25 +37,25 @@ private:
         glm::mat4 transformMatrix(1.f);
         transformMatrix = glm::translate(glm::mat4(1.0f), object->position);
         transformMatrix *= static_cast<glm::mat4>(object->getQuaternion());
-        shaderPrograms[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
-        shaderPrograms[activeShaderProgram]->setMat4("model", transformMatrix);
+        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
+        assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", transformMatrix);
         viewProjection();
-        shaderPrograms[activeShaderProgram]->setVec3("material.ambient", { 1.0f, 0.5f, 0.31f });
-        shaderPrograms[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
-        shaderPrograms[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
-        shaderPrograms[activeShaderProgram]->setFloat("material.shininess", 32.0f);
-        Model* model = models[object->getModelPath()].get();
+        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.ambient", { 1.0f, 0.5f, 0.31f });
+        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
+        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
+        assetManager.getShaderPrograms()[activeShaderProgram]->setFloat("material.shininess", 32.0f);
+        Model* model = assetManager.getModels()[object->getModelPath()].get();
         for (const auto& mesh : model->getMeshes()) {
 
-            shaderPrograms[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
+            assetManager.getShaderPrograms()[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
             for (int i = 0;i < mesh->getTextures().size();i++) {
                 glActiveTexture(GL_TEXTURE0 + i);
                 std::string name = mesh->getTextures()[i].type;
                 if (name == "texture_diffuse") {
-                    shaderPrograms[activeShaderProgram]->setInt("material.diffuse", i);
+                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.diffuse", i);
                 }
                 else if (name == "texture_specular") {
-                    shaderPrograms[activeShaderProgram]->setInt("material.specular", i);
+                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.specular", i);
                 }
 
 
@@ -85,12 +70,12 @@ private:
 	template<typename T>
     void drawObjects(std::vector<std::unique_ptr<T>>& objects) {
         for (const auto& object : objects) {
-            if (!isModelLoaded(object->getModelPath())) {
-				loadModel(object->getModelPath(), "basic");
-            }
+			if (!assetManager.isModelLoaded(object->getModelPath())) {
+				assetManager.loadModel(object->getModelPath(), activeShaderProgram);
+			}
             if (!isShaderProgramActive("basic")) {
                 activeShaderProgram = "basic";
-                shaderPrograms[activeShaderProgram]->use();
+                assetManager.getShaderPrograms()[activeShaderProgram]->use();
                 applyDirectionalLight();
                 applyPointLights();
 			}
@@ -104,11 +89,6 @@ private:
 
     void drawMap();
 
-    void loadShader(const std::string &path, GLenum shaderType);
-
-    std::unordered_map<std::string, std::unique_ptr<Shader> > shaders = {};
-    std::unordered_map<std::string, std::unique_ptr<ShaderProgram> > shaderPrograms = {};
-    std::unordered_map<std::string, std::unique_ptr<Model> > models={};
 
     std::string activeShaderProgram={};
 
@@ -117,6 +97,7 @@ private:
     bool debugMode=false;
 
     GLFWHandler& glfwHandler;
+	AssetManager& assetManager;
 
 };
 

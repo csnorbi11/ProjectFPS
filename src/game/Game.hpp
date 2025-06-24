@@ -26,6 +26,7 @@ private:
 	std::unique_ptr<GLFWInput> glfwInput;
     std::unique_ptr<Renderer> renderer;
     std::unique_ptr<Scene> scene;
+    std::unique_ptr<AssetManager> assetManager;
 
 
     std::chrono::steady_clock::time_point frameStart={};

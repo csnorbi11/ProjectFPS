@@ -11,6 +11,7 @@
 #include "../platform/GLFWInput.hpp"
 #include "../platform/GLFWHandler.hpp"
 #include "../scene/Camera.hpp"
+#include "AssetManager.hpp"
 
 
 Game::Game() {
@@ -18,12 +19,13 @@ Game::Game() {
 
     glfwHandler = std::make_unique<GLFWHandler>();
     glfwInput = std::make_unique<GLFWInput>(glfwHandler->getWindow());
-    renderer = std::make_unique<Renderer>(*glfwHandler.get());
+	assetManager = std::make_unique<AssetManager>();
+    renderer = std::make_unique<Renderer>(*glfwHandler.get(),*assetManager.get());
 
-    renderer->createShaderProgram("basic",
+    assetManager->createShaderProgram("basic",
                                   "assets/shaders/vertex.glsl",
                                   "assets/shaders/fragment.glsl");
-    renderer->createShaderProgram("pointLight",
+    assetManager->createShaderProgram("pointLight",
                                     "assets/shaders/pointLightVertex.glsl",
                                     "assets/shaders/pointLightFragment.glsl");
 
