@@ -11,7 +11,7 @@ Map::Map()
 	directionalLight->setDiffuse({ 1.f,1.f,1.f });
 	directionalLight->setSpecular({ 1.f,1.f,1.f });
 
-	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/testMap.obj" }));
+	addObject(std::make_unique<StaticObject>(GameObjectParams{ "assets/models/TestMap.obj" }));
 
 	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
 		1.f,0.22f,.20f }));

@@ -4,32 +4,26 @@ project(ProjectFPS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 file(GLOB_RECURSE HEADERS "src/*.hpp")
 
-add_executable(ProjectFPS ${SOURCES} ${HEADERS})
-set(CMAKE_TOOLCHAIN_FILE "C:/Users/Norbi/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+source_group(TREE ${CMAKE_SOURCE_DIR}/src FILES ${SOURCES})
 
-if (WIN32)
-    set(CMAKE_C_COMPILER clang-cl)
-    set(CMAKE_CXX_COMPILER clang-cl)
-else()
-    set(CMAKE_C_COMPILER clang)
-    set(CMAKE_CXX_COMPILER clang++)
-endif()
 
-find_package(glfw3 REQUIRED)
+add_executable(ProjectFPS ${SOURCES})
+target_include_directories(ProjectFPS PRIVATE 
+	${CMAKE_SOURCE_DIR}/lib/include ${CMAKE_SOURCE_DIR}/src)
+
+#add_library(glad "${CMAKE_SOURCE_DIR}/lib/src/glad.c")
+#target_include_directories(glad PUBLIC ${CMAKE_SOURCE_DIR}/lib/include)
+
+
+find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(assimp REQUIRED)
+target_link_libraries(ProjectFPS PRIVATE glfw glad::glad assimp::assimp)
 
-
-
-include_directories(glad PUBLIC "C:/Users/Norbi/vcpkg/vcpkg/installed/x64-windows/include")
-add_library(glad STATIC "src/glad.c")
-target_link_libraries(ProjectFPS PRIVATE glfw glad assimp::assimp)
 
 
 set(SHADERS_DIR ${CMAKE_SOURCE_DIR}/assets/shaders)
