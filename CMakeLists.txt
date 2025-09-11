@@ -12,17 +12,16 @@ source_group(TREE ${CMAKE_SOURCE_DIR}/src FILES ${SOURCES})
 
 add_executable(ProjectFPS ${SOURCES})
 target_include_directories(ProjectFPS PRIVATE 
-	${CMAKE_SOURCE_DIR}/lib/include ${CMAKE_SOURCE_DIR}/src)
+	${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
-#add_library(glad "${CMAKE_SOURCE_DIR}/lib/src/glad.c")
-#target_include_directories(glad PUBLIC ${CMAKE_SOURCE_DIR}/lib/include)
+add_library(glad "${CMAKE_SOURCE_DIR}/lib/src/glad.c")
+target_include_directories(glad PUBLIC ${CMAKE_SOURCE_DIR}/lib/include)
 
 
 find_package(glfw3 CONFIG REQUIRED)
-find_package(glad CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(assimp REQUIRED)
-target_link_libraries(ProjectFPS PRIVATE glfw glad::glad assimp::assimp)
+target_link_libraries(ProjectFPS PRIVATE glfw glad assimp::assimp)
 
 
 
