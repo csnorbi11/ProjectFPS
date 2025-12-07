@@ -37,9 +37,8 @@ private:
         glm::mat4 transformMatrix(1.f);
         transformMatrix = glm::translate(glm::mat4(1.0f), object->position);
         transformMatrix *= static_cast<glm::mat4>(object->getQuaternion());
-        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
         assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", transformMatrix);
-        viewProjection();
+
         assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.ambient", { 1.0f, 0.5f, 0.31f });
         assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
         assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
@@ -65,23 +64,30 @@ private:
             }
             mesh->bindVAO();
             glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-            mesh->unbindVAO();
-            glActiveTexture(GL_TEXTURE0);
+
         }
     }
 	template<typename T>
     void drawObjects(std::vector<std::unique_ptr<T>>& objects) {
+        if (!isShaderProgramActive("basic")) {
+            activeShaderProgram = "basic";
+            assetManager.getShaderPrograms()[activeShaderProgram]->use();
+
+        }
+
+        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
+        viewProjection();
+
         for (const auto& object : objects) {
 
-            if (!isShaderProgramActive("basic")) {
-                activeShaderProgram = "basic";
-                assetManager.getShaderPrograms()[activeShaderProgram]->use();
-                applyDirectionalLight();
-                applyPointLights();
-			}
 
+            applyDirectionalLight();
+            applyPointLights();
 			drawObject<T>(object.get());
         }
+
+        glBindVertexArray(0);
+        glActiveTexture(GL_TEXTURE0);
     }
     template<>
     void drawObjects<PointLight>(std::vector<std::unique_ptr<PointLight>>& objects);
