@@ -15,21 +15,17 @@ public:
 	AssetManager() = default;
 	~AssetManager() = default;
 
-
 	void loadModel(const std::string& path, const std::string& shaderProgName);
+	bool isModelLoaded(const std::string& path) const;
+	
 	void createShaderProgram(const std::string& name,
 		const std::string& vertexShader, const std::string& fragmentShader);
-
-	Model const* getModel(const std::string& path, const std::string& shaderProgName);
 
 	std::unordered_map<std::string, std::unique_ptr<Model> >& getModels();
 	std::unordered_map<std::string, std::unique_ptr<ShaderProgram> >& getShaderPrograms();
 
 private:
 	void loadShader(const std::string& path, GLenum shaderType);
-
-	
-	bool isModelLoaded(const std::string& path) const;
 
 	std::unordered_map<std::string, std::unique_ptr<Shader> > shaders = {};
 	std::unordered_map<std::string, std::unique_ptr<ShaderProgram> > shaderPrograms = {};

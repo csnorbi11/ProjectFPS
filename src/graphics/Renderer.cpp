@@ -43,16 +43,14 @@ template<>
 void Renderer::drawObjects<PointLight>(std::vector<std::unique_ptr<PointLight>>& objects) {
     for (const auto& object : objects) {
 
-        if (object->isDrawable()) {
-            if (!isShaderProgramActive("pointLight")) {
-                activeShaderProgram = "pointLight";
-                assetManager.getShaderPrograms()[activeShaderProgram]->use();
-            }
-            assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("color", object->getDiffuse());
-            drawObject<PointLight>(object.get());
+        assetManager.loadModel(object->getModelPath(), "pointLight");
+
+        if (!isShaderProgramActive("pointLight")) {
+            activeShaderProgram = "pointLight";
+            assetManager.getShaderPrograms()[activeShaderProgram]->use();
         }
-
-
+        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("color", object->getDiffuse());
+        drawObject<PointLight>(object.get());
     }
 }
 

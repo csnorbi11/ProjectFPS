@@ -65,11 +65,11 @@ Model::Model(std::string path, std::string shaderProgName)
 
 Model::~Model() = default;
 
-const std::string &Model::getShaderProgName() const {
+const std::string &Model::getShaderProgName() {
     return shaderProgName;
 }
 
-const std::vector<std::unique_ptr<Mesh>> & Model::getMeshes() const {
+std::vector<std::unique_ptr<Mesh>> & Model::getMeshes() {
     return meshes;
 }
 

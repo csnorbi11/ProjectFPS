@@ -3,10 +3,10 @@
 
 #include <glm/glm.hpp>
 #include <string>
-#include "graphics/Model.hpp"
+#include <glm/gtc/quaternion.hpp>
 
 struct GameObjectParams {
-    Model const* model=nullptr;
+    const std::string modelPath="";
     glm::vec3 position{0.f};
     glm::vec3 rotation{0.f};
 };
@@ -14,9 +14,9 @@ struct GameObjectParams {
 class GameObject {
 public:
 
-    GameObject() = default;
+    GameObject();
     explicit GameObject(GameObjectParams params);
-    virtual ~GameObject()=default;
+    virtual ~GameObject();
 
     virtual void update(float deltaTime)=0;
 
@@ -33,8 +33,7 @@ public:
 
     void setQuaternion(const glm::quat& q);
 
-    bool isDrawable() const;
-    Model const& getModel() const;
+    const std::string& getModelPath() const;
 
     glm::vec3 position = { 0,0,0 };
     glm::quat orientation = {};
@@ -46,8 +45,8 @@ protected:
     glm::vec3 right = { 1,0,0 };
     glm::vec3 up = { 0,1,0 };
 
-    Model const* model=nullptr;
-    bool drawable = false;
+    std::string model{};
+
 
 };
 
