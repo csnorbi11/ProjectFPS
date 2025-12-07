@@ -12,13 +12,15 @@
 
 struct Scene {
     std::unique_ptr<Map> map;
-	std::vector<std::unique_ptr<Light>> dynamicLights;
+	std::vector<std::unique_ptr<PointLight>> dynamicLights;
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::unique_ptr<Player> player;
     std::unique_ptr<Camera> camera;
 	std::vector<std::unique_ptr<DynamicObject>> dynamicObjects;
 
     void update(double deltaTime);
+
+    std::vector<GameObject*> getAllObjects() const;
 };
 
 #endif //SCENE_HPP
