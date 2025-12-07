@@ -38,9 +38,9 @@ Game::Game() {
     scene->map = std::make_unique<Map>();
 
 
-    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager->getModel("assets/models/TestMap.obj")}));
-    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager->getModel("assets/models/backpack/backpack.obj") ,glm::vec3(30.f,1.f,6.f) }));
-    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager->getModel("assets/models/backpack/backpack.obj"),glm::vec3(30.f,1.f,-6.f) }));
+    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager->getModel("TestMap.obj")}));
+    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager->getModel("backpack.obj") ,glm::vec3(30.f,1.f,6.f) }));
+    scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager->getModel("backpack.obj"),glm::vec3(30.f,1.f,-6.f) }));
 
     scene->camera->position = glm::vec3(25.0f, 0.0f, 0.0f);
 
