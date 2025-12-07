@@ -31,6 +31,8 @@ public:
     glm::vec3 getEulerAngles() const;
 	glm::quat getQuaternion() const;
 
+    bool drawable();
+
     void setQuaternion(const glm::quat& q);
     void setModel(Model* model);
 

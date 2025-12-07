@@ -5,11 +5,6 @@
 
 Map::Map()
 {
-	directionalLight = std::make_unique<DirectionalLight>();
-	directionalLight->setIntensity(0.5f);
-	directionalLight->setAmbient({ 1.f,1.f,1.f });
-	directionalLight->setDiffuse({ 1.f,1.f,1.f });
-	directionalLight->setSpecular({ 1.f,1.f,1.f });
 
 	
 
@@ -31,6 +26,13 @@ Map::Map()
 
 
 
+
+}
+
+Map::Map(std::unique_ptr<DirectionalLight> dirLight)
+	:
+	directionalLight(std::move(dirLight))
+{
 
 }
 

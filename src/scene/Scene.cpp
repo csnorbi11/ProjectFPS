@@ -2,19 +2,21 @@
 
 #include <iostream>
 #include <ostream>
-#include <GLFW/glfw3.h>
+#include <memory>
 #include <fstream>
 #include <sstream>
 
 #include "Camera.hpp"
 #include "GameObject.hpp"
 #include "PointLight.hpp"
+#include "DirectionalLight.hpp"
+#include "Map.hpp"
 #include <unordered_set>
 
 
 Scene::Scene(std::string mapPath, AssetManager& assetManager)
 {
-    map = std::make_unique<Map>();
+    
 
     std::stringstream buffer;
     std::ifstream file{ mapPath };
@@ -25,7 +27,7 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
     }
 
     std::string line;
-
+    std::unique_ptr<DirectionalLight> dirLight;
     std::unordered_set<std::string> modelsToLoad;
     std::string objType, modelPath;
     glm::vec3 position;
@@ -34,12 +36,24 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
         std::stringstream sline{ line };
 
         sline >> objType >> modelPath;
+        
 
-
-        if (objType == "OBJECT") {
+        if (objType == "OBJECT"|| objType == "LIGHT") {
             modelsToLoad.insert(modelPath);
+        }else if (objType == "DIRLIGHT") {
+            
+            glm::vec3 direction{ 0.f,-1.f,0.f };
+            float intensity=0.5f;
+            glm::vec3 ambient{ 1.f }, diffuse{ 1.f }, specular{ 1.f };
+            dirLight = std::make_unique<DirectionalLight>(
+                DirectionalLightParams{ direction ,intensity},
+                LightParams{ambient,diffuse,specular}
+            );
         }
     }
+
+    map = std::make_unique<Map>(std::move(dirLight));
+
     buffer.clear();
     buffer.seekg(0);
     for (const auto& modelPath : modelsToLoad) {
@@ -49,14 +63,23 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
     while (std::getline(buffer, line)) {
 
         std::stringstream sline{ line };
-        sline >> objType >> modelPath >> position.x >> position.y >> position.z;
-
+        
+        sline >> objType;
         if (objType == "OBJECT") {
+            sline >> modelPath >> position.x >> position.y >> position.z;
             map->addObject(std::make_unique<StaticObject>( GameObjectParams{assetManager.getModel(modelPath),position }));
         }
         else if(objType=="LIGHT") {
-           // map->addPointLight(std::make_unique<PointLight>());
+            float constant, linear, quadratic;
+            glm::vec3 ambient, diffuse, specular;
+            sline>> objType >> modelPath >> position.x >> position.y >> position.z;
+            map->addPointLight(std::make_unique<PointLight>(
+                PointLightParams{},
+                LightParams{},
+            GameObjectParams{ assetManager.getModel(modelPath), position }
+            ));
         }
+        
     }
 }
 
@@ -74,9 +97,10 @@ std::vector<GameObject*> Scene::getAllObjects() const
 {
 
     size_t size = map->getObjects().size() + map->getPointLights().size() +
-        dynamicLights.size() + enemies.size() + dynamicLights.size();
+        dynamicLights.size() + enemies.size() + dynamicObjects.size();
 
-    std::vector<GameObject*> objects{size};
+    std::vector<GameObject*> objects;
+    objects.reserve(size);
 
     for (auto& obj : map->getObjects()) {
         objects.push_back(obj.get());

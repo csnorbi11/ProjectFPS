@@ -45,6 +45,11 @@ const std::vector<Triangle>& Mesh::getTriangles() const
 	return triangles;
 }
 
+uint32_t Mesh::getVAO() const
+{
+    return VAO;
+}
+
 
 void Mesh::setupMesh() {
     glGenVertexArrays(1, &VAO);

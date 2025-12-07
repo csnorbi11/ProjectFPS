@@ -53,6 +53,7 @@ public:
     const std::vector<uint32_t> &getIndices() const;
     const std::vector<Vertex> &getVertices() const;
     const std::vector<Triangle> &getTriangles() const;
+    uint32_t getVAO() const;
 
 private:
     void setupMesh();

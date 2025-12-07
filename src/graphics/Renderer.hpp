@@ -29,43 +29,16 @@ private:
     void applyDirectionalLight();
     void applyPointLights();
 
+    void drawObjects(const std::vector<GameObject*>& objects);
+
     template<typename T>
     void drawObject(T* object) {
 
 
 
-        glm::mat4 transformMatrix(1.f);
-        transformMatrix = glm::translate(glm::mat4(1.0f), object->position);
-        transformMatrix *= static_cast<glm::mat4>(object->getQuaternion());
-        assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", transformMatrix);
-
-        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.ambient", { 1.0f, 0.5f, 0.31f });
-        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
-        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
-        assetManager.getShaderPrograms()[activeShaderProgram]->setFloat("material.shininess", 32.0f);
-        Model* model = object->getModel();
-        if (!model)return;
-        for (const auto& mesh : model->getMeshes()) {
 
 
-            assetManager.getShaderPrograms()[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
-            for (int i = 0;i < mesh->getTextures().size();i++) {
-                glActiveTexture(GL_TEXTURE0 + i);
-                std::string name = mesh->getTextures()[i].type;
-                if (name == "texture_diffuse") {
-                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.diffuse", i);
-                }
-                else if (name == "texture_specular") {
-                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.specular", i);
-                }
 
-
-                glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
-            }
-            mesh->bindVAO();
-            glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-
-        }
     }
 	template<typename T>
     void drawObjects(std::vector<std::unique_ptr<T>>& objects) {
@@ -75,8 +48,7 @@ private:
 
         }
 
-        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
-        viewProjection();
+
 
         for (const auto& object : objects) {
 
@@ -99,6 +71,7 @@ private:
     std::string activeShaderProgram={};
 
     Scene* activeScene=nullptr;
+    uint32_t activeVAO = 0;
 
     bool debugMode=false;
 

@@ -90,6 +90,11 @@ glm::quat GameObject::getQuaternion() const
 	return orientation;
 }
 
+bool GameObject::drawable()
+{
+	return model != nullptr;
+}
+
 void GameObject::setQuaternion(const glm::quat& q)
 {
 	orientation = q;
