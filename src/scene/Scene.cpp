@@ -30,12 +30,11 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
     std::string objType, modelPath;
     glm::vec3 position;
     while (std::getline(buffer, line)) {
-        //std::cout << line << std::endl;
 
         std::stringstream sline{ line };
-        sline >> objType >> modelPath >> position.x >> position.y >> position.z;
 
-        //std::cout << objType << "\t" << modelPath << "\t" << position.x << ":" << position.y << ":" << position.z << std::endl;
+        sline >> objType >> modelPath;
+
 
         if (objType == "OBJECT") {
             modelsToLoad.insert(modelPath);
@@ -48,18 +47,15 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
     }
 
     while (std::getline(buffer, line)) {
-        //std::cout << line << std::endl;
 
         std::stringstream sline{ line };
         sline >> objType >> modelPath >> position.x >> position.y >> position.z;
-
-        std::cout << objType << "\t" << modelPath << "\t" << position.x << ":" << position.y << ":" << position.z << std::endl;
 
         if (objType == "OBJECT") {
             map->addObject(std::make_unique<StaticObject>( GameObjectParams{assetManager.getModel(modelPath),position }));
         }
         else if(objType=="LIGHT") {
-            //map->addPointLight(std::make_unique<PointLight>())
+           // map->addPointLight(std::make_unique<PointLight>());
         }
     }
 }

@@ -4,8 +4,7 @@
 void AssetManager::loadModel(const std::string& path, const std::string& shaderProgName)
 {
 	if (models.count(path) == 0) {
-		std::string name = path.substr(path.find_last_of('/')+1);
-		std::cout <<"Loaded model: " << name << std::endl;
+		std::cout <<"Loaded model: " << path << std::endl;
 		models.emplace(path, std::make_unique<Model>(path, shaderProgName));
 	}
 	else {
@@ -16,8 +15,7 @@ void AssetManager::loadModel(const std::string& path, const std::string& shaderP
 void AssetManager::loadShader(const std::string& path, GLenum shaderType)
 {
 	if (shaders.count(path) == 0) {
-		std::string name = path.substr(path.find_last_of('/') + 1);
-		std::cout << "Shader loaded: " << name << std::endl;
+		std::cout << "Shader loaded: " << path << std::endl;
 		shaders.emplace(path, std::make_unique<Shader>(path.c_str(), shaderType));
 	}
 	else {
