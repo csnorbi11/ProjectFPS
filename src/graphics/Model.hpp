@@ -23,8 +23,8 @@ public:
     ~Model();
 
 
-    const std::string &getShaderProgName();
-    std::vector<std::unique_ptr<Mesh>> &getMeshes();
+    const std::string &getShaderProgName() const;
+    const std::vector<std::unique_ptr<Mesh>> &getMeshes() const;
 
 
 

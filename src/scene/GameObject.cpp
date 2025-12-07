@@ -1,6 +1,5 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject() = default;
 
 GameObject::GameObject(GameObjectParams params)
     :
@@ -10,11 +9,13 @@ GameObject::GameObject(GameObjectParams params)
         forward(0.f,0.f,-1.f),
         right(1.f,0.f,0.f),
         up(0.f,1.f,0.f),
-        model(params.modelPath)
-{}
+        model(params.model){
+	if (model) {
+		drawable = true;
+	}
+}
 
 
-GameObject::~GameObject() = default;
 
 void GameObject::update(float deltaTime) {
 
@@ -98,6 +99,11 @@ void GameObject::setQuaternion(const glm::quat& q)
 
 
 
-const std::string& GameObject::getModelPath() const {
-    return model;
+bool GameObject::isDrawable() const
+{
+	return drawable;
+}
+
+Model const& GameObject::getModel() const {
+    return *model;
 }
