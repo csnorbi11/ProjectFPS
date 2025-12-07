@@ -32,10 +32,10 @@ Game::Game() {
     assetManager->loadModel("assets/models/TestMap.obj", "basic");
     assetManager->loadModel("assets/models/backpack/backpack.obj", "basic");
 
-    scene = std::make_unique<Scene>();
+    //scene->map = std::make_unique<Map>();
+    scene = std::make_unique<Scene>("E:/lvl1.txt",*assetManager);
 
     scene->camera= std::make_unique<Camera>();
-    scene->map = std::make_unique<Map>();
 
 
     scene->map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager->getModel("TestMap.obj")}));

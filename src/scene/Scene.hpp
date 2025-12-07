@@ -6,11 +6,24 @@
 #include "Map.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
-#include "Light.hpp"
+#include "game/AssetManager.hpp"
 #include "Enemy.hpp"
 #include "DynamicObject.hpp"
+#include <string>
 
 struct Scene {
+
+    Scene() = default;
+    Scene(std::string mapPath, AssetManager& assetManager);
+
+    ~Scene() = default;
+
+    void update(double deltaTime);
+    void requestToLoadModels(AssetManager& assetManager, std::string modelPath);
+
+    std::vector<GameObject*> getAllObjects() const;
+
+
     std::unique_ptr<Map> map;
 	std::vector<std::unique_ptr<PointLight>> dynamicLights;
     std::vector<std::unique_ptr<Enemy>> enemies;
@@ -18,9 +31,7 @@ struct Scene {
     std::unique_ptr<Camera> camera;
 	std::vector<std::unique_ptr<DynamicObject>> dynamicObjects;
 
-    void update(double deltaTime);
 
-    std::vector<GameObject*> getAllObjects() const;
 };
 
 #endif //SCENE_HPP

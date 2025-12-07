@@ -96,6 +96,11 @@ void GameObject::setQuaternion(const glm::quat& q)
 	calculateVectors();
 }
 
+void GameObject::setModel(Model* model)
+{
+	this->model = model;
+}
+
 
 
 Model* GameObject::getModel() const {

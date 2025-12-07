@@ -32,6 +32,7 @@ public:
 	glm::quat getQuaternion() const;
 
     void setQuaternion(const glm::quat& q);
+    void setModel(Model* model);
 
     Model* getModel() const;
 

@@ -6,7 +6,7 @@ void AssetManager::loadModel(const std::string& path, const std::string& shaderP
 	if (models.count(path) == 0) {
 		std::string name = path.substr(path.find_last_of('/')+1);
 		std::cout <<"Loaded model: " << name << std::endl;
-		models.emplace(name, std::make_unique<Model>(path, shaderProgName));
+		models.emplace(path, std::make_unique<Model>(path, shaderProgName));
 	}
 	else {
 		std::cerr << "Model already loaded: " << path << std::endl;
