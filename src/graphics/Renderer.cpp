@@ -43,7 +43,6 @@ template<>
 void Renderer::drawObjects<PointLight>(std::vector<std::unique_ptr<PointLight>>& objects) {
     for (const auto& object : objects) {
 
-        assetManager.loadModel(object->getModelPath(), "pointLight");
 
         if (!isShaderProgramActive("pointLight")) {
             activeShaderProgram = "pointLight";

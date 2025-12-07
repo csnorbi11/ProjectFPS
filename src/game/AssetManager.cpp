@@ -33,6 +33,11 @@ void AssetManager::createShaderProgram(const std::string& name, const std::strin
 		*shaders[fragmentShader]));
 }
 
+Model* AssetManager::getModel(std::string model)
+{
+	return models[model].get();
+}
+
 std::unordered_map<std::string, std::unique_ptr<Model>>& AssetManager::getModels()
 {
 	return models;

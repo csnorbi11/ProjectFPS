@@ -21,6 +21,8 @@ public:
 	void createShaderProgram(const std::string& name,
 		const std::string& vertexShader, const std::string& fragmentShader);
 
+	Model* getModel(std::string model);
+
 	std::unordered_map<std::string, std::unique_ptr<Model> >& getModels();
 	std::unordered_map<std::string, std::unique_ptr<ShaderProgram> >& getShaderPrograms();
 

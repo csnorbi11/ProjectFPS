@@ -44,8 +44,10 @@ private:
         assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
         assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
         assetManager.getShaderPrograms()[activeShaderProgram]->setFloat("material.shininess", 32.0f);
-        Model* model = assetManager.getModels()[object->getModelPath()].get();
+        Model* model = object->getModel();
+        if (!model)return;
         for (const auto& mesh : model->getMeshes()) {
+
 
             assetManager.getShaderPrograms()[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
             for (int i = 0;i < mesh->getTextures().size();i++) {
@@ -70,9 +72,7 @@ private:
 	template<typename T>
     void drawObjects(std::vector<std::unique_ptr<T>>& objects) {
         for (const auto& object : objects) {
-			if (!assetManager.isModelLoaded(object->getModelPath())) {
-				assetManager.loadModel(object->getModelPath(), activeShaderProgram);
-			}
+
             if (!isShaderProgramActive("basic")) {
                 activeShaderProgram = "basic";
                 assetManager.getShaderPrograms()[activeShaderProgram]->use();

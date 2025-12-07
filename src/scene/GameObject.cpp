@@ -2,7 +2,7 @@
 
 GameObject::GameObject() = default;
 
-GameObject::GameObject(GameObjectParams params)
+GameObject::GameObject(const GameObjectParams& params)
     :
         position(params.position),
         orientation(params.rotation),
@@ -10,7 +10,7 @@ GameObject::GameObject(GameObjectParams params)
         forward(0.f,0.f,-1.f),
         right(1.f,0.f,0.f),
         up(0.f,1.f,0.f),
-        model(params.modelPath)
+        model(params.model)
 {}
 
 
@@ -98,6 +98,6 @@ void GameObject::setQuaternion(const glm::quat& q)
 
 
 
-const std::string& GameObject::getModelPath() const {
+Model* GameObject::getModel() const {
     return model;
 }
