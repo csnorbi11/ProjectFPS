@@ -31,41 +31,7 @@ private:
 
     void drawObjects(const std::vector<GameObject*>& objects);
 
-    template<typename T>
-    void drawObject(T* object) {
 
-
-
-
-
-
-    }
-	template<typename T>
-    void drawObjects(std::vector<std::unique_ptr<T>>& objects) {
-        if (!isShaderProgramActive("basic")) {
-            activeShaderProgram = "basic";
-            assetManager.getShaderPrograms()[activeShaderProgram]->use();
-
-        }
-
-
-
-        for (const auto& object : objects) {
-
-
-            applyDirectionalLight();
-            applyPointLights();
-			drawObject<T>(object.get());
-        }
-
-        glBindVertexArray(0);
-        glActiveTexture(GL_TEXTURE0);
-    }
-    template<>
-    void drawObjects<PointLight>(std::vector<std::unique_ptr<PointLight>>& objects);
-
-
-    void drawMap();
 
 
     std::string activeShaderProgram={};

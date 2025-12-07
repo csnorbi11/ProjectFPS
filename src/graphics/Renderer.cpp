@@ -96,33 +96,13 @@ void Renderer::drawObjects(const std::vector<GameObject*>& objects)
         }
     }
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-template<>
-void Renderer::drawObjects<PointLight>(std::vector<std::unique_ptr<PointLight>>& objects) {
-    for (const auto& object : objects) {
-
-
-        if (!isShaderProgramActive("pointLight")) {
-            activeShaderProgram = "pointLight";
-            assetManager.getShaderPrograms()[activeShaderProgram]->use();
-        }
-        assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("color", object->getDiffuse());
-        drawObject<PointLight>(object.get());
-    }
-}
-
-void Renderer::drawMap()
-{
-    drawObjects(activeScene->getAllObjects());
-	//drawObjects<StaticObject>(activeScene->map->getObjects());
-	//drawObjects<PointLight>(activeScene->map->getPointLights());
-}
 
 
 void Renderer::drawScene() {
-    if (activeScene==nullptr) return;
-	drawMap();
+    drawObjects(activeScene->getAllObjects());
 }
 
 bool Renderer::isShaderProgramActive(const std::string& programName) const
