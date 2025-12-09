@@ -2,14 +2,26 @@
 #define MATERIAL_HPP
 
 #include <glm/vec3.hpp>
+#include <cstdint>
 
 #include "ShaderProgram.hpp"
 
 
 struct Texture {
-    uint32_t id;
-    std::string type;
-    std::string path;
+    const uint32_t id;
+    const std::string type;
+    const std::string path;
+
+    Texture() = delete;
+    Texture(const uint32_t id, const std::string& type, const std::string& path)
+    :
+        id(id),
+        type(type),
+        path(path)
+    {}
+    ~Texture() {
+
+    }
 };
 
 struct MaterialParam {
@@ -28,13 +40,17 @@ struct MaterialTextureParam {
 class Material {
 public:
     Material() = delete;
-    Material(ShaderProgram* program, const MaterialParam& matParam,
-        const MaterialTextureParam& matTexture);
+    Material(const std::string& name, ShaderProgram* program,
+        const MaterialParam& matParam, const MaterialTextureParam& matTexture);
     ~Material();
 
     void apply() const;
 
+    const std::string& getName();
+
 private:
+    const std::string name;
+
     glm::vec3 ambient{0.1f};
     glm::vec3 diffuse{1.f};
     glm::vec3 specular{0.5f};

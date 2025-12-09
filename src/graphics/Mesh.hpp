@@ -13,8 +13,8 @@
 struct Vertex {
     glm::vec3 position;
     glm::vec3 normal;
-    glm::vec3 ambient = { 1,1,1 }, diffuse = { 1,1,1 }, specular = { 1,1,1 };
     glm::vec2 texCoords;
+    glm::vec3 tangent;
     
     bool operator==(const Vertex& other) const {
         return position == other.position && normal == other.normal && texCoords == other.texCoords;
@@ -40,14 +40,14 @@ struct Triangle {
 
 class Mesh {
 public:
-    Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures,
+    Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Material* material,
         std::vector<Triangle> triangles);
     ~Mesh();
 
     void bindVAO() const;
     void unbindVAO() const;
 
-    const std::vector<Texture> &getTextures() const;
+    Material* getMaterial() const;
     const std::vector<uint32_t> &getIndices() const;
     const std::vector<Vertex> &getVertices() const;
     const std::vector<Triangle> &getTriangles() const;
@@ -58,7 +58,7 @@ private:
 
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
-    std::vector<Texture> textures;
+    Material* material = nullptr;
     std::vector<Triangle> triangles;
 
     uint32_t VAO{}, VBO{}, EBO{};

@@ -14,6 +14,7 @@
 struct RenderCommand {
     const std::string* modelPath;
     Mesh* mesh;
+    Material* material;
     glm::mat4 transform;
 };
 

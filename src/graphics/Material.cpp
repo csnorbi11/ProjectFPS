@@ -1,7 +1,9 @@
 #include "Material.hpp"
+#include <iostream>
 
-Material::Material(ShaderProgram* program, const MaterialParam& matParam, const MaterialTextureParam& matTexture)
+Material::Material(const std::string& name, ShaderProgram* program, const MaterialParam& matParam, const MaterialTextureParam& matTexture)
 	:
+	name(name),
 	program(program),
 	ambient(matParam.ambient),
 	diffuse(matParam.diffuse),
@@ -36,6 +38,11 @@ void Material::apply() const
 
 	program->setBool("hasTexture", hasTexture);
 	if (diffuseMap) {
+		// Ahol a textúrát bindolod:
+		if (!glIsTexture(diffuseMap->id)) {
+			std::cout << "HIBA: Érvénytelen textúrát próbálunk bindolni! ID: " << diffuseMap->id << std::endl;
+		}
+		glBindTexture(GL_TEXTURE_2D, diffuseMap->id);
 		program->setInt("material.diffuse", diffuseMapID);
 	}
 	if (specularMap) {
@@ -45,4 +52,9 @@ void Material::apply() const
 		program->setInt("material.specular", normalMapID);
 	}
 
+}
+
+const std::string& Material::getName()
+{
+	return name;
 }

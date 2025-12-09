@@ -63,24 +63,10 @@ void Renderer::drawObjects()
             activeMesh = cmd.mesh;
             activeMesh->bindVAO();
 
-            assetManager.getShaderPrograms()[activeShaderProgram]->setBool("hasTexture", !(cmd.mesh->getTextures().empty()));
-            for (int i = 0;i < cmd.mesh->getTextures().size();i++) {
-                glActiveTexture(GL_TEXTURE0 + i);
-                std::string name = cmd.mesh->getTextures()[i].type;
-                if (name == "texture_diffuse") {
-                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.diffuse", i);
-                }
-                else if (name == "texture_specular") {
-                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.specular", i);
-                }
-
-
-                glBindTexture(GL_TEXTURE_2D, cmd.mesh->getTextures()[i].id);
-            }
+            cmd.material->apply();
         }
 
         assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", cmd.transform);
-
 
         glDrawElements(GL_TRIANGLES, static_cast<int>(cmd.mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
     }
@@ -99,7 +85,7 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
         if (!model)
             continue;
         for (const auto& mesh : model->getMeshes()) {
-            renderQueue.push_back({&model->getPath(), mesh.get(),object->getTransform()});
+            renderQueue.push_back({&model->getPath(), mesh.get(),mesh->getMaterial(),object->getTransform()});
         }
     }
     std::sort(renderQueue.begin(), renderQueue.end(), [](const RenderCommand& a, const RenderCommand& b) {

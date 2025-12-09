@@ -10,11 +10,11 @@ file(GLOB_RECURSE HEADERS "src/*.hpp")
 source_group(TREE ${CMAKE_SOURCE_DIR}/src FILES ${SOURCES})
 
 
-add_executable(ProjectFPS ${SOURCES} "src/graphics/Material.cpp")
+add_executable(ProjectFPS ${SOURCES})
 target_include_directories(ProjectFPS PRIVATE 
 	${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
-add_library(glad "${CMAKE_SOURCE_DIR}/lib/src/glad.c" "src/graphics/Material.cpp")
+add_library(glad "${CMAKE_SOURCE_DIR}/lib/src/glad.c")
 target_include_directories(glad PUBLIC ${CMAKE_SOURCE_DIR}/lib/include)
 
 

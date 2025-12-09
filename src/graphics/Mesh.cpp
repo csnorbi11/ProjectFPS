@@ -5,11 +5,11 @@
 #include <glad/glad.h>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices,
-    std::vector<Texture> textures, std::vector<Triangle> triangles)
+    Material* material, std::vector<Triangle> triangles)
     :
     vertices(std::move(vertices)),
     indices(std::move(indices)),
-    textures(std::move(textures)),
+    material(material),
     triangles(std::move(triangles))
 {
     setupMesh();
@@ -28,8 +28,9 @@ void Mesh::unbindVAO() const {
     glBindVertexArray(0);
 }
 
-const std::vector<Texture> & Mesh::getTextures() const {
-    return textures;
+Material* Mesh::getMaterial() const
+{
+    return material;
 }
 
 const std::vector<uint32_t> & Mesh::getIndices() const {
@@ -74,18 +75,14 @@ void Mesh::setupMesh() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
         sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, normal)));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,
-        sizeof(Vertex),reinterpret_cast<void *>(offsetof(Vertex,ambient)));
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE,
-        sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, diffuse)));
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE,
-        sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, specular)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,
+        sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, texCoords)));
     // vertex texture coords
-    glEnableVertexAttribArray(5);
-    glVertexAttribPointer(5, 2, GL_FLOAT, GL_FALSE,
-        sizeof(Vertex), reinterpret_cast<void *>(offsetof(Vertex, texCoords)));
+    glEnableVertexAttribArray(3);
+
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE,
+        sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, tangent)));
 
     glBindVertexArray(0);
 }

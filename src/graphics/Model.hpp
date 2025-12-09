@@ -12,13 +12,13 @@
 #include "Mesh.hpp"
 
 class ShaderProgram;
+class AssetManager;
 
-
-unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
+//unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
 class Model {
 public:
-    explicit Model(std::string path, std::string shaderProgName);
+    explicit Model(std::string path, AssetManager& assetManager);
 
     ~Model();
 
@@ -30,12 +30,12 @@ public:
 
 
 private:
-    void loadModel();
-    void processNode(aiNode *node, const aiScene *scene);
+    void loadModel(AssetManager& assetManager);
+    void processNode(aiNode *node, const aiScene *scene, AssetManager& assetManager);
 
-    Mesh* processMesh(aiMesh *mesh, const aiScene *scene);
-    std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type,
-                                         std::string typeName);
+    Mesh* processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& assetManager);
+    void loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type,
+                                         std::string typeName, AssetManager& assetManager);
 
     void logModelInfo() const;
 
