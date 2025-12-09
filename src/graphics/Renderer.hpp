@@ -41,8 +41,8 @@ private:
 
     std::vector<RenderCommand> renderQueue;
 
-    std::string activeShaderProgram={};
-
+    
+    ShaderProgram* activePorgram = nullptr;
     Scene* activeScene=nullptr;
     Mesh* activeMesh = nullptr;
     Material* activeMaterial = nullptr;

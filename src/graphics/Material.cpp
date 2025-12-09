@@ -60,3 +60,8 @@ const std::string& Material::getName()
 {
 	return name;
 }
+
+ShaderProgram* Material::getProgram()
+{
+	return program;
+}

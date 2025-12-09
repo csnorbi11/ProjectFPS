@@ -27,34 +27,28 @@ Renderer::~Renderer() {
 }
 
 void Renderer::applyDirectionalLight() {
-    activeScene->map->getDirectionalLight().apply(assetManager.getShaderPrograms()["basic"].get());
+    activeScene->map->getDirectionalLight().apply(activePorgram);
 }
 
 void Renderer::applyPointLights() {
-    assetManager.getShaderPrograms()["basic"].get()->setInt(
+    activePorgram->setInt(
         "activePointLights",static_cast<int>(activeScene->map->getPointLights().size()));
     for (auto& light:activeScene->map->getPointLights()) {
-        light->apply(assetManager.getShaderPrograms()["basic"].get());
+        light->apply(activePorgram);
     }
     for (auto& light : activeScene->dynamicLights) {
-        light->apply(assetManager.getShaderPrograms()["basic"].get());
+        light->apply(activePorgram);
     }
 }
 
 void Renderer::drawObjects()
 {
-    activeShaderProgram = "basic";
-    assetManager.getShaderPrograms()[activeShaderProgram]->use();
-    assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
-    viewProjection();
-    applyDirectionalLight();
-    applyPointLights();
-
-
-    assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.ambient", { 1.0f, 0.5f, 0.31f });
-    assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
-    assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
-    assetManager.getShaderPrograms()[activeShaderProgram]->setFloat("material.shininess", 32.0f);
+    if (activePorgram) {
+        viewProjection();
+        applyDirectionalLight();
+        applyPointLights();
+        activePorgram->setVec3("viewPos", activeScene->camera->position);
+    }
     for (const auto& cmd : renderQueue) {
         if (!cmd.mesh)
             continue;
@@ -63,13 +57,27 @@ void Renderer::drawObjects()
             activeMesh = cmd.mesh;
             activeMesh->bindVAO();   
         }
+
+        if (cmd.material->getProgram() != activePorgram) {
+            activePorgram = cmd.material->getProgram();
+            activePorgram->use();
+
+            viewProjection();
+            applyDirectionalLight();
+            applyPointLights();
+            activePorgram->setVec3("viewPos", activeScene->camera->position);
+            
+        }
         if (cmd.material != activeMaterial) {
             activeMaterial = cmd.material;
+
             activeMaterial->apply();
         }
 
-        assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", cmd.transform);
+        
+        
 
+        activePorgram->setMat4("model", cmd.transform);
         glDrawElements(GL_TRIANGLES, static_cast<int>(cmd.mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
     }
 
@@ -91,6 +99,10 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
         }
     }
     std::sort(renderQueue.begin(), renderQueue.end(), [](const RenderCommand& a, const RenderCommand& b) {
+        if (a.material->getProgram() != b.material->getProgram())
+            return a.material->getProgram() < b.material->getProgram();
+        if (a.material != b.material)
+            return a.material < b.material;
         return a.mesh < b.mesh;
         });
 
@@ -104,15 +116,11 @@ void Renderer::drawScene() {
     drawObjects();
 }
 
-bool Renderer::isShaderProgramActive(const std::string& programName) const
-{
-    return activeShaderProgram==programName;
-}
+
 
 void Renderer::viewProjection() {
-    assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("projection",
-                                                 glm::perspective(glm::radians(90.0f), glfwHandler.getAspectRatio(),0.01f,100.0f));
-    assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("view",activeScene->camera->getViewMatrix());
+    activePorgram->setMat4("projection", glm::perspective(glm::radians(90.0f), glfwHandler.getAspectRatio(),0.01f,100.0f));
+    activePorgram->setMat4("view",activeScene->camera->getViewMatrix());
 }
 
 void Renderer::update() {

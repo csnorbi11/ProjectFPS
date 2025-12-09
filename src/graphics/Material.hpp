@@ -25,7 +25,7 @@ struct Texture {
 };
 
 struct MaterialParam {
-    glm::vec3 ambient{ 0.1f };
+    glm::vec3 ambient{ 0.3f };
     glm::vec3 diffuse{ 1.f };
     glm::vec3 specular{ 0.5f };
     float shininess = 32.f;
@@ -47,6 +47,7 @@ public:
     void apply() const;
 
     const std::string& getName();
+    ShaderProgram* getProgram();
 
 private:
     const std::string name;
