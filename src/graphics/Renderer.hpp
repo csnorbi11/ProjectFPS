@@ -34,16 +34,16 @@ private:
     void applyDirectionalLight();
     void applyPointLights();
 
-    void drawObjects(const std::vector<GameObject*>& objects);
+    void drawObjects();
 
-    void feedRenderQueue(std::vector<GameObject*>&& gameObjects);
+    void feedRenderQueue(std::vector<GameObject*>& gameObjects);
 
     std::vector<RenderCommand> renderQueue;
 
     std::string activeShaderProgram={};
 
     Scene* activeScene=nullptr;
-    uint32_t activeVAO = 0;
+    Mesh* activeMesh = nullptr;
 
     bool debugMode=false;
 

@@ -41,9 +41,8 @@ void Renderer::applyPointLights() {
     }
 }
 
-void Renderer::drawObjects(const std::vector<GameObject*>& objects)
+void Renderer::drawObjects()
 {
-    activeVAO = 0;
     activeShaderProgram = "basic";
     assetManager.getShaderPrograms()[activeShaderProgram]->use();
     assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("viewPos", activeScene->camera->position);
@@ -56,47 +55,41 @@ void Renderer::drawObjects(const std::vector<GameObject*>& objects)
     assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.diffuse", { 1.0f, 0.5f, 0.31f });
     assetManager.getShaderPrograms()[activeShaderProgram]->setVec3("material.specular", { 0.1f, 0.1f, 0.1f });
     assetManager.getShaderPrograms()[activeShaderProgram]->setFloat("material.shininess", 32.0f);
-    for (auto obj : objects) {
-        if (!obj||!obj->drawable()) {
+    for (const auto& cmd : renderQueue) {
+        if (!cmd.mesh)
             continue;
-        }
 
-        for (const auto& mesh : obj->getModel()->getMeshes()) {
-            assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", obj->getTransform());
+        if (cmd.mesh != activeMesh) {
+            activeMesh = cmd.mesh;
+            activeMesh->bindVAO();
 
-            
-            if (activeVAO != mesh->getVAO()) {
-                activeVAO = mesh->getVAO();
-
-
-                assetManager.getShaderPrograms()[activeShaderProgram]->setBool("hasTexture", !(mesh->getTextures().empty()));
-                for (int i = 0;i < mesh->getTextures().size();i++) {
-                    glActiveTexture(GL_TEXTURE0 + i);
-                    std::string name = mesh->getTextures()[i].type;
-                    if (name == "texture_diffuse") {
-                        assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.diffuse", i);
-                    }
-                    else if (name == "texture_specular") {
-                        assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.specular", i);
-                    }
-
-
-                    glBindTexture(GL_TEXTURE_2D, mesh->getTextures()[i].id);
+            assetManager.getShaderPrograms()[activeShaderProgram]->setBool("hasTexture", !(cmd.mesh->getTextures().empty()));
+            for (int i = 0;i < cmd.mesh->getTextures().size();i++) {
+                glActiveTexture(GL_TEXTURE0 + i);
+                std::string name = cmd.mesh->getTextures()[i].type;
+                if (name == "texture_diffuse") {
+                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.diffuse", i);
+                }
+                else if (name == "texture_specular") {
+                    assetManager.getShaderPrograms()[activeShaderProgram]->setInt("material.specular", i);
                 }
 
 
-
-                mesh->bindVAO();
+                glBindTexture(GL_TEXTURE_2D, cmd.mesh->getTextures()[i].id);
             }
-            glDrawElements(GL_TRIANGLES, static_cast<int>(mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
-
         }
+
+        assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", cmd.transform);
+
+
+        glDrawElements(GL_TRIANGLES, static_cast<int>(cmd.mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
     }
+
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::feedRenderQueue(std::vector<GameObject*>&& gameObjects)
+void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
 {
     renderQueue.clear();
 
@@ -118,8 +111,9 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>&& gameObjects)
 
 
 void Renderer::drawScene() {
-    feedRenderQueue(activeScene->getAllObjects());
-    drawObjects(activeScene->getAllObjects());
+    std::vector<GameObject*>& gameObjects = activeScene->getAllObjects();
+    feedRenderQueue(gameObjects);
+    drawObjects();
 }
 
 bool Renderer::isShaderProgramActive(const std::string& programName) const
