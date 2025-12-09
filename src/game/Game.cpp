@@ -30,10 +30,13 @@ Game::Game() {
                                     "assets/shaders/pointLightFragment.glsl");
 
 
-    scene = std::make_unique<Scene>("E:/lvl1_cubes.txt",*assetManager);
+    scene = std::make_unique<Scene>("E:/lvl1.txt",*assetManager);
 
     scene->camera= std::make_unique<Camera>();
 
+    assetManager->createMaterial("red", assetManager->getShaderPrograms()["basic"].get(),
+        { {0.24725f, 0.1995f, 0.0745f},{0.75164f, 0.60648f, 0.22648f},{0.62828f, 0.5558f, 0.366065f},51.2f }, {});
+    assetManager->getModel("assets/models/cube.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["red"].get());
 
     scene->camera->position = glm::vec3(25.0f, 0.0f, 0.0f);
 
@@ -47,7 +50,7 @@ void Game::run() {
 }
 
 void Game::render() const {
-    glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+    glClearColor(0.9, 0.9, 0.92,1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     renderer->drawScene();

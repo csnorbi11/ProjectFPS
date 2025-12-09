@@ -28,6 +28,11 @@ void Mesh::unbindVAO() const {
     glBindVertexArray(0);
 }
 
+void Mesh::changeMaterial(Material* material)
+{
+    this->material = material;
+}
+
 Material* Mesh::getMaterial() const
 {
     return material;

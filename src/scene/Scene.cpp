@@ -45,6 +45,21 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
             glm::vec3 direction{ -0.5f,-0.5f,0.f };
             float intensity=0.5f;
             glm::vec3 ambient{ 1.f }, diffuse{ 1.f }, specular{ 1.f };
+            sline >> direction.x >> direction.y >> direction.z >> intensity >> ambient.x >> ambient.y >> ambient.z >>
+                diffuse.x >> diffuse.y >> diffuse.z >> specular.x >> specular.y >> specular.z;
+
+            if (glm::length(direction)>1) {
+                direction = glm::normalize(direction);
+            }
+            if (glm::length(ambient) > 1) {
+                ambient = glm::normalize(ambient);
+            }
+            if (glm::length(diffuse) > 1) {
+                diffuse = glm::normalize(diffuse);
+            }
+            if (glm::length(specular) > 1) {
+                specular = glm::normalize(specular);
+            }
             dirLight = std::make_unique<DirectionalLight>(
                 DirectionalLightParams{ direction ,intensity},
                 LightParams{ambient,diffuse,specular}

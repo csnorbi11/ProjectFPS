@@ -54,6 +54,8 @@ public:
     void bindVAO() const;
     void unbindVAO() const;
 
+    void changeMaterial(Material* material);
+
     Material* getMaterial() const;
     const std::vector<uint32_t> &getIndices() const;
     const std::vector<Vertex> &getVertices() const;
