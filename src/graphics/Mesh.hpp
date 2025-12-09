@@ -8,6 +8,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
 
+#include "Material.hpp"
+
 struct Vertex {
     glm::vec3 position;
     glm::vec3 normal;
@@ -29,11 +31,7 @@ namespace std {
     };
 }
 
-struct Texture {
-    uint32_t id;
-    std::string type;
-    std::string path;
-};
+
 
 struct Triangle {
 	glm::vec3 vertices[3];
