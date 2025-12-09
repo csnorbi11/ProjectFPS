@@ -42,7 +42,7 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
             modelsToLoad.insert(modelPath);
         }else if (objType == "DIRLIGHT") {
             
-            glm::vec3 direction{ 0.f,-1.f,0.f };
+            glm::vec3 direction{ -0.5f,-0.5f,0.f };
             float intensity=0.5f;
             glm::vec3 ambient{ 1.f }, diffuse{ 1.f }, specular{ 1.f };
             dirLight = std::make_unique<DirectionalLight>(

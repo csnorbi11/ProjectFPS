@@ -30,7 +30,7 @@ Game::Game() {
                                     "assets/shaders/pointLightFragment.glsl");
 
 
-    scene = std::make_unique<Scene>("E:/lvl1.txt",*assetManager);
+    scene = std::make_unique<Scene>("E:/lvl1_cubes.txt",*assetManager);
 
     scene->camera= std::make_unique<Camera>();
 

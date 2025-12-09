@@ -196,6 +196,16 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
             vert.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
         if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS)
             vert.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
+
+        if (vert.ambient.length >= 0) {
+            vert.ambient = glm::normalize(vert.position);
+        }
+        if (vert.diffuse.length >= 0) {
+            vert.diffuse = glm::normalize(vert.position);
+        }
+        if (vert.specular.length >= 0) {
+            vert.specular = glm::normalize(vert.position);
+        }
     }
 
     // 1. diffuse maps

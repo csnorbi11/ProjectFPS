@@ -55,7 +55,7 @@ void main()
     fragResult=CalcDirLight(dirLight,norm,viewDir);
 
     for(int i=0;i<min(NR_POINT_LIGHTS,activePointLights);i++){
-        fragResult+=CalcPointLight(pointLights[i],norm,FragPos,viewDir);
+        //fragResult+=CalcPointLight(pointLights[i],norm,FragPos,viewDir);
     }
 
     FragColor=vec4(fragResult,1.f);
