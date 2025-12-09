@@ -28,6 +28,7 @@ public:
 	void rotateEulerY(float angle, bool isGlobal = false);
 	void rotateEulerZ(float angle, bool isGlobal = false);
 
+    glm::mat4 getTransform();
     glm::vec3 getEulerAngles() const;
 	glm::quat getQuaternion() const;
 

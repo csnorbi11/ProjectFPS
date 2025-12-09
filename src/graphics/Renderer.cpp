@@ -62,10 +62,7 @@ void Renderer::drawObjects(const std::vector<GameObject*>& objects)
         }
 
         for (const auto& mesh : obj->getModel()->getMeshes()) {
-            glm::mat4 transformMatrix(1.f);
-            transformMatrix = glm::translate(glm::mat4(1.0f), obj->position);
-            transformMatrix *= static_cast<glm::mat4>(obj->getQuaternion());
-            assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", transformMatrix);
+            assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", obj->getTransform());
 
             
             if (activeVAO != mesh->getVAO()) {
@@ -99,9 +96,29 @@ void Renderer::drawObjects(const std::vector<GameObject*>& objects)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Renderer::feedRenderQueue(std::vector<GameObject*>&& gameObjects)
+{
+    renderQueue.clear();
+
+    for (auto object : gameObjects) {
+
+        Model* model = object->getModel();
+        if (!model)
+            continue;
+        for (const auto& mesh : model->getMeshes()) {
+            renderQueue.push_back({&model->getPath(), mesh.get(),object->getTransform()});
+        }
+    }
+    std::sort(renderQueue.begin(), renderQueue.end(), [](const RenderCommand& a, const RenderCommand& b) {
+        return a.mesh < b.mesh;
+        });
+
+}
+
 
 
 void Renderer::drawScene() {
+    feedRenderQueue(activeScene->getAllObjects());
     drawObjects(activeScene->getAllObjects());
 }
 

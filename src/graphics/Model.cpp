@@ -73,6 +73,11 @@ std::vector<std::unique_ptr<Mesh>> & Model::getMeshes() {
     return meshes;
 }
 
+const std::string& Model::getPath()
+{
+    return path;
+}
+
 void Model::logModelInfo() const {
     std::cout << "Model infos:" << std::endl;
     std::cout<<"\tpath: "<<path<<std::endl;
@@ -197,15 +202,15 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS)
             vert.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
 
-        if (vert.ambient.length >= 0) {
-            vert.ambient = glm::normalize(vert.position);
-        }
-        if (vert.diffuse.length >= 0) {
-            vert.diffuse = glm::normalize(vert.position);
-        }
-        if (vert.specular.length >= 0) {
-            vert.specular = glm::normalize(vert.position);
-        }
+        //if (vert.ambient.length >= 0) {
+        //    vert.ambient = glm::normalize(vert.position);
+        //}
+        //if (vert.diffuse.length >= 0) {
+        //    vert.diffuse = glm::normalize(vert.position);
+        //}
+        //if (vert.specular.length >= 0) {
+        //    vert.specular = glm::normalize(vert.position);
+        //}
     }
 
     // 1. diffuse maps

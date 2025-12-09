@@ -11,6 +11,11 @@
 #include "../platform/GLFWHandler.hpp"
 #include "../game/AssetManager.hpp"
 
+struct RenderCommand {
+    const std::string* modelPath;
+    Mesh* mesh;
+    glm::mat4 transform;
+};
 
 class Renderer {
 public:
@@ -31,8 +36,9 @@ private:
 
     void drawObjects(const std::vector<GameObject*>& objects);
 
+    void feedRenderQueue(std::vector<GameObject*>&& gameObjects);
 
-
+    std::vector<RenderCommand> renderQueue;
 
     std::string activeShaderProgram={};
 

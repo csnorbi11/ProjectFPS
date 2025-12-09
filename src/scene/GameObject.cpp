@@ -80,6 +80,12 @@ void GameObject::rotateEulerZ(float angle, bool isGlobal)
 		rotateLocal(glm::vec3(0.f, 0.f, 1.f), angle);
 }
 
+glm::mat4 GameObject::getTransform()
+{
+	return glm::translate(glm::mat4(1.0f), position) *
+		static_cast<glm::mat4>(getQuaternion());
+}
+
 glm::vec3 GameObject::getEulerAngles() const
 {
 	return glm::eulerAngles(orientation);
