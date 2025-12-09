@@ -9,7 +9,6 @@ struct Material {
 struct TextureMaterial {
     sampler2D diffuse;
     sampler2D specular;
-    float shininess;
 };
 struct DirectionalLight {
     vec3 direction;

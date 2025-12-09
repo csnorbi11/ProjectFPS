@@ -19,6 +19,7 @@
 #include "game/AssetManager.hpp"
 
 
+
 //unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma)
 //{
 //    std::string filename = std::string(path);
@@ -209,41 +210,44 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& asset
         return new Mesh(vertices, indices, assetManager.getMaterials()[path].get(), triangles);
     }
 
-    glm::vec3 ambient{}, diffuse{}, specular{};
+    MaterialParam matParam{};
     float shininess;
     aiColor3D ambientColor,diffuseColor,specularColor;
  
-    if(material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor)==AI_SUCCESS)
-        ambient = glm::vec3(ambientColor.r, ambientColor.g, ambientColor.b);
-    if (material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS)
-        diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
-    if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS)
-        specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
+    if(material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor)==AI_SUCCESS && !specularColor.IsBlack())
+        matParam.ambient = glm::vec3(ambientColor.r, ambientColor.g, ambientColor.b);
+    if (material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS && !specularColor.IsBlack())
+        matParam.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
+    if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS&&!specularColor.IsBlack())
+        matParam.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
     if (material->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS);
 
-    // 1. diffuse maps
-    loadOrGetMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse",assetManager);
-    // 2. specular maps
-    loadOrGetMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular",assetManager);
 
-    assetManager.createMaterial(path, assetManager.getShaderPrograms()["basic"].get(), {ambient,diffuse,specular,shininess}, {});
+    Texture* diffuseMap = nullptr;
+    Texture* specularMap = nullptr;
+
+    if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
+        diffuseMap = loadOrGetMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", assetManager);
+    }
+    if (material->GetTextureCount(aiTextureType_SPECULAR) > 0) {
+        specularMap = loadOrGetMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular", assetManager);
+    }
+    
+
+    assetManager.createMaterial(path, assetManager.getShaderPrograms()["basic"].get(), matParam, {diffuseMap,specularMap});
 
     return new Mesh(vertices, indices,assetManager.getMaterials()[path].get(), triangles);
 }
 
-void Model::loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName, AssetManager& assetManager) {
+Texture* Model::loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName, AssetManager& assetManager) {
 
-   
-    for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    {
-        aiString str;
-        mat->GetTexture(type, i, &str);
-        std::string fullPath = str.C_Str() + '/' + path;
-
-        if (assetManager.getTextures().count(fullPath) != 0)
-            continue;
-
-        assetManager.loadTexture(str.C_Str(), directory, typeName);
         
-    }
+        aiString str;
+        mat->GetTexture(type, 0, &str);
+        std::string fullPath = directory+"/"+ str.C_Str();
+
+        if (assetManager.getTextures().count(fullPath) == 0) {
+            assetManager.loadTexture(fullPath, directory, typeName);
+        }
+        return assetManager.getTextures()[fullPath].get();
 }

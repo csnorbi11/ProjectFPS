@@ -13,6 +13,7 @@
 
 class ShaderProgram;
 class AssetManager;
+class Texture;
 
 //unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
@@ -34,7 +35,7 @@ private:
     void processNode(aiNode *node, const aiScene *scene, AssetManager& assetManager);
 
     Mesh* processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& assetManager);
-    void loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type,
+    Texture* loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type,
                                          std::string typeName, AssetManager& assetManager);
 
     void logModelInfo() const;

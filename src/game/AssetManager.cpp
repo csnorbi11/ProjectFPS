@@ -82,7 +82,6 @@ bool AssetManager::isModelLoaded(const std::string& path) const
 void AssetManager::loadTexture(const std::string& path, const std::string& dir, const std::string& type)
 {
     std::string filename = std::string(path);
-    filename = dir + '/' + filename;
 
     unsigned int textureID;
     glGenTextures(1, &textureID);

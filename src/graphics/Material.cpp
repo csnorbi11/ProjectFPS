@@ -33,23 +33,25 @@ void Material::apply() const
 	program->setVec3("material.specular", specular);
 	program->setFloat("material.shininess", shininess);
 
+	program->setBool("hasTexture", hasTexture);
+
 	if (!hasTexture)
 		return;
 
-	program->setBool("hasTexture", hasTexture);
 	if (diffuseMap) {
-		// Ahol a textúrát bindolod:
-		if (!glIsTexture(diffuseMap->id)) {
-			std::cout << "HIBA: Érvénytelen textúrát próbálunk bindolni! ID: " << diffuseMap->id << std::endl;
-		}
+		glActiveTexture(GL_TEXTURE0 + diffuseMapID);
+		program->setInt("texMat.diffuse", diffuseMapID);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap->id);
-		program->setInt("material.diffuse", diffuseMapID);
 	}
 	if (specularMap) {
-		program->setInt("material.specular", specularMapID);
+		glActiveTexture(GL_TEXTURE0 + specularMapID);
+		program->setInt("texMat.specular", specularMapID);
+		glBindTexture(GL_TEXTURE_2D, specularMap->id);
 	}
 	if (normalMap) {
-		program->setInt("material.specular", normalMapID);
+		glActiveTexture(GL_TEXTURE0 + normalMapID);
+		program->setInt("texMat.specular", normalMapID);
+		glBindTexture(GL_TEXTURE_2D, normalMap->id);
 	}
 
 }

@@ -61,9 +61,11 @@ void Renderer::drawObjects()
 
         if (cmd.mesh != activeMesh) {
             activeMesh = cmd.mesh;
-            activeMesh->bindVAO();
-
-            cmd.material->apply();
+            activeMesh->bindVAO();   
+        }
+        if (cmd.material != activeMaterial) {
+            activeMaterial = cmd.material;
+            activeMaterial->apply();
         }
 
         assetManager.getShaderPrograms()[activeShaderProgram]->setMat4("model", cmd.transform);

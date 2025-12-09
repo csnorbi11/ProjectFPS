@@ -45,6 +45,7 @@ private:
 
     Scene* activeScene=nullptr;
     Mesh* activeMesh = nullptr;
+    Material* activeMaterial = nullptr;
 
     bool debugMode=false;
 
