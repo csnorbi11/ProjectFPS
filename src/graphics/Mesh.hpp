@@ -51,6 +51,8 @@ public:
         std::vector<Triangle> triangles);
     ~Mesh();
 
+    void setupInstancing(unsigned int instanceVBO);
+
     void bindVAO() const;
     void unbindVAO() const;
 

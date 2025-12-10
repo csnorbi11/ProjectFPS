@@ -29,7 +29,6 @@ public:
 
     void setActiveScene(Scene* scene);
 private:
-    bool isShaderProgramActive(const std::string& programName) const;
 
     void viewProjection();
     void applyDirectionalLight();
@@ -40,9 +39,9 @@ private:
     void feedRenderQueue(std::vector<GameObject*>& gameObjects);
 
     std::vector<RenderCommand> renderQueue;
-
+    unsigned int instanceVBO;
     
-    ShaderProgram* activePorgram = nullptr;
+    ShaderProgram* activeProgram = nullptr;
     Scene* activeScene=nullptr;
     Mesh* activeMesh = nullptr;
     Material* activeMaterial = nullptr;

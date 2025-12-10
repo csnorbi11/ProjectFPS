@@ -19,72 +19,101 @@ Renderer::Renderer(GLFWHandler& glfwHandler, AssetManager& assetManager)
     glfwHandler(glfwHandler),
     assetManager(assetManager)
 {
-    
+    glGenBuffers(1, &instanceVBO);
+
+    for (auto& [name, modelPtr] : assetManager.getModels()) {
+        if (!modelPtr) continue; // Biztonsági ellenőrzés
+
+        for (auto& mesh : modelPtr->getMeshes()) {
+            mesh->setupInstancing(instanceVBO);
+        }
+    }
 }
 
 Renderer::~Renderer() {
+    glDeleteBuffers(1, &instanceVBO);
     activeScene=nullptr;
 }
 
 void Renderer::applyDirectionalLight() {
-    activeScene->map->getDirectionalLight().apply(activePorgram);
+    activeScene->map->getDirectionalLight().apply(activeProgram);
 }
 
 void Renderer::applyPointLights() {
-    activePorgram->setInt(
+    activeProgram->setInt(
         "activePointLights",static_cast<int>(activeScene->map->getPointLights().size()));
     for (auto& light:activeScene->map->getPointLights()) {
-        light->apply(activePorgram);
+        light->apply(activeProgram);
     }
     for (auto& light : activeScene->dynamicLights) {
-        light->apply(activePorgram);
+        light->apply(activeProgram);
     }
 }
 
 void Renderer::drawObjects()
 {
-    if (activePorgram) {
-        viewProjection();
-        applyDirectionalLight();
-        applyPointLights();
-        activePorgram->setVec3("viewPos", activeScene->camera->position);
-    }
+    std::vector<glm::mat4> batchTransforms;
+    
+    activeMaterial = nullptr;
+    activeMesh = nullptr;
+
     for (const auto& cmd : renderQueue) {
-        if (!cmd.mesh)
-            continue;
+        bool materialDiffers = (activeMaterial != cmd.material);
+        bool meshDiffers = (activeMesh != cmd.mesh);
 
-        if (cmd.mesh != activeMesh) {
-            activeMesh = cmd.mesh;
-            activeMesh->bindVAO();   
-        }
 
-        if (activePorgram != cmd.material->getProgram()) {
-            activePorgram = cmd.material->getProgram();
-            activePorgram->use();
-
+        if ((materialDiffers || meshDiffers) && !batchTransforms.empty()) {
+            activeProgram->setVec3("viewPos", activeScene->camera->position);
             viewProjection();
-            applyDirectionalLight();
-            applyPointLights();
-            activePorgram->setVec3("viewPos", activeScene->camera->position);
             
+            glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+            glBufferData(GL_ARRAY_BUFFER, batchTransforms.size() * sizeof(glm::mat4), batchTransforms.data(), GL_STREAM_DRAW);
+
+            if (activeMesh) {
+                glDrawElementsInstanced(GL_TRIANGLES, activeMesh->getIndices().size(), GL_UNSIGNED_INT, 0, batchTransforms.size());
+            }
+
+            batchTransforms.clear();
         }
-        if (cmd.material != activeMaterial) {
+
+        if (materialDiffers) {
             activeMaterial = cmd.material;
+            if (activeMaterial) {
+                activeMaterial->apply();
+                if (activeProgram != activeMaterial->getProgram()) {
+                    activeProgram = activeMaterial->getProgram();
+                    activeProgram->use();
 
-            activeMaterial->apply();
+                    
+                    applyDirectionalLight();
+                    applyPointLights();
+                    
+                }
+            }
         }
 
-        
-        
-        if (activePorgram) {
-            activePorgram->setMat4("model", cmd.transform);
-            glDrawElements(GL_TRIANGLES, static_cast<int>(cmd.mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
+        if (meshDiffers) {
+            activeMesh = cmd.mesh;
+            if (activeMesh) {
+                activeMesh->bindVAO();
+            }
         }
+
+        batchTransforms.push_back(cmd.transform);
+    }
+
+    if (!batchTransforms.empty() && activeMesh) {
+        glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+        glBufferData(GL_ARRAY_BUFFER, batchTransforms.size() * sizeof(glm::mat4), batchTransforms.data(), GL_STREAM_DRAW);
+
+        glDrawElementsInstanced(GL_TRIANGLES, activeMesh->getIndices().size(), GL_UNSIGNED_INT, 0, batchTransforms.size());
     }
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+
 
 void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
 {
@@ -122,8 +151,8 @@ void Renderer::drawScene() {
 
 
 void Renderer::viewProjection() {
-    activePorgram->setMat4("projection", glm::perspective(glm::radians(90.0f), glfwHandler.getAspectRatio(),0.01f,100.0f));
-    activePorgram->setMat4("view",activeScene->camera->getViewMatrix());
+    activeProgram->setMat4("projection", glm::perspective(glm::radians(90.0f), glfwHandler.getAspectRatio(),0.01f,100.0f));
+    activeProgram->setMat4("view",activeScene->camera->getViewMatrix());
 }
 
 void Renderer::update() {

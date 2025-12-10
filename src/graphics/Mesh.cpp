@@ -90,3 +90,29 @@ void Mesh::setupMesh() {
 
     glBindVertexArray(0);
 }
+
+void Mesh::setupInstancing(unsigned int instanceVBO)
+{
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+
+    size_t mat4Size = sizeof(glm::mat4);
+    size_t vec4Size = sizeof(glm::vec4);
+
+    unsigned int startLocation = 4;
+
+    for (unsigned int i = 0; i < 4; i++) {
+        // A tényleges location index (pl. 3, 4, 5, 6)
+        unsigned int loc = startLocation + i;
+
+        glEnableVertexAttribArray(loc);
+
+        // A 'loc' indexet használjuk az 'i' helyett
+        glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, mat4Size, (void*)(i * vec4Size));
+
+        // A divisor-t ugyanarra a 'loc' indexre állítjuk be
+        glVertexAttribDivisor(loc, 1);
+    }
+    glBindVertexArray(0);
+}
