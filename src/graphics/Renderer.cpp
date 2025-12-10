@@ -58,7 +58,7 @@ void Renderer::drawObjects()
             activeMesh->bindVAO();   
         }
 
-        if (cmd.material->getProgram() != activePorgram) {
+        if (activePorgram != cmd.material->getProgram()) {
             activePorgram = cmd.material->getProgram();
             activePorgram->use();
 
@@ -76,9 +76,10 @@ void Renderer::drawObjects()
 
         
         
-
-        activePorgram->setMat4("model", cmd.transform);
-        glDrawElements(GL_TRIANGLES, static_cast<int>(cmd.mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
+        if (activePorgram) {
+            activePorgram->setMat4("model", cmd.transform);
+            glDrawElements(GL_TRIANGLES, static_cast<int>(cmd.mesh->getIndices().size()), GL_UNSIGNED_INT, 0);
+        }
     }
 
     glBindVertexArray(0);

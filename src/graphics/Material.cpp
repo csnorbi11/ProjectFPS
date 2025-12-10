@@ -23,7 +23,7 @@ Material::~Material()
 	diffuseMap = nullptr;
 	specularMap = nullptr;
 	normalMap = nullptr;
-	program = nullptr;
+	//program = nullptr;
 }
 
 void Material::apply() const
