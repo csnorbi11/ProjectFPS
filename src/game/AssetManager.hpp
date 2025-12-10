@@ -19,7 +19,7 @@ public:
 	void loadModel(const std::string& path, const std::string& shaderProgName);
 	bool isModelLoaded(const std::string& path) const;
 	
-	void loadTexture(const std::string& path, const std::string& dir, const std::string& type);
+	void loadTexture(const std::string& path, const std::string& name, const std::string& type, bool flip = false);
 
 	void createMaterial(const std::string& name, ShaderProgram* program,
 		const MaterialParam& matParam, const MaterialTextureParam& matTexture);

@@ -40,8 +40,6 @@ private:
 
     void logModelInfo() const;
 
-    std::string shaderProgName;
-
     std::vector<Texture> textures_loaded;
     std::vector<std::unique_ptr<Mesh>> meshes;
 

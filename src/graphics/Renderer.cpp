@@ -96,6 +96,8 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
         if (!model)
             continue;
         for (const auto& mesh : model->getMeshes()) {
+            if (!mesh.get() || !mesh->getMaterial())
+                continue;
             renderQueue.push_back({&model->getPath(), mesh.get(),mesh->getMaterial(),object->getTransform()});
         }
     }

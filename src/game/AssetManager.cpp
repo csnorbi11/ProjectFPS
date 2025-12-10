@@ -1,7 +1,10 @@
 #include "AssetManager.hpp"
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+#include "graphics/Model.hpp"
 
 void AssetManager::loadModel(const std::string& path, const std::string& shaderProgName)
 {
@@ -79,15 +82,15 @@ bool AssetManager::isModelLoaded(const std::string& path) const
 	return !(models.count(path) == 0);
 }
 
-void AssetManager::loadTexture(const std::string& path, const std::string& dir, const std::string& type)
+void AssetManager::loadTexture(const std::string& path, const std::string& name, const std::string& type, bool flip)
 {
-    std::string filename = std::string(path);
+    //std::string filename = std::string(path);
 
     unsigned int textureID;
     glGenTextures(1, &textureID);
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(flip);
     int width, height, nrComponents;
-    unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+    unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
     if (data)
     {
         GLenum format;
@@ -115,7 +118,7 @@ void AssetManager::loadTexture(const std::string& path, const std::string& dir, 
         stbi_image_free(data);
     }
 
-    textures.emplace(filename, std::make_unique<Texture>(textureID, type, filename));
+    textures.emplace(name, std::make_unique<Texture>(textureID, type, name, path));
 }
 
 

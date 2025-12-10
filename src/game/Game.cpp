@@ -1,16 +1,11 @@
 #include "Game.hpp"
 
-#include <iostream>
-#include <filesystem>
-
-#include "../scene/DirectionalLight.hpp"
-#include "../scene/Map.hpp"
-#include "../scene/PointLight.hpp"
-#include "../graphics/Renderer.hpp"
-#include "../scene/Scene.hpp"
-#include "../platform/GLFWInput.hpp"
-#include "../platform/GLFWHandler.hpp"
-#include "../scene/Camera.hpp"
+#include "scene/Map.hpp"
+#include "graphics/Renderer.hpp"
+#include "scene/Scene.hpp"
+#include "platform/GLFWInput.hpp"
+#include "platform/GLFWHandler.hpp"
+#include "scene/Camera.hpp"
 #include "AssetManager.hpp"
 
 
@@ -34,14 +29,14 @@ Game::Game() {
 
     scene->camera= std::make_unique<Camera>();
 
-    //assetManager->createMaterial("golden", assetManager->getShaderPrograms()["basic"].get(),
-    //    { {0.24725f, 0.1995f, 0.0745f},{0.75164f, 0.60648f, 0.22648f},{0.62828f, 0.5558f, 0.366065f},51.2f }, {});
-    //assetManager->getModel("assets/models/cube.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["red"].get());
+    assetManager->createMaterial("golden", assetManager->getShaderPrograms()["basic"].get(),
+        { {0.24725f, 0.1995f, 0.0745f},{0.75164f, 0.60648f, 0.22648f},{0.62828f, 0.5558f, 0.366065f},51.2f }, {});
+    assetManager->getModel("assets/models/cube.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["red"].get());
 
-    //assetManager->loadTexture("City_01_Atlas_Dif.png", "assets/models/City_01_Atlas_Dif.png", "texture_diffuse");
-    //assetManager->createMaterial("building", assetManager->getShaderPrograms()["basic"].get(),
-    //    MaterialParam{}, { assetManager->getTextures()["City_01_Atlas_Dif.png"].get() });
-    //assetManager->getModel("assets/models/Building_04.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["building"].get());
+    assetManager->loadTexture("assets/models/City_01_Atlas_Dif.png", "City_01_Atlas_Dif.png", "texture_diffuse");
+    assetManager->createMaterial("building", assetManager->getShaderPrograms()["basic"].get(),
+        MaterialParam{}, { assetManager->getTextures()["City_01_Atlas_Dif.png"].get() });
+    assetManager->getModel("assets/models/Building_04.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["building"].get());
 
     scene->camera->position = glm::vec3(25.0f, 0.0f, 0.0f);
 

@@ -7,58 +7,14 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <glad/glad.h>
 
 #include "Model.hpp"
 #include "Material.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include <unordered_map>
 
-#include "stb_image.h"
-
 #include "game/AssetManager.hpp"
 
-
-
-//unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma)
-//{
-//    std::string filename = std::string(path);
-//    filename = directory + '/' + filename;
-//
-//    unsigned int textureID;
-//    glGenTextures(1, &textureID);
-//    stbi_set_flip_vertically_on_load(true);
-//    int width, height, nrComponents;
-//    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-//    if (data)
-//    {
-//        GLenum format;
-//        if (nrComponents == 1)
-//            format = GL_RED;
-//        else if (nrComponents == 3)
-//            format = GL_RGB;
-//        else if (nrComponents == 4)
-//            format = GL_RGBA;
-//
-//        glBindTexture(GL_TEXTURE_2D, textureID);
-//        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-//        glGenerateMipmap(GL_TEXTURE_2D);
-//
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//
-//        stbi_image_free(data);
-//    }
-//    else
-//    {
-//        std::cout << "Texture failed to load at path: " << path << std::endl;
-//        stbi_image_free(data);
-//    }
-//
-//    return textureID;
-//}
 
 Model::Model(std::string path, AssetManager& assetManager)
     :
@@ -68,9 +24,6 @@ Model::Model(std::string path, AssetManager& assetManager)
 
 Model::~Model() = default;
 
-const std::string &Model::getShaderProgName() {
-    return shaderProgName;
-}
 
 std::vector<std::unique_ptr<Mesh>> & Model::getMeshes() {
     return meshes;
@@ -84,9 +37,7 @@ const std::string& Model::getPath()
 void Model::logModelInfo() const {
     std::cout << "Model infos:" << std::endl;
     std::cout<<"\tpath: "<<path<<std::endl;
-    std::cout<<"\tshader program: "<<shaderProgName<<std::endl;
     std::cout<<"\tmeshes count: "<<meshes.size()<<std::endl;
-    std::cout<<"\ttextures_loaded count: "<<textures_loaded.size()<<std::endl;
     uint32_t totalVertices = 0;
     for (auto& mesh:meshes) {
         totalVertices += mesh->getVertices().size();
@@ -220,7 +171,9 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& asset
         matParam.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
     if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS&&!specularColor.IsBlack())
         matParam.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
-    if (material->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS);
+    if (material->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS) {
+        matParam.shininess = shininess;
+    }
 
 
     Texture* diffuseMap = nullptr;
@@ -247,7 +200,7 @@ Texture* Model::loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type, s
         std::string fullPath = directory+"/"+ str.C_Str();
 
         if (assetManager.getTextures().count(fullPath) == 0) {
-            assetManager.loadTexture(fullPath, directory, typeName);
+            assetManager.loadTexture(fullPath, str.C_Str(), typeName);
         }
-        return assetManager.getTextures()[fullPath].get();
+        return assetManager.getTextures()[str.C_Str()].get();
 }
