@@ -22,7 +22,7 @@ struct Triangle {
 
 class Mesh {
 public:
-    Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, Material* material,
+    Mesh(std::string name, std::vector<Vertex> vertices, std::vector<uint32_t> indices, Material* material,
         std::vector<Triangle> triangles);
     ~Mesh();
 
@@ -38,6 +38,7 @@ public:
     const std::vector<Vertex> &getVertices() const;
     const std::vector<Triangle> &getTriangles() const;
     uint32_t getVAO() const;
+    const std::string& getName();
 
 private:
     void setupMesh();
@@ -48,7 +49,7 @@ private:
     std::vector<Triangle> triangles;
 
     uint32_t VAO{}, VBO{}, EBO{};
-
+    std::string name;
 
 };
 

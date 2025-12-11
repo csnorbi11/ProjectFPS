@@ -85,10 +85,9 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
             size_t lastSlash = modelPath.find_last_of('/')+1;
             std::string modelName = lastSlash != std::string::npos ? modelPath.substr(lastSlash) : modelPath;
             
-            map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager.getModel(modelName),{},position }));
+            map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager.getModel(modelName),position }));
         }
         else if(objType=="LIGHT") {
-            std::vector<Material*> mat{};
             float constant, linear, quadratic;
             glm::vec3 ambient, diffuse, specular;
             sline >> modelPath >> position.x >> position.y >> position.z >> ambient.x >> ambient.y >> ambient.z;
@@ -96,34 +95,19 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
             specular = ambient;
             std::string matName{ std::to_string(diffuse.x) + std::to_string(diffuse.y) + std::to_string(diffuse.z) + "pointLight" };
             assetManager.createMaterial(matName, "unlit", { ambient,diffuse,specular }, {});
-            mat.push_back(assetManager.getMaterials()[matName].get());
+            
             size_t lastSlash = modelPath.find_last_of('/')+1;
             std::string modelName = lastSlash != std::string::npos&&lastSlash!=0 ? modelPath.substr(lastSlash) : modelPath;
-            map->addPointLight(std::make_unique<PointLight>(
-                PointLightParams{map->getPointLights().size(),1.f,0.22f,.20f },
+            PointLight* light = new PointLight{ PointLightParams{map->getPointLights().size(),1.f,0.22f,.20f },
                 LightParams{ambient,diffuse,specular},
-                GameObjectParams{ assetManager.getModel(modelName), std::move(mat), position}
-            ));
+                GameObjectParams{ assetManager.getModel(modelName), position} 
+            };
+            light->overrideMaterial("mesh_Cube", assetManager.getMaterials()[matName].get());
+            map->addPointLight(std::unique_ptr<PointLight>(light));
         }
         
     }
 
-    std::vector<Material*> mats;
-    mats.push_back(assetManager.getMaterials()["pointLight"].get());
-
-    //map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
-    //    1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("cube.obj"), mats })));
-    //map->getPointLights()[0]->position = glm::vec3(35.0f, 4.0f, 5.0f);
-    //map->getPointLights()[0]->setOverallColor({ 0.3f,0.9f,1.f });
-
-    //map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
-    //    1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("cube.obj"), mats })));
-    //map->getPointLights()[1]->position = glm::vec3(26.0f, 1.0f, -5.0f);
-    //map->getPointLights()[1]->setOverallColor({ 1.0f,0.3f,0.f });
-    //map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
-    //    1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("cube.obj"), mats })));
-    //map->getPointLights()[2]->position = glm::vec3(22.0f, 3.0f, -5.0f);
-    //map->getPointLights()[2]->setOverallColor({ 1.0f,0.9f,0.f });
 }
 
 void Scene::update(double deltaTime) {

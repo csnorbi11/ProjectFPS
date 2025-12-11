@@ -162,7 +162,8 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene, AssetManager& asset
 		triangles.push_back(Triangle{ a, b, c, normal });
 	}
 
-
+	std::string meshName{ "mesh_" };
+	meshName.append(mesh->mName.C_Str());
 	// process materials
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
@@ -173,7 +174,7 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene, AssetManager& asset
 	// normal: texture_normalN
 	std::string matName = name + "." + material->GetName().C_Str();
 	if (assetManager.getMaterials().count(matName) != 0) {
-		return new Mesh(vertices, indices, assetManager.getMaterials()[matName].get(), triangles);
+		return new Mesh(meshName, vertices, indices, assetManager.getMaterials()[matName].get(), triangles);
 	}
 
 	MaterialParam matParam{};
@@ -205,7 +206,7 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene, AssetManager& asset
 
 	assetManager.createMaterial(matName, "lit", matParam, { diffuseMap,specularMap });
 
-	return new Mesh(vertices, indices, assetManager.getMaterials()[matName].get(), triangles);
+	return new Mesh(meshName, vertices, indices, assetManager.getMaterials()[matName].get(), triangles);
 }
 
 Texture* Model::loadOrGetMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, AssetManager& assetManager) {

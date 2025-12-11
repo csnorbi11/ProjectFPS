@@ -124,12 +124,10 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
         Model* model = object->getModel();
         if (!model)
             continue;
-        size_t i = 0;
         for (const auto& mesh : model->getMeshes()) {
             Material* mat = nullptr;
-            if (!object->getOverriderMaterial().empty() && object->getOverriderMaterial()[i]) {
-                mat = object->getOverriderMaterial()[i];
-                i++;
+            if (object->getOverideMaterial(mesh->getName())) {
+                mat = object->getOverideMaterial(mesh->getName());
             }
             else {
                 mat = mesh->getMaterial();

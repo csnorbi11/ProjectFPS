@@ -5,13 +5,14 @@
 
 #include <glad/glad.h>
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices,
+Mesh::Mesh(std::string name, std::vector<Vertex> vertices, std::vector<uint32_t> indices,
     Material* material, std::vector<Triangle> triangles)
     :
     vertices(std::move(vertices)),
     indices(std::move(indices)),
     material(material),
-    triangles(std::move(triangles))
+    triangles(std::move(triangles)),
+    name(name)
 {
     setupMesh();
 }
@@ -55,6 +56,11 @@ const std::vector<Triangle>& Mesh::getTriangles() const
 uint32_t Mesh::getVAO() const
 {
     return VAO;
+}
+
+const std::string& Mesh::getName()
+{
+    return name;
 }
 
 

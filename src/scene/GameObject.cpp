@@ -10,8 +10,7 @@ GameObject::GameObject(const GameObjectParams& params)
         forward(0.f,0.f,-1.f),
         right(1.f,0.f,0.f),
         up(0.f,1.f,0.f),
-        model(params.model),
-		materialOverride(params.overrideMats)
+        model(params.model)
 {}
 
 
@@ -81,6 +80,11 @@ void GameObject::rotateEulerZ(float angle, bool isGlobal)
 		rotateLocal(glm::vec3(0.f, 0.f, 1.f), angle);
 }
 
+void GameObject::overrideMaterial(std::string meshName, Material* material)
+{
+	overrideMaterials.insert_or_assign(meshName, material);
+}
+
 glm::mat4 GameObject::getTransform()
 {
 	return glm::translate(glm::mat4(1.0f), position) *
@@ -97,10 +101,11 @@ glm::quat GameObject::getQuaternion() const
 	return orientation;
 }
 
-std::vector<Material*>& GameObject::getOverriderMaterial()
+Material* GameObject::getOverideMaterial(std::string meshName)
 {
-	return materialOverride;
+	return overrideMaterials[meshName];
 }
+
 
 bool GameObject::drawable()
 {
