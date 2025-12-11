@@ -65,6 +65,8 @@ void Renderer::drawObjects()
         if ((materialDiffers || meshDiffers) && !batchTransforms.empty()) {
             activeProgram->setVec3("viewPos", activeScene->camera->position);
             viewProjection();
+            applyDirectionalLight();
+            applyPointLights();
             
             glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
             glBufferData(GL_ARRAY_BUFFER, batchTransforms.size() * sizeof(glm::mat4), batchTransforms.data(), GL_STREAM_DRAW);
@@ -85,8 +87,7 @@ void Renderer::drawObjects()
                     activeProgram->use();
 
                     
-                    applyDirectionalLight();
-                    applyPointLights();
+
                     
                 }
             }

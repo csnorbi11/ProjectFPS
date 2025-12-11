@@ -3,7 +3,7 @@
 
 #include "Map.hpp"
 
-Map::Map()
+Map::Map(AssetManager& assetManager)
 {
 
 	
@@ -11,7 +11,7 @@ Map::Map()
 
 
 	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
-		1.f,0.22f,.20f }));
+		1.f,0.22f,.20f },LightParams{},GameObjectParams{assetManager.getModel("assets/models/cube.obj")}));
 	pointLights[0]->position = glm::vec3(35.0f, 4.0f, 5.0f);
 	pointLights[0]->setOverallColor({ 0.3f,0.9f,1.f });
 

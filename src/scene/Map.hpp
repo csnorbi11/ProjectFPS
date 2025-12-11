@@ -7,10 +7,11 @@
 #include "StaticObject.hpp"
 #include "PointLight.hpp"
 #include "DirectionalLight.hpp"
+#include "game/AssetManager.hpp"
 
 class Map {
 public:
-	Map();
+	Map(AssetManager& assetManager);
 	Map(std::unique_ptr<DirectionalLight> dirLight);
 	~Map() = default;
 
