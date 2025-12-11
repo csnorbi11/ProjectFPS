@@ -1,6 +1,7 @@
 ﻿#include "Renderer.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 #include "../scene/Camera.hpp"
 #include "../scene/DirectionalLight.hpp"
@@ -81,15 +82,13 @@ void Renderer::drawObjects()
         if (materialDiffers) {
             activeMaterial = cmd.material;
             if (activeMaterial) {
-                activeMaterial->apply();
                 if (activeProgram != activeMaterial->getProgram()) {
+                    
                     activeProgram = activeMaterial->getProgram();
                     activeProgram->use();
 
-                    
-
-                    
                 }
+                activeMaterial->apply();
             }
         }
 
