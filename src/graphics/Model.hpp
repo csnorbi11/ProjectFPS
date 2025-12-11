@@ -24,9 +24,8 @@ public:
     ~Model();
 
 
-    const std::string &getShaderProgName();
     std::vector<std::unique_ptr<Mesh>> &getMeshes();
-    const std::string& getPath();
+    const std::string& getName();
 
 
 
@@ -44,7 +43,8 @@ private:
     std::vector<std::unique_ptr<Mesh>> meshes;
 
     std::string directory;
-    std::string path;
+    std::string fullPath;
+    std::string name;
 };
 
 #endif //MODEL_HPP

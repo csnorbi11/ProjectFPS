@@ -1,4 +1,4 @@
-#include <utility>
+﻿#include <utility>
 #include <iostream>
 #include <stdexcept>
 
@@ -18,7 +18,8 @@
 
 Model::Model(std::string path, AssetManager& assetManager)
     :
-        path(std::move(path)) {
+    fullPath(std::move(path)) {
+    name = fullPath.substr(fullPath.find_last_of('/')+1);
     loadModel(assetManager);
 }
 
@@ -29,14 +30,15 @@ std::vector<std::unique_ptr<Mesh>> & Model::getMeshes() {
     return meshes;
 }
 
-const std::string& Model::getPath()
+const std::string& Model::getName()
 {
-    return path;
+    return name;
 }
+
 
 void Model::logModelInfo() const {
     std::cout << "Model infos:" << std::endl;
-    std::cout<<"\tpath: "<<path<<std::endl;
+    std::cout<<"\tpath: "<<fullPath<<std::endl;
     std::cout<<"\tmeshes count: "<<meshes.size()<<std::endl;
     uint32_t totalVertices = 0;
     for (auto& mesh:meshes) {
@@ -50,15 +52,23 @@ void Model::logModelInfo() const {
 void Model::loadModel(AssetManager& assetManager) {
 
     Assimp::Importer import;
-    const aiScene *scene = import.ReadFile(path, aiProcess_OptimizeMeshes | aiProcess_Triangulate | aiProcess_FlipUVs);
+
+    import.SetPropertyFloat(AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE, 80.0f);
+    const aiScene* scene = import.ReadFile(fullPath,
+        aiProcess_Triangulate |
+        aiProcess_FlipUVs |
+        aiProcess_JoinIdenticalVertices | // <--- EZT ADD HOZZÁ (Fontos a sorrend: először join, aztán smooth)
+        aiProcess_GenSmoothNormals |
+        aiProcess_CalcTangentSpace |
+        aiProcess_OptimizeMeshes);
 
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
-       // throw std::runtime_error("ASSIMP ERROR: "+
-        //    static_cast<std::string>(import.GetErrorString()));
+        std::cerr << "ASSIMP ERROR: " <<
+            static_cast<std::string>(import.GetErrorString()) << std::endl;;
         return;
     }
-    directory = path.substr(0, path.find_last_of('/'));
+    directory = fullPath.substr(0, fullPath.find_last_of('/'));
 
     processNode(scene->mRootNode, scene, assetManager);
 }
@@ -116,9 +126,9 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& asset
 
         if (mesh->HasTangentsAndBitangents()) {
             glm::vec3 vec;
-            vec.x = mesh->mTangents->x;
-            vec.y = mesh->mTangents->y;
-            vec.z = mesh->mTangents->z;
+            vec.x = mesh->mTangents[i].x;
+            vec.y = mesh->mTangents[i].y;
+            vec.z = mesh->mTangents[i].z;
         }
         else {
             vertex.tangent = glm::vec3{ 0.f };
@@ -126,25 +136,30 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& asset
 
         vertices.push_back(vertex);
     }
-    for(unsigned int i = 0; i < mesh->mNumFaces; i++)
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
-        // retrieve all indices of the face and store them in the indices vector
-        for (unsigned int j = 0; j < face.mNumIndices; j++) {
-            indices.push_back(face.mIndices[j]);
-            if (j < face.mNumIndices - 2) {
-                glm::vec3 a, b, c;
-                a = vertices[face.mIndices[j]].position;
-                b = vertices[face.mIndices[j + 1]].position;
-                c = vertices[face.mIndices[j + 2]].position;
-                glm::vec3 ab = b - a;
-                glm::vec3 ac = c - a;
-                glm::vec3 normal = glm::normalize(glm::cross(ab, ac));
-                triangles.push_back(Triangle{ a,b,c,normal });
-            }
+        
 
-        }
+        // Mivel aiProcess_Triangulate-et használunk, tudjuk, hogy mindig 3 index van.
+        // Nem kell belső ciklus, sem if feltétel.
 
+        // 1. Indexek mentése a rendereléshez
+        indices.push_back(face.mIndices[0]);
+        indices.push_back(face.mIndices[1]);
+        indices.push_back(face.mIndices[2]);
+
+        // 2. Fizikai háromszög (vagy Raycast) adatok kinyerése
+        glm::vec3 a = vertices[face.mIndices[0]].position;
+        glm::vec3 b = vertices[face.mIndices[1]].position;
+        glm::vec3 c = vertices[face.mIndices[2]].position;
+
+        // Normálvektor számítás (Geometriai normál)
+        glm::vec3 ab = b - a;
+        glm::vec3 ac = c - a;
+        glm::vec3 normal = glm::normalize(glm::cross(ab, ac));
+
+        triangles.push_back(Triangle{ a, b, c, normal });
     }
 
 
@@ -156,25 +171,26 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& asset
     // diffuse: texture_diffuseN
     // specular: texture_specularN
     // normal: texture_normalN
-
-    if (assetManager.getMaterials().count(path) != 0) {
-        return new Mesh(vertices, indices, assetManager.getMaterials()[path].get(), triangles);
+    std::string matName = name+"."+material->GetName().C_Str();
+    if (assetManager.getMaterials().count(matName) != 0) {
+        return new Mesh(vertices, indices, assetManager.getMaterials()[matName].get(), triangles);
     }
 
     MaterialParam matParam{};
-    float shininess;
+    float shininess,shininessStrength, specularExponent;
     aiColor3D ambientColor,diffuseColor,specularColor;
  
-    if(material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor)==AI_SUCCESS && !specularColor.IsBlack())
+    if(material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor)==AI_SUCCESS)
         matParam.ambient = glm::vec3(ambientColor.r, ambientColor.g, ambientColor.b);
-    if (material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS && !specularColor.IsBlack())
+    if (material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS)
         matParam.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
-    if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS&&!specularColor.IsBlack())
+    if (material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS)
         matParam.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
-    if (material->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS) {
+    if (material->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS) 
         matParam.shininess = shininess;
+    if (glm::length(matParam.ambient) < 0.01f && glm::length(matParam.diffuse) > 0.01f) {
+        matParam.ambient = matParam.diffuse;
     }
-
 
     Texture* diffuseMap = nullptr;
     Texture* specularMap = nullptr;
@@ -187,9 +203,9 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& asset
     }
     
 
-    assetManager.createMaterial(path, "lit", matParam, {diffuseMap,specularMap});
+    assetManager.createMaterial(matName, "lit", matParam, {diffuseMap,specularMap});
 
-    return new Mesh(vertices, indices,assetManager.getMaterials()[path].get(), triangles);
+    return new Mesh(vertices, indices,assetManager.getMaterials()[matName].get(), triangles);
 }
 
 Texture* Model::loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName, AssetManager& assetManager) {
@@ -197,10 +213,10 @@ Texture* Model::loadOrGetMaterialTextures(aiMaterial *mat, aiTextureType type, s
         
         aiString str;
         mat->GetTexture(type, 0, &str);
-        std::string fullPath = directory+"/"+ str.C_Str();
+        std::string fPath = directory+"/"+ str.C_Str();
 
-        if (assetManager.getTextures().count(fullPath) == 0) {
-            assetManager.loadTexture(fullPath, str.C_Str(), typeName);
+        if (assetManager.getTextures().count(name) == 0) {
+            assetManager.loadTexture(str.C_Str(), fPath, typeName);
         }
         return assetManager.getTextures()[str.C_Str()].get();
 }

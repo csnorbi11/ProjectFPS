@@ -82,16 +82,21 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
         sline >> objType;
         if (objType == "OBJECT") {
             sline >> modelPath >> position.x >> position.y >> position.z;
-            map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager.getModel(modelPath),{},position }));
+            size_t lastSlash = modelPath.find_last_of('/')+1;
+            std::string modelName = lastSlash != std::string::npos ? modelPath.substr(lastSlash) : modelPath;
+            
+            map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager.getModel(modelName),{},position }));
         }
         else if(objType=="LIGHT") {
             float constant, linear, quadratic;
             glm::vec3 ambient, diffuse, specular;
             sline>> objType >> modelPath >> position.x >> position.y >> position.z;
+            size_t lastSlash = modelPath.find_last_of('/')+1;
+            std::string modelName = lastSlash != std::string::npos&&lastSlash!=0 ? modelPath.substr(lastSlash) : modelPath;
             map->addPointLight(std::make_unique<PointLight>(
                 PointLightParams{},
                 LightParams{},
-                GameObjectParams{ assetManager.getModel(modelPath),{}, position }
+                GameObjectParams{ assetManager.getModel(modelName),{}, position }
             ));
         }
         
@@ -122,7 +127,7 @@ void Scene::update(double deltaTime) {
 
 void Scene::requestToLoadModels(AssetManager& assetManager, std::string modelPath)
 {
-    assetManager.loadModel(modelPath, "lit");
+    assetManager.loadModel(modelPath);
 }
 
 std::vector<GameObject*> Scene::getAllObjects() const

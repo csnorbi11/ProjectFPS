@@ -6,11 +6,18 @@
 
 #include "graphics/Model.hpp"
 
-void AssetManager::loadModel(const std::string& path, const std::string& shaderProgName)
+void AssetManager::loadModel(const std::string& path)
 {
-	if (models.count(path) == 0) {
-		std::cout <<"Loaded model: " << path << std::endl;
-		models.emplace(path, std::make_unique<Model>(path, *this));
+    std::string name = path.substr(path.find_last_of('/')+1);
+	if (models.count(name) == 0) {
+		std::cout <<"Loading model: " << name << std::endl;
+		models.emplace(name, std::make_unique<Model>(path, *this));
+        if (models[name]->getMeshes().empty()) {
+            std::cout << "Cant model: " << name << std::endl;
+        }
+        else {
+            std::cout << "Loaded model: " << name << std::endl;
+        }
 	}
 	else {
 		std::cerr << "Model already loaded: " << path << std::endl;
@@ -77,12 +84,7 @@ std::unordered_map<std::string, std::unique_ptr<Material>>& AssetManager::getMat
     return materials;
 }
 
-bool AssetManager::isModelLoaded(const std::string& path) const
-{
-	return !(models.count(path) == 0);
-}
-
-void AssetManager::loadTexture(const std::string& path, const std::string& name, const std::string& type, bool flip)
+void AssetManager::loadTexture(const std::string& name, const std::string& path, const std::string& type, bool flip)
 {
     //std::string filename = std::string(path);
 
@@ -118,7 +120,7 @@ void AssetManager::loadTexture(const std::string& path, const std::string& name,
         stbi_image_free(data);
     }
 
-    textures.emplace(name, std::make_unique<Texture>(textureID, type, name, path));
+    textures.emplace(name, std::make_unique<Texture>(name, path, textureID, type));
 }
 
 

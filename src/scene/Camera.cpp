@@ -57,7 +57,7 @@ void Camera::recieveInput(GLFWwindow* window)
         direction.y -= 1;
     }
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        direction *= 2;
+        direction *= 4;
     }
 
 	double mouseX, mouseY;

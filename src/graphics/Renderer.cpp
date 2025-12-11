@@ -137,7 +137,7 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
             }
             if (!mesh.get() || !mesh->getMaterial())
                 continue;
-            renderQueue.push_back({&model->getPath(), mesh.get(),mat,object->getTransform()});
+            renderQueue.push_back({&model->getName(), mesh.get(),mat,object->getTransform()});
         }
     }
     std::sort(renderQueue.begin(), renderQueue.end(), [](const RenderCommand& a, const RenderCommand& b) {
@@ -161,7 +161,7 @@ void Renderer::drawScene() {
 
 
 void Renderer::viewProjection() {
-    activeProgram->setMat4("projection", glm::perspective(glm::radians(90.0f), glfwHandler.getAspectRatio(),0.01f,100.0f));
+    activeProgram->setMat4("projection", glm::perspective(glm::radians(90.0f), glfwHandler.getAspectRatio(),0.01f,100000.f));
     activeProgram->setMat4("view",activeScene->camera->getViewMatrix());
 }
 

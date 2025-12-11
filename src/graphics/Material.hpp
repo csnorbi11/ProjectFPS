@@ -32,6 +32,8 @@ public:
     void apply() const;
 
     const std::string& getName();
+    void changeDiffuseTexture(Texture* newTexture);
+    void changeSpecularTexture(Texture* newTexture);
     ShaderProgram* getProgram();
 
 private:

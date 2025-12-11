@@ -8,7 +8,7 @@ struct Texture {
     const std::string path;
 
     Texture() = delete;
-    Texture(const uint32_t id, const std::string& type, const std::string& name, const std::string& path)
+    Texture(const std::string& name, const std::string& path, const uint32_t id, const std::string& type)
         :
         id(id),
         type(type),

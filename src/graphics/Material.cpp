@@ -61,6 +61,19 @@ const std::string& Material::getName()
 	return name;
 }
 
+
+void Material::changeDiffuseTexture(Texture* newTexture)
+{
+	diffuseMap = newTexture;
+	hasTexture = (diffuseMap || specularMap) ? true : false;
+}
+
+void Material::changeSpecularTexture(Texture* newTexture)
+{
+	specularMap = newTexture;
+	hasTexture = (diffuseMap || specularMap) ? true : false;
+}
+
 ShaderProgram* Material::getProgram()
 {
 	return program;

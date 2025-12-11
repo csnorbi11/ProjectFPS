@@ -33,12 +33,12 @@ Game::Game() {
 
     assetManager->createMaterial("golden", "lit",
         { {0.24725f, 0.1995f, 0.0745f},{0.75164f, 0.60648f, 0.22648f},{0.62828f, 0.5558f, 0.366065f},51.2f }, {});
-    assetManager->getModel("assets/models/cube.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["golden"].get());
+    assetManager->getModel("cube.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["golden"].get());
 
-    assetManager->loadTexture("assets/models/City_01_Atlas_Dif.png", "City_01_Atlas_Dif.png", "texture_diffuse");
-    assetManager->createMaterial("building", "lit",
-        MaterialParam{}, { assetManager->getTextures()["City_01_Atlas_Dif.png"].get() });
-    assetManager->getModel("assets/models/Building_04.obj")->getMeshes()[0]->changeMaterial(assetManager->getMaterials()["building"].get());
+    //assetManager->loadTexture("City_01_Atlas_Dif.png", "assets/models/City_01_Atlas_Dif.png", "texture_diffuse");
+    assetManager->loadTexture("cottage_diffuse.png", "assets/models/cottage_diffuse.png", "texture_diffuse");
+    assetManager->getMaterials()["cottage_obj.obj.cottage_texture"]->changeDiffuseTexture(assetManager->getTextures()["cottage_diffuse.png"].get());
+
 
     scene->camera->position = glm::vec3(25.0f, 0.0f, 0.0f);
     renderer = std::make_unique<Renderer>(*glfwHandler.get(), *assetManager.get());

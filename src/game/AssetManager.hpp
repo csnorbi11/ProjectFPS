@@ -16,10 +16,9 @@ public:
 	AssetManager() = default;
 	~AssetManager() = default;
 
-	void loadModel(const std::string& path, const std::string& shaderProgName);
-	bool isModelLoaded(const std::string& path) const;
+	void loadModel(const std::string& path);
 	
-	void loadTexture(const std::string& path, const std::string& name, const std::string& type, bool flip = false);
+	void loadTexture(const std::string& name, const std::string& path, const std::string& type, bool flip = false);
 
 	void createMaterial(const std::string& name, const std::string& programName,
 		const MaterialParam& matParam, const MaterialTextureParam& matTexture);
