@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -24,7 +25,7 @@ public:
     ~Model();
 
 
-    std::vector<std::unique_ptr<Mesh>> &getMeshes();
+    std::unordered_map<std::string, std::unique_ptr<Mesh>> &getMeshes();
     const std::string& getName();
 
 
@@ -39,8 +40,7 @@ private:
 
     void logModelInfo() const;
 
-    std::vector<Texture> textures_loaded;
-    std::vector<std::unique_ptr<Mesh>> meshes;
+    std::unordered_map<std::string, std::unique_ptr<Mesh>> meshes;
 
     std::string directory;
     std::string fullPath;

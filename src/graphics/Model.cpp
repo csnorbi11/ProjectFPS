@@ -26,7 +26,7 @@ Model::Model(std::string path, AssetManager& assetManager)
 Model::~Model() = default;
 
 
-std::vector<std::unique_ptr<Mesh>>& Model::getMeshes() {
+std::unordered_map<std::string, std::unique_ptr<Mesh>>& Model::getMeshes() {
 	return meshes;
 }
 
@@ -42,8 +42,8 @@ void Model::logModelInfo() const {
 	std::cout << "\tmeshes count: " << meshes.size() << std::endl;
 	uint32_t totalVertices = 0;
 	for (auto& mesh : meshes) {
-		totalVertices += mesh->getVertices().size();
-		std::cout << "\t\tvertices count: " << mesh->getVertices().size() << std::endl;
+		totalVertices += mesh.second->getVertices().size();
+		std::cout << "\t\tvertices count: " << mesh.second->getVertices().size() << std::endl;
 	}
 	std::cout << "\ttotal vertices: " << totalVertices << std::endl;
 	std::cout << "models size: " << static_cast<float>(totalVertices * sizeof(Vertex)) / 1000.f / 1000.f << "MB" << std::endl;
@@ -80,7 +80,9 @@ void Model::processNode(aiNode* node, const aiScene* scene, AssetManager& assetM
 		// the node object only contains indices to index the actual objects in the scene.
 		// the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.emplace_back(std::unique_ptr<Mesh>(processMesh(mesh, scene, assetManager)));
+		std::string meshName{ "mesh_" };
+		meshName.append(mesh->mName.C_Str());
+		meshes.insert_or_assign(meshName, std::unique_ptr<Mesh>(processMesh(mesh, scene, assetManager)));
 	}
 	// after we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (unsigned int i = 0; i < node->mNumChildren; i++)

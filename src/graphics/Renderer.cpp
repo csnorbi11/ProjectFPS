@@ -26,7 +26,7 @@ Renderer::Renderer(GLFWHandler& glfwHandler, AssetManager& assetManager)
         if (!modelPtr) continue; // Biztonsági ellenőrzés
 
         for (auto& mesh : modelPtr->getMeshes()) {
-            mesh->setupInstancing(instanceVBO);
+            mesh.second->setupInstancing(instanceVBO);
         }
     }
 }
@@ -126,15 +126,15 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
             continue;
         for (const auto& mesh : model->getMeshes()) {
             Material* mat = nullptr;
-            if (object->getOverideMaterial(mesh->getName())) {
-                mat = object->getOverideMaterial(mesh->getName());
+            if (object->getOverideMaterial(mesh.second->getName())) {
+                mat = object->getOverideMaterial(mesh.second->getName());
             }
             else {
-                mat = mesh->getMaterial();
+                mat = mesh.second->getMaterial();
             }
-            if (!mesh.get() || !mesh->getMaterial())
+            if (!mesh.second.get() || !mesh.second->getMaterial())
                 continue;
-            renderQueue.push_back({&model->getName(), mesh.get(),mat,object->getTransform()});
+            renderQueue.push_back({&model->getName(), mesh.second.get(),mat,object->getTransform()});
         }
     }
     std::sort(renderQueue.begin(), renderQueue.end(), [](const RenderCommand& a, const RenderCommand& b) {
