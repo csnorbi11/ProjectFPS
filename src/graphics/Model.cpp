@@ -14,7 +14,7 @@
 #include <unordered_map>
 
 #include "game/AssetManager.hpp"
-
+#include "Mesh.hpp"
 
 Model::Model(std::string path, AssetManager& assetManager)
     :

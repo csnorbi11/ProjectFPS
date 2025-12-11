@@ -2,6 +2,7 @@
 
 #include "Mesh.hpp"
 
+
 #include <glad/glad.h>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices,

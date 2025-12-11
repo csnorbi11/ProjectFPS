@@ -10,12 +10,12 @@
 #include <assimp/postprocess.h>
 
 #include "Mesh.hpp"
+#include "Vertex.hpp"
 
 class ShaderProgram;
 class AssetManager;
 class Texture;
 
-//unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
 class Model {
 public:

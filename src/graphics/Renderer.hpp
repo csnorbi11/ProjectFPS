@@ -10,13 +10,8 @@
 #include "../scene/Scene.hpp"
 #include "../platform/GLFWHandler.hpp"
 #include "../game/AssetManager.hpp"
+#include "RenderCommand.hpp"
 
-struct RenderCommand {
-    const std::string* modelPath;
-    Mesh* mesh;
-    Material* material;
-    glm::mat4 transform;
-};
 
 class Renderer {
 public:
