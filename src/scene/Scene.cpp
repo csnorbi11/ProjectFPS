@@ -106,16 +106,16 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
     mats.push_back(assetManager.getMaterials()["pointLight"].get());
 
     map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
-        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("assets/models/cube.obj"), mats })));
+        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("cube.obj"), mats })));
     map->getPointLights()[0]->position = glm::vec3(35.0f, 4.0f, 5.0f);
     map->getPointLights()[0]->setOverallColor({ 0.3f,0.9f,1.f });
 
     map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
-        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("assets/models/cube.obj"), mats })));
+        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("cube.obj"), mats })));
     map->getPointLights()[1]->position = glm::vec3(26.0f, 1.0f, -2.0f);
     map->getPointLights()[1]->setOverallColor({ 1.0f,0.3f,0.f });
     map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
-        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("assets/models/cube.obj"), mats })));
+        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("cube.obj"), mats })));
     map->getPointLights()[2]->position = glm::vec3(22.0f, 3.0f, -2.0f);
     map->getPointLights()[2]->setOverallColor({ 1.0f,0.9f,0.f });
 }

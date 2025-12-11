@@ -64,8 +64,11 @@ const std::string& Material::getName()
 
 void Material::changeDiffuseTexture(Texture* newTexture)
 {
-	diffuseMap = newTexture;
-	hasTexture = (diffuseMap || specularMap) ? true : false;
+	if (newTexture) {
+		diffuseMap = newTexture;
+		hasTexture = (diffuseMap || specularMap) ? true : false;
+	}
+
 }
 
 void Material::changeSpecularTexture(Texture* newTexture)
