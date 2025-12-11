@@ -67,12 +67,12 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
         }
     }
 
-    map = std::make_unique<Map>(std::move(dirLight));
+    map = std::make_unique<Map>(std::move(dirLight),assetManager);
 
     buffer.clear();
     buffer.seekg(0);
-    for (const auto& modelPath : modelsToLoad) {
-        requestToLoadModels(assetManager, modelPath);
+    for (const auto& path : modelsToLoad) {
+        requestToLoadModels(assetManager, path);
     }
 
     while (std::getline(buffer, line)) {
@@ -82,7 +82,7 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
         sline >> objType;
         if (objType == "OBJECT") {
             sline >> modelPath >> position.x >> position.y >> position.z;
-            map->addObject(std::make_unique<StaticObject>( GameObjectParams{assetManager.getModel(modelPath),position }));
+            map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager.getModel(modelPath),{},position }));
         }
         else if(objType=="LIGHT") {
             float constant, linear, quadratic;
@@ -91,11 +91,28 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
             map->addPointLight(std::make_unique<PointLight>(
                 PointLightParams{},
                 LightParams{},
-            GameObjectParams{ assetManager.getModel(modelPath), position }
+                GameObjectParams{ assetManager.getModel(modelPath),{}, position }
             ));
         }
         
     }
+
+    std::vector<Material*> mats;
+    mats.push_back(assetManager.getMaterials()["pointLight"].get());
+
+    map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
+        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("assets/models/cube.obj"), mats })));
+    map->getPointLights()[0]->position = glm::vec3(35.0f, 4.0f, 5.0f);
+    map->getPointLights()[0]->setOverallColor({ 0.3f,0.9f,1.f });
+
+    map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
+        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("assets/models/cube.obj"), mats })));
+    map->getPointLights()[1]->position = glm::vec3(26.0f, 1.0f, -2.0f);
+    map->getPointLights()[1]->setOverallColor({ 1.0f,0.3f,0.f });
+    map->addPointLight((std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(map->getPointLights().size()),
+        1.f,0.22f,.20f }, LightParams{}, GameObjectParams{ assetManager.getModel("assets/models/cube.obj"), mats })));
+    map->getPointLights()[2]->position = glm::vec3(22.0f, 3.0f, -2.0f);
+    map->getPointLights()[2]->setOverallColor({ 1.0f,0.9f,0.f });
 }
 
 void Scene::update(double deltaTime) {
@@ -105,7 +122,7 @@ void Scene::update(double deltaTime) {
 
 void Scene::requestToLoadModels(AssetManager& assetManager, std::string modelPath)
 {
-    assetManager.loadModel(modelPath, "basic");
+    assetManager.loadModel(modelPath, "lit");
 }
 
 std::vector<GameObject*> Scene::getAllObjects() const

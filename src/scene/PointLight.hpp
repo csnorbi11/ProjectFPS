@@ -15,7 +15,7 @@ class PointLight final : public Light, public GameObject {
 public:
     explicit PointLight(const PointLightParams& params=PointLightParams(),
         const LightParams& lightParams=LightParams(),
-        const GameObjectParams& gameObjectParams={nullptr,
+        const GameObjectParams& gameObjectParams = { nullptr,{},
         glm::vec3(0.f),glm::vec3(0.f)});
     ~PointLight() override;
 

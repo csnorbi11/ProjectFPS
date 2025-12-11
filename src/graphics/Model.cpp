@@ -187,7 +187,7 @@ Mesh* Model::processMesh(aiMesh *mesh, const aiScene *scene, AssetManager& asset
     }
     
 
-    assetManager.createMaterial(path, assetManager.getShaderPrograms()["lit"].get(), matParam, {diffuseMap,specularMap});
+    assetManager.createMaterial(path, "lit", matParam, {diffuseMap,specularMap});
 
     return new Mesh(vertices, indices,assetManager.getMaterials()[path].get(), triangles);
 }

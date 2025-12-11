@@ -10,7 +10,8 @@ GameObject::GameObject(const GameObjectParams& params)
         forward(0.f,0.f,-1.f),
         right(1.f,0.f,0.f),
         up(0.f,1.f,0.f),
-        model(params.model)
+        model(params.model),
+		materialOverride(params.overrideMats)
 {}
 
 
@@ -94,6 +95,11 @@ glm::vec3 GameObject::getEulerAngles() const
 glm::quat GameObject::getQuaternion() const
 {
 	return orientation;
+}
+
+std::vector<Material*>& GameObject::getOverriderMaterial()
+{
+	return materialOverride;
 }
 
 bool GameObject::drawable()

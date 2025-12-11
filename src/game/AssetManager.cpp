@@ -28,11 +28,11 @@ void AssetManager::loadShader(const std::string& path, GLenum shaderType)
 	}
 }
 
-void AssetManager::createMaterial(const std::string& name, ShaderProgram* program, const MaterialParam& matParam, const MaterialTextureParam& matTexture)
+void AssetManager::createMaterial(const std::string& name, const std::string& programName, const MaterialParam& matParam, const MaterialTextureParam& matTexture)
 {
     if (shaders.count(name) == 0) {
         std::cout << "Material created: " << name<< std::endl;
-        materials.emplace(name, std::make_unique<Material>(name, program, matParam, matTexture));
+        materials.emplace(name, std::make_unique<Material>(name, shaderPrograms[programName].get(), matParam, matTexture));
     }
     else {
         std::cerr << "Material done: " << name << std::endl;
@@ -54,7 +54,7 @@ void AssetManager::createShaderProgram(const std::string& name, const std::strin
 
 Model* AssetManager::getModel(std::string model)
 {
-	return models[model].get();
+    return models.count(model) != 0 ? models[model].get() : nullptr;
 }
 
 std::unordered_map<std::string, std::unique_ptr<Model>>& AssetManager::getModels()

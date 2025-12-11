@@ -21,7 +21,7 @@ public:
 	
 	void loadTexture(const std::string& path, const std::string& name, const std::string& type, bool flip = false);
 
-	void createMaterial(const std::string& name, ShaderProgram* program,
+	void createMaterial(const std::string& name, const std::string& programName,
 		const MaterialParam& matParam, const MaterialTextureParam& matTexture);
 	
 	void createShaderProgram(const std::string& name,

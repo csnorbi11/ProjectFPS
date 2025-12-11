@@ -1,35 +1,11 @@
 #include <utility>
 #include <stdexcept>
+#include <vector>
 
 #include "Map.hpp"
 
-Map::Map(AssetManager& assetManager)
-{
 
-	
-
-
-
-	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
-		1.f,0.22f,.20f },LightParams{},GameObjectParams{assetManager.getModel("assets/models/cube.obj")}));
-	pointLights[0]->position = glm::vec3(35.0f, 4.0f, 5.0f);
-	pointLights[0]->setOverallColor({ 0.3f,0.9f,1.f });
-
-	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
-		1.f,0.22f,.20f }));
-	pointLights[1]->position = glm::vec3(26.0f, 1.0f, -2.0f);
-	pointLights[1]->setOverallColor({ 1.0f,0.3f,0.f });
-	pointLights.emplace_back(std::make_unique<PointLight>(PointLightParams{ static_cast<uint32_t>(pointLights.size()),
-		1.f,0.22f,.20f }));
-	pointLights[2]->position = glm::vec3(22.0f, 3.0f, -2.0f);
-	pointLights[2]->setOverallColor({ 1.0f,0.9f,0.f });
-
-
-
-
-}
-
-Map::Map(std::unique_ptr<DirectionalLight> dirLight)
+Map::Map(std::unique_ptr<DirectionalLight> dirLight, AssetManager& assetManager)
 	:
 	directionalLight(std::move(dirLight))
 {

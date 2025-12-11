@@ -7,6 +7,7 @@
 
 struct GameObjectParams {
     Model* model = nullptr;
+    std::vector<Material*> overrideMats{};
     glm::vec3 position{0.f};
     glm::vec3 rotation{0.f};
 };
@@ -28,9 +29,11 @@ public:
 	void rotateEulerY(float angle, bool isGlobal = false);
 	void rotateEulerZ(float angle, bool isGlobal = false);
 
+
     glm::mat4 getTransform();
     glm::vec3 getEulerAngles() const;
 	glm::quat getQuaternion() const;
+    std::vector<Material*>& getOverriderMaterial();
 
     bool drawable();
 
@@ -50,7 +53,7 @@ protected:
     glm::vec3 up = { 0,1,0 };
 
     Model* model = nullptr;
-
+    std::vector<Material*> materialOverride{};
 
 };
 

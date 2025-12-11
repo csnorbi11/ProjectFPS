@@ -125,10 +125,19 @@ void Renderer::feedRenderQueue(std::vector<GameObject*>& gameObjects)
         Model* model = object->getModel();
         if (!model)
             continue;
+        size_t i = 0;
         for (const auto& mesh : model->getMeshes()) {
+            Material* mat = nullptr;
+            if (!object->getOverriderMaterial().empty() && object->getOverriderMaterial()[i]) {
+                mat = object->getOverriderMaterial()[i];
+                i++;
+            }
+            else {
+                mat = mesh->getMaterial();
+            }
             if (!mesh.get() || !mesh->getMaterial())
                 continue;
-            renderQueue.push_back({&model->getPath(), mesh.get(),mesh->getMaterial(),object->getTransform()});
+            renderQueue.push_back({&model->getPath(), mesh.get(),mat,object->getTransform()});
         }
     }
     std::sort(renderQueue.begin(), renderQueue.end(), [](const RenderCommand& a, const RenderCommand& b) {
