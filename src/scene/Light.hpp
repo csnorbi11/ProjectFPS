@@ -8,9 +8,8 @@
 
 
 struct LightParams {
-    glm::vec3 ambient{1.f};
-    glm::vec3 diffuse{1.f};
-    glm::vec3 specular{1.f};
+    glm::vec3 color;
+    float intensity;
 };
 
 class Light {
@@ -20,20 +19,16 @@ public:
 
     virtual void apply(ShaderProgram* program)=0;
 
-    void setAmbient(const glm::vec3& ambient);
-    void setDiffuse(const glm::vec3& diffuse);
-    void setSpecular(const glm::vec3& specular);
-    void setOverallColor(const glm::vec3& color, float ambientFactor=0.4f);
-    const glm::vec3& getAmbient() const;
-    const glm::vec3& getDiffuse() const;
-    const glm::vec3& getSpecular() const;
+    virtual void setColor(glm::vec3 color);
+    virtual void setIntensity(float intensity);
+    virtual void setColorAndIntensity(glm::vec3 color, float intensity);
+
+    glm::vec3 getColor();
+    float getIntensity();
 
 protected:
-
-
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
+    glm::vec3 color;
+    float intensity;
 };
 
 

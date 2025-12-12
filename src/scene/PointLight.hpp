@@ -23,7 +23,9 @@ public:
     void apply(ShaderProgram* program) override;
     void update(float deltaTime) override;
 
-    void setColor(glm::vec3 color);
+    virtual void setColor(glm::vec3 color) override;
+    virtual void setIntensity(float intensity) override;
+    virtual void setColorAndIntensity(glm::vec3 color, float intensity) override;
 
 private:
     void updateBulbMaterial();

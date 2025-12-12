@@ -44,25 +44,12 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
             
             glm::vec3 direction{ -0.5f,-0.5f,0.f };
             float intensity=0.5f;
-            glm::vec3 ambient{ 1.f }, diffuse{ 1.f }, specular{ 1.f };
-            sline >> direction.x >> direction.y >> direction.z >> intensity >> ambient.x >> ambient.y >> ambient.z >>
-                diffuse.x >> diffuse.y >> diffuse.z >> specular.x >> specular.y >> specular.z;
+            glm::vec3 color{};
+            sline >> direction.x >> direction.y >> direction.z >> intensity >> color.x >> color.y >> color.z;
 
-            if (glm::length(direction)>1) {
-                direction = glm::normalize(direction);
-            }
-            if (glm::length(ambient) > 1) {
-                ambient = glm::normalize(ambient);
-            }
-            if (glm::length(diffuse) > 1) {
-                diffuse = glm::normalize(diffuse);
-            }
-            if (glm::length(specular) > 1) {
-                specular = glm::normalize(specular);
-            }
             dirLight = std::make_unique<DirectionalLight>(
-                DirectionalLightParams{ direction ,intensity},
-                LightParams{ambient,diffuse,specular}
+                DirectionalLightParams{ direction},
+                LightParams{color,intensity}
             );
         }
     }
@@ -89,19 +76,14 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
         }
         else if(objType=="LIGHT") {
             float constant, linear, quadratic;
-            glm::vec3 ambient, diffuse, specular;
-            sline >> modelPath >> position.x >> position.y >> position.z >> ambient.x >> ambient.y >> ambient.z;
-            diffuse = ambient;
-            specular = ambient;
-            std::string matName{ std::to_string(diffuse.x) + std::to_string(diffuse.y) + std::to_string(diffuse.z) + "pointLight" };
-            assetManager.createMaterial(matName, "unlit", { ambient,diffuse,specular }, {});
-            
+            glm::vec3 color{};
+            sline >> modelPath >> position.x >> position.y >> position.z >> color.x >> color.y >> color.z;
+
             size_t lastSlash = modelPath.find_last_of('/')+1;
             std::string modelName = lastSlash != std::string::npos&&lastSlash!=0 ? modelPath.substr(lastSlash) : modelPath;
             PointLight* light = new PointLight{assetManager, PointLightParams{map->getPointLights().size(),1.f,0.22f,.20f },
-                LightParams{ambient,diffuse,specular},
-                GameObjectParams{ assetManager.getModel(modelName), position}            };
-            //light->overrideMaterial("mesh_Cube", assetManager.getMaterials()[matName].get());
+                LightParams{color, 1.f},
+                GameObjectParams{ assetManager.getModel(modelName), position}};
             map->addPointLight(std::unique_ptr<PointLight>(light));
         }
         

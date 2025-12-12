@@ -17,7 +17,7 @@ PointLight::PointLight(AssetManager& assetManager, const PointLightParams& param
     std::string name{ "light" };
     bulbMaterial = std::make_unique<Material>(
         std::move(name), assetManager.getShaderPrograms()["unlit"].get(),
-        MaterialParam{ ambient,diffuse,specular,1.f }, MaterialTextureParam{}
+        MaterialParam{ color,color,color,1.f }, MaterialTextureParam{}
     );
     updateBulbMaterial();
 }
@@ -29,9 +29,8 @@ void PointLight::apply(ShaderProgram *program) {
     program->setFloat("pointLights["+std::to_string(index)+"].linear",linear);
     program->setFloat("pointLights["+std::to_string(index)+"].quadratic",quadratic);
     program->setVec3("pointLights["+std::to_string(index)+"].position",position);
-    program->setVec3("pointLights["+std::to_string(index)+"].ambient", ambient);
-    program->setVec3("pointLights["+std::to_string(index)+"].diffuse", diffuse);
-    program->setVec3("pointLights["+std::to_string(index)+"].specular", specular);
+    program->setVec3("pointLights["+std::to_string(index)+"].color", color);
+    program->setFloat("pointLights["+std::to_string(index)+"].intensity", intensity);
 }
 
 void PointLight::update(float deltaTime)
@@ -42,17 +41,28 @@ void PointLight::update(float deltaTime)
 
 void PointLight::setColor(glm::vec3 color)
 {
-    ambient = color;
-    diffuse = color;
-    specular = color;
-
+    Light::setColor(color);
     updateBulbMaterial();
 }
 
+void PointLight::setIntensity(float intensity)
+{
+    Light::setIntensity(intensity);
+    updateBulbMaterial();
+}
+
+void PointLight::setColorAndIntensity(glm::vec3 color, float intensity)
+{
+    Light::setColorAndIntensity(color, intensity);
+    updateBulbMaterial();
+}
+
+
+
 void PointLight::updateBulbMaterial()
 {
-    bulbMaterial->changeAmbientColor(ambient);
-    bulbMaterial->changeAmbientColor(diffuse);
-    bulbMaterial->changeAmbientColor(specular);
+    bulbMaterial->changeAmbientColor(color/intensity);
+    bulbMaterial->changeDiffuseColor(color/intensity);
+    bulbMaterial->changeSpecularColor(color/intensity);
     overrideMaterials.insert_or_assign(model->getMeshes().begin()->second->getName(), bulbMaterial.get());
 }

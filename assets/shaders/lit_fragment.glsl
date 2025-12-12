@@ -12,9 +12,7 @@ struct TextureMaterial {
 };
 struct DirectionalLight {
     vec3 direction;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec3 color;
     float intensity;
 };
 struct PointLight{
@@ -22,9 +20,8 @@ struct PointLight{
     float constant;
     float linear;
     float quadratic;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec3 color;
+    float intensity;
 };
 
 
@@ -74,9 +71,9 @@ vec3 CalcDirLight(DirectionalLight light,vec3 normal,vec3 viewDir){
     vec3 halfway= normalize(lightDir + viewDir);
     float spec=pow(max(dot(normal,halfway),0.f),material.shininess);
 
-    vec3 ambient=light.ambient*material.ambient;
-    vec3 diffuse=light.diffuse*diff*material.diffuse;
-    vec3 specular=light.specular*spec*material.specular;
+    vec3 ambient=light.color*light.intensity*material.ambient;
+    vec3 diffuse=light.color*light.intensity*diff*material.diffuse;
+    vec3 specular=light.color*light.intensity*spec*material.specular;
 
     if(hasTexture){
         ambient*=texture(texMat.diffuse, TexCoords).rgb;
@@ -98,9 +95,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float attenuation = 1.0 / (light.constant + light.linear * distance +
     light.quadratic * (distance * distance));
 
-    vec3 ambient=light.ambient*material.ambient;
-    vec3 diffuse=light.diffuse*diff*material.diffuse;
-    vec3 specular=light.specular*spec*material.specular;
+    vec3 ambient=light.color*light.intensity*material.ambient;
+    vec3 diffuse=light.color*light.intensity*diff*material.diffuse;
+    vec3 specular=light.color*light.intensity*spec*material.specular;
 
     if(hasTexture){
         ambient*=texture(texMat.diffuse, TexCoords).rgb;
