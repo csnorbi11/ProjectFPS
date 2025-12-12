@@ -3,6 +3,8 @@
 #include <glm/vec3.hpp>
 
 #include "../graphics/ShaderProgram.hpp"
+#include "graphics/Material.hpp"
+#include "game/AssetManager.hpp"
 
 
 struct LightParams {
@@ -27,6 +29,8 @@ public:
     const glm::vec3& getSpecular() const;
 
 protected:
+
+
     glm::vec3 ambient;
     glm::vec3 diffuse;
     glm::vec3 specular;

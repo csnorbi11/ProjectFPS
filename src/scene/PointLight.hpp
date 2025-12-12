@@ -3,6 +3,7 @@
 
 #include "GameObject.hpp"
 #include "Light.hpp"
+#include "graphics/Material.hpp"
 
 struct PointLightParams {
     size_t index;
@@ -13,7 +14,7 @@ struct PointLightParams {
 
 class PointLight final : public Light, public GameObject {
 public:
-    explicit PointLight(const PointLightParams& params=PointLightParams(),
+    explicit PointLight(AssetManager& assetManager, const PointLightParams& params=PointLightParams(),
         const LightParams& lightParams=LightParams(),
         const GameObjectParams& gameObjectParams = { nullptr,
         glm::vec3(0.f),glm::vec3(0.f)});
@@ -22,12 +23,19 @@ public:
     void apply(ShaderProgram* program) override;
     void update(float deltaTime) override;
 
+    void setColor(glm::vec3 color);
+
 private:
+    void updateBulbMaterial();
+
+
     float constant;
     float linear;
     float quadratic;
 
     size_t index;
+
+    std::unique_ptr<Material> bulbMaterial;
     
 };
 

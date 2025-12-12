@@ -1,4 +1,6 @@
 #include "Light.hpp"
+#include <memory>
+
 
 #include "../graphics/ShaderProgram.hpp"
 

@@ -98,11 +98,10 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
             
             size_t lastSlash = modelPath.find_last_of('/')+1;
             std::string modelName = lastSlash != std::string::npos&&lastSlash!=0 ? modelPath.substr(lastSlash) : modelPath;
-            PointLight* light = new PointLight{ PointLightParams{map->getPointLights().size(),1.f,0.22f,.20f },
+            PointLight* light = new PointLight{assetManager, PointLightParams{map->getPointLights().size(),1.f,0.22f,.20f },
                 LightParams{ambient,diffuse,specular},
-                GameObjectParams{ assetManager.getModel(modelName), position} 
-            };
-            light->overrideMaterial("mesh_Cube", assetManager.getMaterials()[matName].get());
+                GameObjectParams{ assetManager.getModel(modelName), position}            };
+            //light->overrideMaterial("mesh_Cube", assetManager.getMaterials()[matName].get());
             map->addPointLight(std::unique_ptr<PointLight>(light));
         }
         
@@ -113,6 +112,9 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
 void Scene::update(double deltaTime) {
 
     camera->update(static_cast<float>(deltaTime));
+    for (auto& obj : getAllObjects()) {
+        obj->update(static_cast<float>(deltaTime));
+    }
 }
 
 void Scene::requestToLoadModels(AssetManager& assetManager, std::string modelPath)

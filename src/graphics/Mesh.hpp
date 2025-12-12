@@ -38,7 +38,7 @@ public:
     const std::vector<Vertex> &getVertices() const;
     const std::vector<Triangle> &getTriangles() const;
     uint32_t getVAO() const;
-    const std::string& getName();
+    std::string& getName();
 
 private:
     void setupMesh();

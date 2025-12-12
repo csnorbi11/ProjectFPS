@@ -31,6 +31,10 @@ public:
 
     void apply() const;
 
+    void changeAmbientColor(glm::vec3 color);
+    void changeDiffuseColor(glm::vec3 color);
+    void changeSpecularColor(glm::vec3 color);
+
     const std::string& getName();
     void changeDiffuseTexture(Texture* newTexture);
     void changeSpecularTexture(Texture* newTexture);

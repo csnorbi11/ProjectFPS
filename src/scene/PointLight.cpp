@@ -1,8 +1,9 @@
 #include "PointLight.hpp"
 
+#include <GLFW/glfw3.h>
 #include "../graphics/ShaderProgram.hpp"
 
-PointLight::PointLight(const PointLightParams& params,
+PointLight::PointLight(AssetManager& assetManager, const PointLightParams& params,
                        const LightParams& lightParams,
                        const GameObjectParams& gameObjectParams)
                 :
@@ -12,7 +13,14 @@ PointLight::PointLight(const PointLightParams& params,
     linear(params.linear),
     quadratic(params.quadratic),
     index(params.index)
-{}
+{
+    std::string name{ "light" };
+    bulbMaterial = std::make_unique<Material>(
+        std::move(name), assetManager.getShaderPrograms()["unlit"].get(),
+        MaterialParam{ ambient,diffuse,specular,1.f }, MaterialTextureParam{}
+    );
+    updateBulbMaterial();
+}
 
 PointLight::~PointLight() =default;
 
@@ -28,4 +36,23 @@ void PointLight::apply(ShaderProgram *program) {
 
 void PointLight::update(float deltaTime)
 {
+
+
+}
+
+void PointLight::setColor(glm::vec3 color)
+{
+    ambient = color;
+    diffuse = color;
+    specular = color;
+
+    updateBulbMaterial();
+}
+
+void PointLight::updateBulbMaterial()
+{
+    bulbMaterial->changeAmbientColor(ambient);
+    bulbMaterial->changeAmbientColor(diffuse);
+    bulbMaterial->changeAmbientColor(specular);
+    overrideMaterials.insert_or_assign(model->getMeshes().begin()->second->getName(), bulbMaterial.get());
 }

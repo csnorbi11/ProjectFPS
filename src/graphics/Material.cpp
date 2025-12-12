@@ -56,6 +56,21 @@ void Material::apply() const
 
 }
 
+void Material::changeAmbientColor(glm::vec3 color)
+{
+	ambient = color;
+}
+
+void Material::changeDiffuseColor(glm::vec3 color)
+{
+	ambient = color;
+}
+
+void Material::changeSpecularColor(glm::vec3 color)
+{
+	ambient = color;
+}
+
 const std::string& Material::getName()
 {
 	return name;

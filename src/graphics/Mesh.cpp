@@ -58,7 +58,7 @@ uint32_t Mesh::getVAO() const
     return VAO;
 }
 
-const std::string& Mesh::getName()
+std::string& Mesh::getName()
 {
     return name;
 }
