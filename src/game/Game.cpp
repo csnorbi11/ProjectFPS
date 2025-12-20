@@ -29,7 +29,6 @@ Game::Game() {
 
     scene = std::make_unique<Scene>("C:/Users/Norbi/Documents/start.json",*assetManager);
 
-    scene->camera= std::make_unique<Camera>();
 
     assetManager->createMaterial("golden", "lit",
         { {0.24725f, 0.1995f, 0.0745f},{0.75164f, 0.60648f, 0.22648f},{0.62828f, 0.5558f, 0.366065f},51.2f }, {});
@@ -40,7 +39,6 @@ Game::Game() {
 
 
 
-    scene->camera->position = glm::vec3(25.0f, 0.0f, 0.0f);
     renderer = std::make_unique<Renderer>(*glfwHandler.get(), *assetManager.get());
     renderer->setActiveScene(scene.get());
 }

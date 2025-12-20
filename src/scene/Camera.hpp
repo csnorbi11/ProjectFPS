@@ -10,11 +10,13 @@ class GLFWwindow;
 
 class Camera final :public DynamicObject, public IControllable {
 public:
-    Camera();
-    ~Camera() override;
+	Camera() = default;
+    ~Camera() = default;
 
     void update(float deltaTime) override;
     void recieveInput(GLFWwindow* window) override;
+
+    void setRotation(float yaw, float pitch);
 
     glm::mat4 getViewMatrix() const;
 

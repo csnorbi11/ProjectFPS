@@ -8,27 +8,27 @@
 
 
 struct LightParams {
-    glm::vec3 color;
-    float intensity;
+	glm::vec3 color{ 1.f };
+	float intensity = 1;
 };
 
 class Light {
 public:
-    explicit Light(const LightParams& params);
-    virtual ~Light();
+	explicit Light(const LightParams& params);
+	virtual ~Light();
 
-    virtual void apply(ShaderProgram* program)=0;
+	virtual void apply(ShaderProgram* program) = 0;
 
-    virtual void setColor(glm::vec3 color);
-    virtual void setIntensity(float intensity);
-    virtual void setColorAndIntensity(glm::vec3 color, float intensity);
+	virtual void setColor(glm::vec3 color);
+	virtual void setIntensity(float intensity);
+	virtual void setColorAndIntensity(glm::vec3 color, float intensity);
 
-    glm::vec3 getColor();
-    float getIntensity();
+	glm::vec3 getColor();
+	float getIntensity();
 
 protected:
-    glm::vec3 color;
-    float intensity;
+	glm::vec3 color;
+	float intensity;
 };
 
 

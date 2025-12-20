@@ -8,10 +8,6 @@
 #include "../platform/GLFWInput.hpp"
 
 
-Camera::Camera() = default;
-
-Camera::~Camera()=default;
-
 
 void Camera::update(float deltaTime)
 {
@@ -69,6 +65,24 @@ void Camera::recieveInput(GLFWwindow* window)
 
     prevMousePosX = mouseX;
     prevMousePosY = mouseY;
+}
+
+void Camera::setRotation(float yaw, float pitch)
+{
+    if (pitch > glm::radians(89.0f)) {
+        pitch = glm::radians(89.0f);
+    }
+    else if (pitch < glm::radians(-89.0f)) {
+        pitch = glm::radians(-89.0f);
+    }
+
+    glm::quat qPitch = glm::angleAxis(pitch, glm::vec3(1.f, 0.f, 0.f));
+    glm::quat qYaw = glm::angleAxis(yaw, glm::vec3(0.f, 1.f, 0.f));
+
+    setQuaternion(glm::normalize(qYaw * qPitch));
+    calculateVectors();
+    this->yaw = yaw;
+    this->pitch = pitch;
 }
 
 

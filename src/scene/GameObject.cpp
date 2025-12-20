@@ -5,9 +5,10 @@ GameObject::GameObject() = default;
 GameObject::GameObject(const GameObjectParams& params)
     :
         position(params.position),
-        model(params.model)
+        model(params.model),
+		orientation(glm::quat(1.f, 0.f, 0.f, 0.f))
 {
-	rotateEuler(params.rotation, true);
+	rotateEuler(glm::radians(params.rotation), true);
 }
 
 

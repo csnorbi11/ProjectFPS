@@ -43,7 +43,7 @@ public:
     Model* getModel() const;
 
     glm::vec3 position = { 0,0,0 };
-    glm::quat orientation = {};
+    glm::quat orientation = { 1.f, 0.f, 0.f, 0.f };
 
 protected:
     glm::vec3 direction = { 0,0,1 };

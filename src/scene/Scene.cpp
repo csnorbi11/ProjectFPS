@@ -24,6 +24,7 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
 
 
 	map = std::make_unique<Map>();
+	camera = std::make_unique<Camera>();
 
 	std::ifstream file{ mapPath };
 
@@ -81,6 +82,17 @@ Scene::Scene(std::string mapPath, AssetManager& assetManager)
 			));
 		}
 
+	}
+	for (const auto& obj : data["cameras"]) {
+		glm::vec3 pos{ obj["position"][0],obj["position"][1] ,obj["position"][2] };
+		glm::vec3 rot{ obj["rotation"][0],obj["rotation"][1] ,obj["rotation"][2] };
+
+		//rot = glm::radians(rot);
+		//rot.x -= 180.f;
+		//rot.y -= 180.f;
+
+		camera->position = pos;
+		camera->setRotation(rot.y, rot.x);
 	}
 
 }
