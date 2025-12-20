@@ -27,7 +27,7 @@ Game::Game() {
     assetManager->createMaterial("pointLight", "unlit", {}, {});
 
 
-    scene = std::make_unique<Scene>("E:/start.json",*assetManager);
+    scene = std::make_unique<Scene>("C:/Users/Norbi/Documents/start.json",*assetManager);
 
     scene->camera= std::make_unique<Camera>();
 

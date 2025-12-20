@@ -5,11 +5,6 @@ GameObject::GameObject() = default;
 GameObject::GameObject(const GameObjectParams& params)
     :
         position(params.position),
-        orientation(params.rotation),
-        direction(0.f,0.f,-1.f),
-        forward(0.f,0.f,-1.f),
-        right(1.f,0.f,0.f),
-        up(0.f,1.f,0.f),
         model(params.model)
 {
 	rotateEuler(params.rotation, true);
