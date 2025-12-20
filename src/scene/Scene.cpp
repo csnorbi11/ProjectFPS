@@ -13,80 +13,70 @@
 #include "Map.hpp"
 #include <unordered_set>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 Scene::Scene(std::string mapPath, AssetManager& assetManager)
 {
-    
 
-    std::stringstream buffer;
+
+
+    map = std::make_unique<Map>();
+
     std::ifstream file{ mapPath };
 
-    if (file) {
-        buffer << file.rdbuf();
-        file.close();
+    if (!file) {
+        return;
     }
 
-    std::string line;
-    std::unique_ptr<DirectionalLight> dirLight;
+    json data = json::parse(file);
+    file.close();
+
     std::unordered_set<std::string> modelsToLoad;
-    std::string objType, modelPath;
-    glm::vec3 position;
-    while (std::getline(buffer, line)) {
-
-        std::stringstream sline{ line };
-
-        sline >> objType >> modelPath;
         
+    for (const auto& obj : data["objects"]) {
+        std::string type = obj["type"];
+        std::string modelPath = obj["model"];
+        glm::vec3 pos{ obj["position"][0],obj["position"][1] ,obj["position"][2] };
+        glm::vec3 rot{ obj["rotation"][0],obj["rotation"][1] ,obj["rotation"][2] };
+        size_t lastSlash = modelPath.find_last_of('/') + 1;
+        std::string modelName = lastSlash != std::string::npos ? modelPath.substr(lastSlash) : modelPath;
 
-        if (objType == "OBJECT"|| objType == "LIGHT") {
-            modelsToLoad.insert(modelPath);
-        }else if (objType == "DIRLIGHT") {
-            
-            glm::vec3 direction{ -0.5f,-0.5f,0.f };
-            float intensity=0.5f;
-            glm::vec3 color{};
-            sline >> direction.x >> direction.y >> direction.z >> intensity >> color.x >> color.y >> color.z;
-
-            dirLight = std::make_unique<DirectionalLight>(
-                DirectionalLightParams{ direction},
-                LightParams{color,intensity}
-            );
+        
+        if (assetManager.getModels().count(modelName) == 0) {
+            assetManager.loadModel(modelPath);
+        }
+        if (type == "static") {
+            map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager.getModel(modelName),pos, rot }));
         }
     }
+    for (const auto& obj : data["lights"]) {
+        std::string type{ obj["type"] };
+        glm::vec3 pos{ obj["position"][0],obj["position"][1] ,obj["position"][2] };
+        glm::vec3 rot{ obj["rotation"][0],obj["rotation"][1] ,obj["rotation"][2] };
+        glm::vec3 color{ obj["color"][0],obj["color"][1] ,obj["color"][2] };
+        float intensity{ obj["intensity"] };
 
-    map = std::make_unique<Map>(std::move(dirLight),assetManager);
 
-    buffer.clear();
-    buffer.seekg(0);
-    for (const auto& path : modelsToLoad) {
-        requestToLoadModels(assetManager, path);
-    }
 
-    while (std::getline(buffer, line)) {
+        if (type == "POINT") {
+            if (assetManager.getModels().count("cube.obj") == 0) {
+                assetManager.loadModel("assets/models/cube.obj");
+            }
 
-        std::stringstream sline{ line };
-        
-        sline >> objType;
-        if (objType == "OBJECT") {
-            sline >> modelPath >> position.x >> position.y >> position.z;
-            size_t lastSlash = modelPath.find_last_of('/')+1;
-            std::string modelName = lastSlash != std::string::npos ? modelPath.substr(lastSlash) : modelPath;
-            
-            map->addObject(std::make_unique<StaticObject>(GameObjectParams{ assetManager.getModel(modelName),position }));
+            map->addPointLight(std::make_unique<PointLight>(assetManager, PointLightParams{ map->getPointLights().size() }, LightParams{ color,intensity },
+                GameObjectParams{ assetManager.getModel("cube.obj"),pos }));
         }
-        else if(objType=="LIGHT") {
-            float constant, linear, quadratic;
-            glm::vec3 color{};
-            sline >> modelPath >> position.x >> position.y >> position.z >> color.x >> color.y >> color.z;
-
-            size_t lastSlash = modelPath.find_last_of('/')+1;
-            std::string modelName = lastSlash != std::string::npos&&lastSlash!=0 ? modelPath.substr(lastSlash) : modelPath;
-            PointLight* light = new PointLight{assetManager, PointLightParams{map->getPointLights().size(),1.f,0.22f,.20f },
-                LightParams{color, 1.f},
-                GameObjectParams{ assetManager.getModel(modelName), position}};
-            map->addPointLight(std::unique_ptr<PointLight>(light));
+        else if (type == "SUN") {
+            rot = glm::normalize(rot);
+            map->setDirectionalLight(std::make_unique<DirectionalLight>(
+                DirectionalLightParams{ rot }, LightParams{ color,intensity }
+            ));
         }
+
         
+        std::cout << pos.x << ":" << pos.y << ":" << pos.z << "\t" << color.x << ":" << color.y << ":" << color.z <<"\t"<< intensity<< std::endl;
     }
 
 }

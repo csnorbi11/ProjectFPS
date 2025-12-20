@@ -11,7 +11,9 @@ GameObject::GameObject(const GameObjectParams& params)
         right(1.f,0.f,0.f),
         up(0.f,1.f,0.f),
         model(params.model)
-{}
+{
+	rotateEuler(params.rotation, true);
+}
 
 
 GameObject::~GameObject() = default;

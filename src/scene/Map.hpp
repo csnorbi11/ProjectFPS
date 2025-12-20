@@ -11,7 +11,7 @@
 
 class Map {
 public:
-	Map(std::unique_ptr<DirectionalLight> dirLight, AssetManager& assetManager);
+	Map();
 	~Map() = default;
 
 	void addObject(std::unique_ptr<StaticObject> object);

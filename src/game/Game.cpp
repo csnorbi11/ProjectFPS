@@ -27,16 +27,16 @@ Game::Game() {
     assetManager->createMaterial("pointLight", "unlit", {}, {});
 
 
-    scene = std::make_unique<Scene>("E:/lvl1.txt",*assetManager);
+    scene = std::make_unique<Scene>("E:/start.json",*assetManager);
 
     scene->camera= std::make_unique<Camera>();
 
     assetManager->createMaterial("golden", "lit",
         { {0.24725f, 0.1995f, 0.0745f},{0.75164f, 0.60648f, 0.22648f},{0.62828f, 0.5558f, 0.366065f},51.2f }, {});
-    assetManager->getModel("cube.obj")->getMeshes()["mesh_Cube"]->changeMaterial(assetManager->getMaterials()["golden"].get());
+    //assetManager->getModel("cube.obj")->getMeshes()["mesh_Cube"]->changeMaterial(assetManager->getMaterials()["golden"].get());
     assetManager->createMaterial("blue", "lit",
         { {0.2f, 0.2f,1.f},{0.2f, 0.2f,1.f},{0.2f, 0.2f,1.f},2.f }, {});
-    scene->map->getObjects()[scene->map->getObjects().size() - 1]->overrideMaterial("mesh_Cube", assetManager->getMaterials()["blue"].get());
+    //scene->map->getObjects()[scene->map->getObjects().size() - 1]->overrideMaterial("mesh_Cube", assetManager->getMaterials()["blue"].get());
 
 
 

@@ -5,9 +5,7 @@
 #include "Map.hpp"
 
 
-Map::Map(std::unique_ptr<DirectionalLight> dirLight, AssetManager& assetManager)
-	:
-	directionalLight(std::move(dirLight))
+Map::Map()
 {
 
 }
